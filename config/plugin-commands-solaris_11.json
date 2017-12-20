@@ -1,0 +1,492 @@
+{
+	"os_settings": {
+		"disksCommand": "",
+		"disksRegex": "",
+		"interfacesCommand": "/usr/sbin/ifconfig -a",
+		"interfacesRegex": "(\\w+\\d*):\\d*:*\\s+flags.*",
+		"pageSizeCommand": "pagesize"
+	},
+	"commands": [{
+			"eventType": "Disk",
+			"command": "df -k -l",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [{
+				"expression": "\\s*(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%.*",
+				"metrics": [{
+						"name": "DISK_NAME"
+					},
+					{
+						"name": "Total",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Used",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Free",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Percent Used",
+						"ratio": 1,
+						"type": "NORMAL"
+					}
+				]
+			}]
+		},
+		{
+			"eventType": "DiskIO",
+			"command": "iostat -x -I",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [{
+				"expression": "\\s*([\\/\\w\\d]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+(\\d+)\\s+(\\d+)",
+				"metrics": [{
+						"name": "METRIC_PREFIX"
+					},
+					{
+						"name": "Reads per Interval",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"name": "Writes per Interval",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"name": "Data Read per Interval",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"name": "Data Written per Interval",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"name": "Average queue length",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Active transactions",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Average service time",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Percentage of Time Non-Empty Queue",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Percentage of Time Busy",
+						"ratio": 1,
+						"type": "NORMAL"
+					}
+				]
+			}]
+		},
+		{
+			"eventName": "NetworkIO",
+			"command": "kstat -n MEMBER_PLACEHOLDER",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [{
+				"expression": "(\\w+\\d*)\\s+([0-9\\.]+)",
+				"metrics": [{
+						"name": "METRIC_NAME"
+					},
+					{
+						"name": "METRIC_VALUE"
+					}
+				],
+				"translations": [{
+						"input": "brdcstrcv",
+						"output": "Receive.Broadcast",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "brdcstxmt",
+						"output": "Transmit.Broadcast",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "collisions",
+						"output": "Collisions",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "ierrors",
+						"output": "Receive.Errors",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "ipackets64",
+						"output": "Receive.Packets",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "multircv",
+						"output": "Receive.Multicast",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "multixmt",
+						"output": "Transmit.Multicast",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "norcvbuf",
+						"output": "Receive.Buffer Allocation Errors",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "noxmtbuf",
+						"output": "Transmit.Buffer Allocation Errors",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "obytes64",
+						"output": "Transmit.Bytes",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "oerrors",
+						"output": "Transmit.Errors",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "opackets64",
+						"output": "Transmit.Packets",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "rbytes64",
+						"output": "Receive.Bytes",
+						"ratio": 1,
+						"type": "DELTA"
+					}
+				]
+			}]
+		},
+		{
+			"eventType": "Process",
+			"command": "ps -eo pid,s,pcpu,pmem,rss,vsz,args",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [{
+				"expression": "(\\d+)\\s+([A-Z]{1})\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+(\\d+)\\s+(\\d+)\\s+(.+)",
+				"metrics": [{
+						"name": "PID",
+						"type": "ATTRIBUTE"
+					},
+					{
+						"name": "State",
+						"type": "ATTRIBUTE"
+					},
+					{
+						"name": "CPU",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Memory",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Resident Set Size",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Virtual Size",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "PROCESS_NAME"
+					}
+				]
+			}]
+		},
+		{
+			"eventType": "Stats",
+			"command": "kstat -p unix::system_pages",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [{
+				"expression": "unix:0:system_pages:([\\w_]+)\\s+([0-9\\.]+)",
+				"metrics": [{
+						"name": "METRIC_NAME"
+					},
+					{
+						"name": "METRIC_VALUE"
+					}
+				],
+				"translations": [{
+						"input": "availrmem",
+						"output": "Page.Available",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "pagesfree",
+						"output": "Page.Free",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "pageslocked",
+						"output": "Page.Locked",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "pagestotal",
+						"output": "Page.Total",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "pp_kernel",
+						"output": "Page.Used By Kernel",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "physmem",
+						"output": "Memory.Total",
+						"ratio": "PAGE_SIZE/1000",
+						"type": "NORMAL"
+					},
+					{
+						"input": "freemem",
+						"output": "Memory.Free",
+						"ratio": "PAGE_SIZE/1000",
+						"type": "NORMAL"
+					}
+				]
+			}]
+		},
+		{
+			"eventType": "Stats",
+			"command": "/usr/sbin/swap -s",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [{
+				"expression": "total:\\s+(\\d+)k\\s+bytes allocated\\s+\\+\\s+(\\d+)k\\s+reserved\\s+=\\s+(\\d+)k\\s+used,\\s+(\\d+)k\\s+available",
+				"metrics": [{
+						"name": "Swap.Allocated",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Swap.Reserved",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Swap.Used",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Swap.Available",
+						"ratio": 1,
+						"type": "NORMAL"
+					}
+				]
+			}]
+		},
+		{
+			"eventType": "Stats",
+			"command": "top -b",
+			"checkAllRegex": false,
+			"lineLimit": 5,
+			"type": "REGEXDIM",
+			"mappings": [{
+					"expression": "([0-9\\.]+)\\s+processes:\\s+([0-9]+)\\s+sleeping,\\s+([0-9]+) on cpu",
+					"metrics": [{
+							"name": "Processes.Total",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+
+						{
+							"name": "Processes.Sleeping",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+
+						{
+							"name": "Processes.Running",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				},
+
+				{
+					"expression": "CPU states:\\s+([0-9\\.]+)%\\s+idle,\\s+([0-9\\.]+)%\\s+user,\\s+([0-9\\.]+)%\\s+kernel,\\s+([0-9\\.]+)%\\s+iowait,\\s+([0-9\\.]+)%\\s+swap",
+					"metrics": [{
+							"name": "CPU.Idle",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+
+						{
+							"name": "CPU.User",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+
+						{
+							"name": "CPU.Kernel",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+
+						{
+							"name": "CPU.IOWait",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+
+						{
+							"name": "CPU.Swap",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				},
+
+				{
+					"expression": "Memory:\\s+([0-9]+)M\\s+phys mem,\\s+([0-9]+)M\\s+free mem,\\s+([0-9]+)M\\s+total swap,\\s+([0-9]+)M\\s+free swap",
+					"metrics": [{
+							"name": "PhysicalMemory.Total",
+							"ratio": 1024,
+							"type": "NORMAL"
+						},
+
+						{
+							"name": "PhysicalMemory.Free",
+							"ratio": 1024,
+							"type": "NORMAL"
+						},
+
+						{
+							"name": "Swap.Total",
+							"ratio": 1024,
+							"type": "NORMAL"
+						},
+
+						{
+							"name": "Swap.Free",
+							"ratio": 1024,
+							"type": "NORMAL"
+						}
+					]
+				},
+
+				{
+					"expression": "load averages:\\s+([0-9\\.]+),\\s+([0-9\\.]+),\\s+([0-9\\.]+);.*",
+					"metrics": [{
+							"name": "LoadAverage.1 Minute",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+
+						{
+							"name": "LoadAverage.5 Minute",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+
+						{
+							"name": "LoadAverage.15 Minute",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "Stats",
+			"command": "vmstat 1 2",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [{
+				"expression": "\\s*(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+).*",
+				"metrics": [{
+						"name": "KernelThreads.Runnable",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "KernelThreads.In Wait Queue",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "KernelThreads.Swapped",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Memory.Swap",
+						"ratio": 1,
+						"type": "NORMAL"
+					}
+				]
+			}]
+		},
+		{
+			"eventType": "Vmstat",
+			"command": "vmstat -s",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [{
+				"expression": "\\s*(\\d+)\\s+(.+)",
+				"metrics": [{
+						"name": "METRIC_VALUE",
+						"type": "DELTA"
+					},
+					{
+						"name": "METRIC_NAME"
+					}
+				],
+				"translations": [{
+					"input": "total address trans. faults taken",
+					"output": "translation faults",
+					"ratio": 1,
+					"type": "DELTA"
+				}]
+			}]
+		}
+	]
+}

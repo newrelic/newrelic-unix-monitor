@@ -1,0 +1,11 @@
+{
+  "global": {
+    "OS": "auto", 
+    "debug": false
+  },
+  "agents": [
+    {
+      "name": "auto"
+    }
+  ] 
+} 

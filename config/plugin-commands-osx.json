@@ -1,0 +1,374 @@
+{
+	"os_settings": {
+		"disksCommand": "diskutil list",
+		"disksRegex": "\\/dev\\/(\\w+\\d*)\\s+\\([\\w\\s,]+\\):.*",
+		"interfacesCommand": "ifconfig -a",
+		"interfacesRegex": "(\\w+\\d*):\\s+flags.*",
+		"pageSizeCommand": "pagesize"
+	},
+	"commands": [{
+			"eventType": "Disk",
+			"command": "df -k -T nocdfs,devfs,hsfs,iso9660,nfs",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [{
+				"expression": "\\s*(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%.*",
+				"metrics": [{
+						"name": "DISK_NAME"
+					},
+					{
+						"name": "Total",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Used",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Free",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Percent Used",
+						"ratio": 1,
+						"type": "NORMAL"
+					}
+				]
+			}]
+		},
+		{
+			"eventType": "DiskIO",
+			"command": "iostat -I -d MEMBER_PLACEHOLDER",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [{
+				"expression": "\\s*([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+).*",
+				"metrics": [{
+						"name": "Average Request Size",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Transfers Per Interval",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"name": "Data Transferred Per Interval",
+						"ratio": 1024,
+						"type": "DELTA"
+					}
+				]
+			}]
+		},
+		{
+			"eventType": "NetworkIO",
+			"command": "netstat -i -b -n",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [{
+				"expression": "(\\w+\\d*)\\s+\\d+\\s+\\S+\\s+\\S+\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)",
+				"metrics": [{
+						"name": "METRIC_PREFIX"
+					},
+					{
+						"name": "Receive.Packets",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"name": "Receive.Errors",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"name": "Receive.Bytes",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"name": "Transmit.Packets",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"name": "Transmit.Errors",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"name": "Transmit.Bytes",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"name": "Collisions",
+						"ratio": 1,
+						"type": "DELTA"
+					}
+				]
+			}]
+		},
+		{
+			"eventType": "Process",
+			"command": "ps -ewwo pid,state,%cpu,%mem,rss,vsz,comm",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [{
+				"expression": "(\\d+)\\s+([A-Z]{1})\\S*\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+(\\d+)\\s+(\\d+)\\s+(.+)",
+				"metrics": [{
+						"name": "PID",
+						"type": "ATTRIBUTE"
+					},
+					{
+						"name": "State",
+						"type": "ATTRIBUTE"
+					},
+					{
+						"name": "CPU",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Memory",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Resident Set Size",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "Virtual Size",
+						"ratio": 1,
+						"type": "NORMAL"
+					},
+					{
+						"name": "PROCESS_NAME_MAY_HAVE_SPACES"
+					}
+				]
+			}]
+		},
+		{
+			"eventType": "Stats",
+			"command": "top -l 1 -n 0 -S",
+			"checkAllRegex": true,
+			"lineLimit": 0,
+			"mappings": [{
+					"expression": "CPU usage:\\s+([0-9\\.]+)%\\s+user,\\s+([0-9\\.]+)%\\s+sys,\\s+([0-9\\.]+)%\\s+idle.*",
+					"metrics": [{
+							"name": "CPU.User",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "CPU.System",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "CPU.Idle",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				},
+				{
+					"expression": "Disks:\\s+(\\d+)\\/\\d+[BKMGT]{1}\\s+read,\\s+(\\d+)\\/\\d+[BKMGT]{1}\\s+written.",
+					"metrics": [{
+							"name": "DiskIO.Reads Per Interval",
+							"ratio": 1048576,
+							"type": "DELTA"
+						},
+						{
+							"name": "DiskIO.Writes Per Interval",
+							"ratio": 1048576,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": "Load Avg:\\s+([0-9\\.]+),\\s+([0-9\\.]+),\\s+([0-9\\.]+)",
+					"metrics": [{
+							"name": "LoadAverage.1 Minute",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "LoadAverage.5 Minute",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "LoadAverage.15 Minute",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				},
+				{
+					"expression": "MemRegions:\\s+(\\d+)\\s+total,\\s+(\\d+)M\\s+resident,\\s+(\\d+)M\\s+private,\\s+(\\d+)M\\s+shared.*",
+					"metrics": [{
+							"name": "Regions.Total",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Regions.Resident",
+							"ratio": 1024,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Regions.Private",
+							"ratio": 1024,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Regions.Shared",
+							"ratio": 1024,
+							"type": "NORMAL"
+						}
+					]
+				},
+				{
+					"expression": "PhysMem:\\s+(\\d+)G\\s+used\\s+.*",
+					"metrics": [{
+						"name": "Memory.Used",
+						"ratio": 1048576,
+						"type": "NORMAL"
+					}]
+				},
+				{
+					"expression": "PhysMem:\\s+(\\d+)M\\s+used\\s+.*",
+					"metrics": [{
+						"name": "Memory.Used",
+						"ratio": 1024,
+						"type": "NORMAL"
+					}]
+				},
+				{
+					"expression": "PhysMem:\\s+\\d+[MG]{1}\\s+used\\s+\\((\\d+)G wired\\).*",
+					"metrics": [{
+						"name": "Memory.Wired",
+						"ratio": 1048576,
+						"type": "NORMAL"
+					}]
+				},
+				{
+					"expression": "PhysMem:\\s+\\d+[MG]{1}\\s+used\\s+\\((\\d+)M wired\\).*",
+					"metrics": [{
+						"name": "Memory.Wired",
+						"ratio": 1024,
+						"type": "NORMAL"
+					}]
+				},
+				{
+					"expression": "PhysMem:\\s+\\d+[MG]{1}\\s+used\\s+\\(\\d+[MG]{1} wired\\),\\s(\\d+)G\\s+unused.",
+					"metrics": [{
+						"name": "Memory.Free",
+						"ratio": 1048576,
+						"type": "NORMAL"
+					}]
+				},
+				{
+					"expression": "PhysMem:\\s+\\d+[MG]{1}\\s+used\\s+\\(\\d+[MG]{1} wired\\),\\s(\\d+)M\\s+unused.",
+					"metrics": [{
+						"name": "Memory.Free",
+						"ratio": 1024,
+						"type": "NORMAL"
+					}]
+				},
+				{
+					"expression": "Processes:\\s+(\\d+)\\s+total,\\s+(\\d+)\\s+running,\\s+(\\d+)\\s+stuck,\\s+(\\d+)\\s+sleeping,\\s+(\\d+)\\s+threads.*",
+					"metrics": [{
+							"name": "Processes.Total",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Processes.Running",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Processes.Stuck",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Processes.Sleeping",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "KernelThreads.Runnable",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				},
+				{
+					"expression": "Swap:\\s+(\\d+)B\\s+\\+\\s+(\\d+)B\\s+free.",
+					"metrics": [{
+							"name": "Swap.Used",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Swap.Free",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "Vmstat",
+			"command": "vm_stat",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [{
+				"expression": "\\s*\"*([^:\"]+)\"*:\\s+(\\d+)\\.*",
+				"metrics": [{
+						"name": "METRIC_NAME"
+					},
+					{
+						"name": "METRIC_VALUE",
+						"ratio": 1,
+						"type": "DELTA"
+					}
+				],
+				"translations": [{
+						"input": "Pageins",
+						"output": "page ins",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "Pageouts",
+						"output": "page outs",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "Swapins",
+						"output": "swap ins",
+						"ratio": 1,
+						"type": "DELTA"
+					},
+					{
+						"input": "Swapouts",
+						"output": "swap outs",
+						"ratio": 1,
+						"type": "DELTA"
+					}
+				]
+			}]
+		}
+	]
+}
