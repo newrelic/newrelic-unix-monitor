@@ -2,10 +2,10 @@
 	"global": {
 		"OS": "auto",
 		"debug": false,
-		"rpm.account.id": "284929",
-		"rpm.account.adminApiKey": "b9ace432659c5ddecb72adc09885fe67",
-		"integration.dashboard.installerUrl": "https://oaq67woo45.execute-api.us-east-1.amazonaws.com/prod",
-		"integration.guid": "UNIX.Integration"
+		"rpm.account.id": "your-account-id-here",
+		"rpm.account.adminApiKey": "your-admin-api-key-here",
+		"dashboard.installerUrl": "https://oaq67woo45.execute-api.us-east-1.amazonaws.com/prod",
+		"integration.guid": "UNIX.Infra.Monitor"
 	},
 	"agents": [
 		{

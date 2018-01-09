@@ -91,3 +91,4 @@ config-test/**
 nr-plugin-exec-mac-testing
 scratchpad.txt
 updateUnixMonitor.sh
+logs
