@@ -1,0 +1,150 @@
+{
+    "dashboard": {
+        "id": 466006,
+        "title": "Unix - Processes",
+        "icon": "bar-chart",
+        "created_at": "2018-01-04T03:44:09Z",
+        "updated_at": "2018-01-04T04:17:03Z",
+        "visibility": "all",
+        "editable": "editable_by_all",
+        "ui_url": "https://insights.newrelic.com/accounts/284929/dashboards/466006",
+        "api_url": "https://api.newrelic.com/v2/dashboards/466006",
+        "owner_email": "seth@newrelic.com",
+        "metadata": {
+            "version": 1
+        },
+        "widgets": [
+            {
+                "visualization": "facet_table",
+                "layout": {
+                    "width": 2,
+                    "height": 1,
+                    "row": 1,
+                    "column": 1
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT count(*) as 'instances', sum(`cpu`), sum(`memory`), sum(`residentSetSize`), sum(`virtualSize`) FROM `unixMonitor:Process` SINCE 1 minute ago until now facet instance limit 1000"
+                    }
+                ],
+                "presentation": {
+                    "title": "Process Summary",
+                    "notes": null,
+                    "drilldown_dashboard_id": 466006
+                }
+            },
+            {
+                "visualization": "faceted_area_chart",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 1,
+                    "column": 3
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT count(*) from `unixMonitor:Process` since 1 hour ago until now timeseries facet instance"
+                    }
+                ],
+                "presentation": {
+                    "title": "Process Instance Counts",
+                    "notes": null
+                }
+            },
+            {
+                "visualization": "facet_table",
+                "layout": {
+                    "width": 2,
+                    "height": 1,
+                    "row": 2,
+                    "column": 1
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT latest(instance), latest(`cpu`), latest(`memory`), latest(`residentSetSize`), latest(`virtualSize`) FROM `unixMonitor:Process` SINCE 5 minutes ago limit 1000 facet pid"
+                    }
+                ],
+                "presentation": {
+                    "title": "Process List",
+                    "notes": null,
+                    "drilldown_dashboard_id": 466006
+                }
+            },
+            {
+                "visualization": "line_chart",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 2,
+                    "column": 3
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT average(memory) from `unixMonitor:Process` since 1 hour ago timeseries"
+                    }
+                ],
+                "presentation": {
+                    "title": "Process Memory Utilization 1H",
+                    "notes": ""
+                }
+            },
+            {
+                "visualization": "single_event",
+                "layout": {
+                    "width": 2,
+                    "height": 1,
+                    "row": 3,
+                    "column": 1
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT instance, command, pid, state  from `unixMonitor:Process` limit 1"
+                    }
+                ],
+                "presentation": {
+                    "title": "Process Details (Use Filter on PID)",
+                    "notes": ""
+                }
+            },
+            {
+                "visualization": "line_chart",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 3,
+                    "column": 3
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT average(cpu) from `unixMonitor:Process` since 1 hour ago timeseries"
+                    }
+                ],
+                "presentation": {
+                    "title": "Process CPU Utilization 1H",
+                    "notes": ""
+                }
+            }
+        ],
+        "filter": {
+            "event_types": [
+                "unixMonitor:Disk",
+                "unixMonitor:DiskIO",
+                "unixMonitor:NetworkIO",
+                "unixMonitor:Process",
+                "unixMonitor:Stats",
+                "unixMonitor:Vmstat"
+            ],
+            "attributes": [
+                "agentName",
+                "hostname",
+                "instance"
+            ]
+        }
+    }
+}
