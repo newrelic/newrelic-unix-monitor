@@ -440,43 +440,9 @@
 			"checkAllRegex": false,
 			"lineLimit": 0,
 			"mappings": [{
-					"expression": "\\s*in use\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)",
-					"metrics": [{
-							"name": "PhysicalMemory.Working",
-							"ratio": 1,
-							"type": "NORMAL"
-						},
-						{
-							"name": "PhysicalMemory.Persistent",
-							"ratio": 1,
-							"type": "NORMAL"
-						},
-						{
-							"name": "PhysicalMemory.Client",
-							"ratio": 1,
-							"type": "NORMAL"
-						}
-					]
-				},
-				{
 					"expression": "\\s*memory\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+).*",
 					"metrics": [{
-							"name": "Physical.Total",
-							"ratio": 1,
-							"type": "NORMAL"
-						},
-						{
-							"name": "Physical.Total In Use",
-							"ratio": 1,
-							"type": "NORMAL"
-						},
-						{
-							"name": "Physical.Free",
-							"ratio": 1,
-							"type": "NORMAL"
-						},
-						{
-							"name": "Pinned.Total",
+							"name": "Memory.Total",
 							"ratio": 1,
 							"type": "NORMAL"
 						},
@@ -489,18 +455,33 @@
 							"name": "Memory.Free",
 							"ratio": 1,
 							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Pinned",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Virtual",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Available",
+							"ratio": 1,
+							"type": "NORMAL"
 						}
 					]
 				},
 				{
 					"expression": "\\s*pg space\\s+(\\d+)\\s+(\\d+)",
 					"metrics": [{
-							"name": "Memory.Physical.Total",
+							"name": "Swap.Total",
 							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
-							"name": "Memory.Physical.Total In Use",
+							"name": "Swap.Used",
 							"ratio": 1,
 							"type": "NORMAL"
 						}
@@ -525,6 +506,25 @@
 						},
 						{
 							"name": "Memory.Pinned.Other",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				},
+				{
+					"expression": "\\s*in use\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)",
+					"metrics": [{
+							"name": "Memory.Real.Working",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Real.Persistent",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Real.Client",
 							"ratio": 1,
 							"type": "NORMAL"
 						}

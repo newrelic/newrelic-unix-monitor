@@ -305,7 +305,7 @@
 		},
 		{
 			"eventType": "Stats",
-			"command": "top -b -n 2",
+			"command": "top -bH -n 2",
 			"checkAllRegex": false,
 			"lineLimit": 5,
 			"mappings": [{
@@ -453,29 +453,29 @@
 					]
 				},
 				{
-					"expression": "Tasks:\\s+(\\d+)\\s+total,\\s+(\\d+)\\s+running,\\s+(\\d+)\\s+sleeping,\\s+(\\d+)\\s+stopped,\\s+(\\d+)\\s+zombie",
+					"expression": "Threads:\\s+(\\d+)\\s+total,\\s+(\\d+)\\s+running,\\s+(\\d+)\\s+sleeping,\\s+(\\d+)\\s+stopped,\\s+(\\d+)\\s+zombie",
 					"metrics": [{
-							"name": "Processes.Total",
+							"name": "KernelThreads.Total",
 							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
-							"name": "Processes.Running",
+							"name": "KernelThreads.Runnable",
 							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
-							"name": "Processes.Sleeping",
+							"name": "KernelThreads.Sleeping",
 							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
-							"name": "Processes.Stopped",
+							"name": "KernelThreads.Stopped",
 							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
-							"name": "Processes.Zombie",
+							"name": "KernelThreads.Zombie",
 							"ratio": 1,
 							"type": "NORMAL"
 						}

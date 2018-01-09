@@ -63,7 +63,7 @@
 
 ### Installation & Usage Overview
 
-1. Download the latest version of the agent: [newrelic_unix_plugin-distribution.tar.gz](/target/newrelic_unix_plugin-distribution.tar.gz?raw=true)
+1. Download the latest version of the agent.
 2. Gunzip & untar on Unix server that you want to monitor
 3. Configure `config/newrelic.json`
   * [Click here for newrelic.json config details](#nrjson)
@@ -75,10 +75,10 @@
 6. Run `chmod +x pluginctl.sh` to make the startup script executable (if it isn't already)
 7. Run `./pluginctl.sh start` from command-line
 8. Check logs (in `logs` directory by default) for errors
-9. Login to New Relic UI and find your plugin instance
-  * In the New Relic UI, select "Plugins" from the top level accordion menu
-  * Check for the "Unix" plugin in left-hand column.  Click on it, your instance should appear in the list.
-
+9. Login to New Relic UI and find your data in Insights.
+  * In the data explorer, look for custom event types that start with "unixMonitor:"
+  * Possible event types (for out-of-the-box commands): unixMonitor:Disk, unixMonitor:DiskIO, unixMonitor:NetworkIO, unixMonitor:Process, unixMonitor:Stats, unixMonitor:Vmstat
+   
 ----
 
 ### <a name="nrjson"/>Configuring the `newrelic.json` file
