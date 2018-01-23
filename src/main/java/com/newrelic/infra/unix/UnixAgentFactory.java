@@ -8,10 +8,16 @@ import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.TreeMap;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -183,7 +189,12 @@ public class UnixAgentFactory extends AgentFactory {
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setRequestProperty("X-Api-Key", this.getRpmAccountAdminApiKey());
-
+			connection.setHostnameVerifier(new HostnameVerifier() {
+				@Override
+				public boolean verify(String hostname, SSLSession session) {
+					return true;
+				}
+			});
 			connection.setDoOutput(true);
 			DataOutputStream outputStream;
 			outputStream = new DataOutputStream(connection.getOutputStream());
@@ -205,8 +216,37 @@ public class UnixAgentFactory extends AgentFactory {
 				errorStream.close();
 				logger.error("installDashboards: responseBody: {}", responseBody);
 			}
+		} catch (javax.net.ssl.SSLHandshakeException e) {
+			logger.warn("installDashboards: non-fatal exception: {}", e.getMessage());
+			try {
+				SSLServerSocketFactory ssf = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+				String[] defaultCiphers = ssf.getDefaultCipherSuites();
+				String[] availableCiphers = ssf.getSupportedCipherSuites();
+
+				TreeMap<String, Boolean> ciphers = new TreeMap<String, Boolean>();
+				for (int i = 0; i < availableCiphers.length; ++i)
+					ciphers.put(availableCiphers[i], Boolean.FALSE);
+
+				for (int i = 0; i < defaultCiphers.length; ++i)
+					ciphers.put(defaultCiphers[i], Boolean.TRUE);
+
+				logger.debug("cipher: Default\tCipher");
+				for (Iterator<?> i = ciphers.entrySet().iterator(); i.hasNext();) {
+					StringBuffer line = new StringBuffer();
+					Map.Entry<String, Boolean> cipher = (Entry<String, Boolean>) i.next();
+					if (Boolean.TRUE.equals(cipher.getValue()))
+						line.append('*');
+					else
+						line.append(' ');
+					line.append('\t');
+					line.append(cipher.getKey());
+					logger.debug("cipher: {}", line.toString());
+				}
+			} catch (Exception ee) {
+				logger.debug("installDashboards: debugging exception: {}", e.getMessage());
+			}
 		} catch (Exception e) {
-			logger.error("installDashboards: exception: {}", e.getMessage(), e);
+			logger.warn("installDashboards: non-fatal exception: {}", e.getMessage());
 		}
 		logger.debug("installDashboards: exit");
 	}
