@@ -196,11 +196,35 @@ start_plugin() {
     	echo "####################" >> $PLUGIN_ERR_FILE
     	exit 1
     else
+		installDashboards
         echo $PID > $PLUGIN_PID_FILE
         echo "$PLUGIN_NAME started with PID $PID" | tee -a $PLUGIN_ERR_FILE
         echo "####################" >> $PLUGIN_ERR_FILE
 		exit 0
     fi
+}
+
+installDashboards() { 
+	echo "$PLUGIN_NAME installing dashboards"
+	adminApiKey=`grep admin_api_key config/plugin.json  | sed -e 's/^.*://' -e 's/"//g' -e 's/,//' -e 's/ //g'`
+	integrationGuid=`grep integration_guid config/plugin.json  | sed -e 's/^.*://' -e 's/"//g' -e 's/,//' -e 's/ //g'`
+	installerUrl=`grep installer_url config/plugin.json  | sed -e 's/^.*https/https/' -e 's/"//g' -e 's/,//' -e 's/ //g'`
+	accountId=`grep account_id config/plugin.json  | sed -e 's/^.*://' -e 's/"//g' -e 's/,//' -e 's/ //g'`
+	if which curl; then
+		curl --request POST  \
+			  --url ${installerUrl} \
+			  --header 'Content-Type: application/json' \
+			  --data "{ \"integrationId\": \"${integrationGuid}\", \"accountId\": ${accountId}, \"accountAdminApiKey\": \"${adminApiKey}\"}"
+	elif which wget; then
+		wget --quiet \
+			  --method POST \
+			  --header 'Content-Type: application/json' \
+			  --body-data "{ \"integrationId\": \"${integrationGuid}\", \"accountId\": ${accountId}, \"accountAdminApiKey\": \"${adminApiKey}\"}" \
+			  --output-document /dev/null \
+			  - ${intallerUrl}
+	else
+		echo "Dashboard installation requires either curl or wget be installed"
+	fi
 }
 
 echo ""

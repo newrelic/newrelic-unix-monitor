@@ -2,7 +2,7 @@
 	"global": {
 		"OS": "auto",
 		"debug": false,
-		"account_id": "insert_your_RPM_account_ID_here",
+		"account_id": insert_your_RPM_account_ID_here_NO_QUOTES,
 		"insights_insert_key": "insert_your_insights_insert_key_here",
 		"dashboards": {
 			"admin_api_key": "insert_your_admin_api_key_here",
