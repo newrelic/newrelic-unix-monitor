@@ -2,10 +2,13 @@
 	"global": {
 		"OS": "auto",
 		"debug": false,
-		"rpm.account.id": "your-account-id-here",
-		"rpm.account.adminApiKey": "your-admin-api-key-here",
-		"dashboard.installerUrl": "https://oaq67woo45.execute-api.us-east-1.amazonaws.com/prod",
-		"integration.guid": "UNIX.Infra.Monitor"
+		"account_id": "insert_your_RPM_account_ID_here",
+		"insights_insert_key": "insert_your_insights_insert_key_here",
+		"dashboards": {
+			"admin_api_key": "insert_your_admin_api_key_here",
+			"installer_url": "https://oaq67woo45.execute-api.us-east-1.amazonaws.com/prod",
+			"integration_guid": "UNIX.Infra.Monitor"
+		}
 	},
 	"agents": [
 		{

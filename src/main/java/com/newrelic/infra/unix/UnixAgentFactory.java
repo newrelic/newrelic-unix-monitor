@@ -1,23 +1,10 @@
 package com.newrelic.infra.unix;
 
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
-import java.io.InputStream;
 import java.io.Reader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Scanner;
-import java.util.TreeMap;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLServerSocketFactory;
-import javax.net.ssl.SSLSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +17,6 @@ import com.newrelic.infra.unix.config.AgentSettings;
 
 public class UnixAgentFactory extends AgentFactory {
 
-	private static final String body = "{\"body\": {\"integrationId\": \"%s\", \"accountId\": \"%s\", \"accountAdminApiKey\": \"%s\"}}";
 	private static final String kDefaultServerName = "unixserver";
 	private static final Logger logger = LoggerFactory.getLogger(UnixAgentFactory.class);
 	private static ObjectMapper objectMapper = new ObjectMapper();
@@ -38,10 +24,7 @@ public class UnixAgentFactory extends AgentFactory {
 
 	String agentname;
 	Boolean debug;
-
-	private Map<String, Object> globalProperties;
 	String hostname;
-
 	String os;
 
 	@Override
@@ -96,50 +79,9 @@ public class UnixAgentFactory extends AgentFactory {
 		return new UnixAgent(agentSettings);
 	}
 
-	// integration.dashboard.installerUrl=https://oaq67woo45.execute-api.us-east-1.amazonaws.com/prod
-	public URL getDashboardInstallerUrl() {
-		String url = (String) globalProperties.get("dashboard.installerUrl");
-		if (url == null)
-			url = "";
-		try {
-			return new URL(url.trim());
-		} catch (MalformedURLException e) {
-			logger.error(e.getMessage(), e);
-			return null;
-		}
-	}
-
-	// integration.guid=
-	public String getIntegrationGuid() {
-		Object value = this.globalProperties.get("integration.guid");
-		if (value == null)
-			return "";
-		else
-			return ((String) value).trim();
-	}
-
-	// rpm.account.adminApiKey= # This account's Admin API Key
-	public String getRpmAccountAdminApiKey() {
-		Object value = this.globalProperties.get("rpm.account.adminApiKey");
-		if (value == null)
-			return "";
-		else
-			return (String) value;
-	}
-
-	// rpm.account.id= # This account's New Relic RPM Account ID
-	public String getRpmAccountId() {
-		Object value = this.globalProperties.get("rpm.account.id");
-		if (value == null)
-			return "";
-		else
-			return ((String) value).trim();
-	}
-
 	@Override
 	public void init(Map<String, Object> properties) {
 		super.init(properties);
-		this.globalProperties = properties;
 
 		if (properties.containsKey("OS") && !((String) properties.get("OS")).toLowerCase().equals("auto")) {
 			os = ((String) properties.get("OS")).toLowerCase().trim();
@@ -161,94 +103,5 @@ public class UnixAgentFactory extends AgentFactory {
 				os = "unsupported";
 			}
 		}
-		this.installDashboards();
 	}
-
-	// Install dashboards for this account in Insights if they don't already exist
-	// Update the dashboards in Insights if they exist and have been updated in S3
-	private void installDashboards() {
-		logger.debug("installDashboards: enter");
-		if (this.getDashboardInstallerUrl() == null) {
-			logger.warn("installDashboards: dashboard.installerUrl is null, unable to install or update Integration dashboards");
-			return;
-		}
-
-		// curl -X POST \
-		// https://oaq67woo45.execute-api.us-east-1.amazonaws.com/prod \
-		// -H 'Content-Type: application/json' \
-		// -d '{
-		// "body": {
-		// "integrationId": "RabbitMQ.Integration",
-		// "accountId": "284929-4",
-		// "accountAdminApiKey": "b9ace432659c5ddecb72adc09885fe67"
-		// }
-		// }'
-		try {
-			HttpsURLConnection connection = (HttpsURLConnection) this.getDashboardInstallerUrl().openConnection();
-
-			connection.setRequestMethod("POST");
-			connection.setRequestProperty("Content-Type", "application/json");
-			connection.setRequestProperty("X-Api-Key", this.getRpmAccountAdminApiKey());
-			connection.setHostnameVerifier(new HostnameVerifier() {
-				@Override
-				public boolean verify(String hostname, SSLSession session) {
-					return true;
-				}
-			});
-			connection.setDoOutput(true);
-			DataOutputStream outputStream;
-			outputStream = new DataOutputStream(connection.getOutputStream());
-			String msg = String.format(body, this.getIntegrationGuid(), this.getRpmAccountId(), this.getRpmAccountAdminApiKey());
-			outputStream.writeBytes(msg);
-			outputStream.flush();
-			outputStream.close();
-			int responseCode;
-			responseCode = connection.getResponseCode();
-
-			if (responseCode >= 400) {
-				InputStream errorStream = connection.getErrorStream();
-				logger.error("installDashboards: responseCode: {}", responseCode);
-				String encoding = connection.getContentEncoding();
-				encoding = encoding == null ? "UTF-8" : encoding;
-				Scanner scanner = new Scanner(errorStream, encoding).useDelimiter("\\A");
-				String responseBody = scanner.hasNext() ? scanner.next() : "";
-				scanner.close();
-				errorStream.close();
-				logger.error("installDashboards: responseBody: {}", responseBody);
-			}
-		} catch (javax.net.ssl.SSLHandshakeException e) {
-			logger.warn("installDashboards: non-fatal exception: {}", e.getMessage());
-			try {
-				SSLServerSocketFactory ssf = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
-				String[] defaultCiphers = ssf.getDefaultCipherSuites();
-				String[] availableCiphers = ssf.getSupportedCipherSuites();
-
-				TreeMap<String, Boolean> ciphers = new TreeMap<String, Boolean>();
-				for (int i = 0; i < availableCiphers.length; ++i)
-					ciphers.put(availableCiphers[i], Boolean.FALSE);
-
-				for (int i = 0; i < defaultCiphers.length; ++i)
-					ciphers.put(defaultCiphers[i], Boolean.TRUE);
-
-				logger.debug("cipher: Default\tCipher");
-				for (Iterator<?> i = ciphers.entrySet().iterator(); i.hasNext();) {
-					StringBuffer line = new StringBuffer();
-					Map.Entry<String, Boolean> cipher = (Entry<String, Boolean>) i.next();
-					if (Boolean.TRUE.equals(cipher.getValue()))
-						line.append('*');
-					else
-						line.append(' ');
-					line.append('\t');
-					line.append(cipher.getKey());
-					logger.debug("cipher: {}", line.toString());
-				}
-			} catch (Exception ee) {
-				logger.debug("installDashboards: debugging exception: {}", e.getMessage());
-			}
-		} catch (Exception e) {
-			logger.warn("installDashboards: non-fatal exception: {}", e.getMessage());
-		}
-		logger.debug("installDashboards: exit");
-	}
-
 }
