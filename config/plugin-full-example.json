@@ -1,0 +1,30 @@
+{
+	"global": {
+		"OS": "auto",
+		"debug": false,
+		"account_id": "enter_NR_account_ID",
+		"insights_mode": {
+			"insights_insert_key": "enter_insights_insert_key"
+		},
+		"infra_mode": {
+			"rpc_listener_port": 9001
+		},
+		"dashboards": {
+			"admin_api_key": "enter_admin_api_key",
+			"installer_url": "https://url_for_installer_service",
+			"integration_guid": "UNIX.Infra.Monitor",
+			"dashboard_install": "command_line"
+		},
+		"proxy": {
+			"proxy_host": "enter_proxy_host",
+			"proxy_port": 5443,
+			"proxy_username": "enter_proxy_username",
+			"proxy_password": "enter_proxy_password"
+		}
+	},
+	"agents": [
+		{
+			"name": "auto"
+		}
+	]
+}	
