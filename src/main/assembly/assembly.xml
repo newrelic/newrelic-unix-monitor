@@ -12,6 +12,9 @@
 			<source>README.md</source>
 		</file>
 		<file>
+			<source>README.pdf</source>
+		</file>
+		<file>
 			<source>pluginctl.sh</source>
 		</file>
         <file>
