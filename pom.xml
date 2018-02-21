@@ -3,10 +3,28 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.newrelic.experts</groupId>
 	<artifactId>unix-infra-monitor</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1</version>
 	<name>unix-infra-monitor</name>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>com.ruleoftech</groupId>
+				<artifactId>markdown-page-generator-plugin</artifactId>
+				<version>2.1.0</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+        <inputDirectory>${basedir}</inputDirectory>
+        <outputDirectory>${basedir}</outputDirectory>
+        <pegdownExtensions>TABLES,FENCED_CODE_BLOCKS,AUTOLINKS,EXTANCHORLINKS</pegdownExtensions>
+    </configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
