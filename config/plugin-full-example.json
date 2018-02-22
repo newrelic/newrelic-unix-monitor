@@ -24,7 +24,11 @@
 	},
 	"agents": [
 		{
-			"name": "auto"
+			"name": "auto",
+			"static": {
+				"attribute1": "attribute1_value",
+				"attribute2": 12345
+			}
 		}
 	]
 }	

@@ -2,7 +2,6 @@ package com.newrelic.infra.unix;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import com.newrelic.infra.publish.api.Agent;
 import com.newrelic.infra.publish.api.InventoryReporter;
 import com.newrelic.infra.publish.api.MetricReporter;
-import com.newrelic.infra.publish.api.metrics.AttributeMetric;
-import com.newrelic.infra.publish.api.metrics.Metric;
 import com.newrelic.infra.unix.config.AgentSettings;
 import com.newrelic.infra.unix.config.Command;
 
@@ -23,7 +20,6 @@ public class UnixAgent extends Agent {
 	private AgentSettings agentSettings;
 	private HashSet<String> disks;
 	private HashSet<String> networkInterfaces;
-	private LinkedList<Metric> staticMetrics;
 	private int pageSize;
 	
 	public UnixAgent(AgentSettings asettings) {
@@ -31,10 +27,7 @@ public class UnixAgent extends Agent {
 		disks = getMembers(agentSettings.getOsSettings().getDisksCommand(), agentSettings.getOsSettings().getDisksRegex());
 		networkInterfaces = getMembers(agentSettings.getOsSettings().getInterfacesCommand(), agentSettings.getOsSettings().getInterfacesRegex());
 		setPageSize(agentSettings);
-		staticMetrics = new LinkedList<Metric>();
-		// staticMetrics.add(new AttributeMetric("agentName", agentSettings.getAgentname()));
-		// staticMetrics.add(new AttributeMetric("hostName", agentSettings.getHostname()));
-		staticMetrics.add(new AttributeMetric(UnixAgentConstants.KAOSMetricName, agentSettings.getOs().split("_")[0]));
+		addStaticAttribute(UnixAgentConstants.KAOSMetricName, agentSettings.getOs().split("_")[0]);
 	}
 	
 	@Override
@@ -56,7 +49,7 @@ public class UnixAgent extends Agent {
 				}
 				
 				for(String thisMember : members) {
-					CommandMetricUtils.parseCommandOutput(command, thisMember, metricReporter, staticMetrics, pageSize);
+					CommandMetricUtils.parseCommandOutput(command, thisMember, metricReporter, getStaticAttributes(), pageSize);
 				}
 			} catch (Exception e) {
 				logger.error("Error: Parsing of " + command.getEventType() + " : " + command.getCommand() + " could not be completed.");

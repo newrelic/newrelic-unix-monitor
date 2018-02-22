@@ -179,7 +179,7 @@ public class CommandMetricUtils {
 	}
 
 	public static void parseCommandOutput(Command command, String metricPrefix,
-			MetricReporter metricReporter, List<Metric> staticMetrics, int pageSize) throws Exception {
+			MetricReporter metricReporter, List<Metric> staticAttributes, int pageSize) throws Exception {
 		String thisCommand = command.getCommand().replace(UnixAgentConstants.kMemberPlaceholder, metricPrefix);
 		ArrayList<String> commandReader = CommandMetricUtils.executeCommand(thisCommand);
 		
@@ -300,8 +300,8 @@ public class CommandMetricUtils {
 					// Metric lines with "Instances" require their own metric event.
 					// Otherwise, add to the set of metrics that will be reported at the end of the command looping.
 					if(!thisMetricInstance.isEmpty() && !thisMetricInstance.equals(metricPrefix)) {
-						if(staticMetrics != null) {
-							localMetricSet.addAll(staticMetrics);
+						if(staticAttributes != null) {
+							localMetricSet.addAll(staticAttributes);
 						}
 						metricReporter.report(command.getEventType(), localMetricSet, thisCommand + thisMetricInstance);						
 					} else {
@@ -326,8 +326,8 @@ public class CommandMetricUtils {
 		
 		// For commands that used the pooled metric set (non-Instance-centric), finally report them.
 		if(!commandMetricSet.isEmpty()) {
-			if(staticMetrics != null) {
-				commandMetricSet.addAll(staticMetrics);
+			if(staticAttributes != null) {
+				commandMetricSet.addAll(staticAttributes);
 			}
 			metricReporter.report(command.getEventType(), commandMetricSet, thisCommand);
 		}

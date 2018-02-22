@@ -8,6 +8,7 @@
 * [Installation & Usage Overview](#installation-usage-overview)
 * [`plugin.json` configuration](#pluginjson-configuration)
 	* [Global settings](#global-settings)
+	* [Agent settings](#agent-settings)
 	* [Proxy settings](#proxy-settings)
 	* [Dashboard deployment](#dashboard-deployment)
 * [Other configurations](#other-configurations)
@@ -46,13 +47,30 @@
 --------------------------------------------------------------------------------
 
 ## `plugin.json` configuration
-_Note: A full example of the possible fields in plugin.json can be found in plugin-fullexample.json_
+_Note: A full example of the possible fields in `plugin.json` can be found in `plugin-fullexample.json`_
 
 ### Global settings
 * `OS` (default: `auto`): Used to determine which commands to run and how to parse them. Leave set to `auto` to have the plugin figure that out (which normally works).
 * `account_id`: New Relic account ID - the 6- or 7- digit number in the URL when you're logged into the account of your choosing.
 * `insights_insert_key` (under `insights`): You must create an [Insights Insert key, as described here.](https://docs.newrelic.com/docs/insights/insights-data-sources/custom-data/insert-custom-events-insights-api#register)
-* `name` (under `agents`): Otherwise, sets the hostname and agentName to whatever is set here. If set to `auto`, the plugin will use that server's hostname.
+
+### Agent settings
+These settings are found in the `agents` object.
+
+* `name`: If set to `auto`, the plugin will use that server's hostname. Otherwise, sets the hostname and agentName to whatever is set here. 
+* `static` (optional): An object containing static attributes (as name-value pairs) you want to appear in every event from this plugin. For example:
+```
+  "agents": [
+    {
+      "name": "auto"
+      "static": {
+        "data_center": "Philadelphia",
+        "customer": "Eagles",
+        "rank": 1	
+      }
+    }
+  ]
+```
 
 ### Proxy settings
 If using a proxy, the optional `proxy` object should be added to the `global` object in `plugin.json`, if its not there already.
