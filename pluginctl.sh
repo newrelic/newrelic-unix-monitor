@@ -47,7 +47,7 @@ echo "Plugin location: $PLUGIN_PATH"
 # Comment-out if using -jar
 PLUGIN_JAVA_CLASS=com.newrelic.infra.unix.Main
 # Set to the jar if using -jar
-PLUGIN_JAVA_CLASSPATH="$PLUGIN_PATH/lib/unix-infra-monitor.jar"
+PLUGIN_JAVA_CLASSPATH="$PLUGIN_PATH/target/unix-infra-monitor.jar"
 PLUGIN_JAVA_OPTS="-Xms16m -Xmx128m"
 
 # Attempt to set Java path & filename if not manually defined above
