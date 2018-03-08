@@ -7,7 +7,6 @@
 		},
 		"dashboards": {
 			"admin_api_key": "insert_your_admin_api_key_here",
-			"installer_url": "https://url_for_installer_service",
 			"integration_guid": "UNIX.Infra.Monitor",
 			"dashboard_install": "command_line"
 		}
