@@ -203,20 +203,29 @@ start_plugin() {
   fi
 }
 
+get_variable() {
+  echo $1 | sed -e 's/^.*://' -e 's/"//g' -e 's/,//' -e 's/ //g'
+}
+
+get_url() {
+  echo $1 | sed -e 's/^.*https/https/' -e 's/"//g' -e 's/,//' -e 's/ //g'
+}
+
 install_dashboards() {
   echo ""
   echo "Dashboards: Installing dashboards for $PLUGIN_NAME"
   pluginJsonLocation="$PLUGIN_PATH/config/plugin.json"
-
-  admin_api_key=`grep admin_api_key ${pluginJsonLocation}        | sed -e 's/^.*://' -e 's/"//g' -e 's/,//' -e 's/ //g'`
-  integration_guid=`grep integration_guid ${pluginJsonLocation}  | sed -e 's/^.*://' -e 's/"//g' -e 's/,//' -e 's/ //g'`
-  installer_url=`grep installer_url ${pluginJsonLocation}  | sed -e 's/^.*https/https/' -e 's/"//g' -e 's/,//' -e 's/ //g'`
-  account_id=`grep account_id ${pluginJsonLocation}              | sed -e 's/^.*://' -e 's/"//g' -e 's/,//' -e 's/ //g'`
-
+  defaultInstallerURL="https://oaq67woo45.execute-api.us-east-1.amazonaws.com/prod"
+  
+  admin_api_key=`grep admin_api_key ${pluginJsonLocation}`
+  integration_guid=`grep integration_guid ${pluginJsonLocation}`
+  account_id=`grep account_id ${pluginJsonLocation}`
+  installer_url=`grep installer_url ${pluginJsonLocation}`
+  
   something_is_missing=false
-  for testvar in admin_api_key integration_guid installer_url account_id; do
-    if [ -z "${testvar}" ] ; then
-      echo "Dashboards: $testvar is not set in ${pluginJsonLocation}"
+  for testvar in admin_api_key integration_guid account_id; do
+    if [ -z "${!testvar}" ] ; then
+      echo "Dashboards: ${testvar} is not set in ${pluginJsonLocation} or defined in this script."
       something_is_missing=true
     fi
   done
@@ -224,6 +233,11 @@ install_dashboards() {
   if [ "${something_is_missing}" = true ]; then
     echo "Dashboards: Skipping dashboard installation."
   else
+    admin_api_key=$(get_variable "$admin_api_key")
+  	integration_guid=$(get_variable "$integration_guid")
+  	account_id=$(get_variable "$account_id")
+  	installer_url=$(get_url "${installer_url:-$defaultInstallerURL}")
+
     if command -v curl 2>&1 >/dev/null; then
       echo "Dashboards: Using curl to initiate dashboard install."
       dashResponse=$(curl -sb -k \

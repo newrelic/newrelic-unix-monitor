@@ -14,14 +14,16 @@
 				<executions>
 					<execution>
 						<phase>package</phase>
-						<goals><goal>generate</goal></goals>
+						<goals>
+							<goal>generate</goal>
+						</goals>
 					</execution>
 				</executions>
 				<configuration>
-        <inputDirectory>${basedir}</inputDirectory>
-        <outputDirectory>${basedir}</outputDirectory>
-        <pegdownExtensions>TABLES,FENCED_CODE_BLOCKS,AUTOLINKS,EXTANCHORLINKS</pegdownExtensions>
-    </configuration>
+					<inputDirectory>${basedir}</inputDirectory>
+					<outputDirectory>${basedir}</outputDirectory>
+					<pegdownExtensions>TABLES,FENCED_CODE_BLOCKS,AUTOLINKS,EXTANCHORLINKS</pegdownExtensions>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>

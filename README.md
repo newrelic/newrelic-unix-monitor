@@ -101,7 +101,7 @@ If you want to initiate the dashboard install from a standalone machine (i.e. a 
 * `pluginctl.sh`
 * `config/plugin.json` (including path) with the `dashboard` object filled in [as described above.](#enabling-at-plugin-startup)
 
-To install, run `./pluginctl.sh installDashboards`.
+To install, run `./pluginctl.sh dashboards`.
 
 ### Fix for using the WebSphere JDK
 If you are using the JDK that is packaged with WebSphere and see an exception in the logs like below, it is due to attempting to use the WebSphere SSL Factory instead of the IBM JSSE packages.
