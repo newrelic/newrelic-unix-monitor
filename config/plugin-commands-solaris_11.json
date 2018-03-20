@@ -98,7 +98,7 @@
 			}]
 		},
 		{
-			"eventName": "NetworkIO",
+			"eventType": "NetworkIO",
 			"command": "kstat -n MEMBER_PLACEHOLDER",
 			"checkAllRegex": false,
 			"lineLimit": 0,
