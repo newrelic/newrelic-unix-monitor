@@ -327,7 +327,6 @@
 			"command": "top -b",
 			"checkAllRegex": false,
 			"lineLimit": 5,
-			"type": "REGEXDIM",
 			"mappings": [{
 					"expression": "([0-9\\.]+)\\s+processes:\\s+([0-9]+)\\s+sleeping,\\s+([0-9]+) on cpu",
 					"metrics": [{
