@@ -136,7 +136,7 @@ public class CommandMetricUtils {
 		
 		// Assume that it's a string attribute if we don't know the type.
 		if((metricDeets.getType() == null) || metricDeets.getType().equals("ATTRIBUTE")) {
-			newMetric = new AttributeMetric(metricName, metricValueString);
+			newMetric = new AttributeMetric(metricName, truncateForInsights(metricValueString));
 		} else {
 			double metricValue;
 			try {
@@ -156,7 +156,7 @@ public class CommandMetricUtils {
 					newMetric = new RateMetric(metricName, metricValue);
 				}
 	  		} catch (NumberFormatException e) {
-				newMetric = new AttributeMetric(metricName, metricValueString);
+				newMetric = new AttributeMetric(metricName, truncateForInsights(metricValueString));
 	  		}
 		}
 		
@@ -234,17 +234,22 @@ public class CommandMetricUtils {
 						}	
 						
 						// Metric prefixes get appended to the "Instance" attribute.
-						else if(columnMetricName.equals(UnixAgentConstants.kColumnMetricPrefix)) {
+						else if (columnMetricName.equals(UnixAgentConstants.kColumnMetricPrefix)) {
 							thisMetricInstance = mungeString(thisMetricInstance, thisColumn,
 									UnixAgentConstants.kMetricTreeDivider);
 						}
 						
 						// For processes, set the "Instance" attribute to a friendly process name,
 						// AND set "Command" attribute to the full command.
-						else if(columnMetricName.startsWith(UnixAgentConstants.kColumnMetricProcessName)) {
-							thisMetricInstance = mungeString(thisMetricInstance, extractCommandName(thisColumn,
-									columnMetricName.equals(UnixAgentConstants.kColumnMetricProcessNameAndSpaces)),
-									UnixAgentConstants.kMetricTreeDivider);
+						else if (columnMetricName.startsWith(UnixAgentConstants.kColumnMetricProcessName)) {
+							String outCommand = extractCommandName(thisColumn,
+								columnMetricName.equals(UnixAgentConstants.kColumnMetricProcessNameAndSpaces));
+							thisMetricInstance = mungeString(thisMetricInstance, outCommand, UnixAgentConstants.kMetricTreeDivider);
+							if (outCommand.toLowerCase().equals("java")) {
+								String[] allColumns = thisColumn.split("\\s+");
+						        CommandMetricUtils.insertMetric(localMetricSet, 
+						        		new MappingMetric(UnixAgentConstants.kJavaClassMetricName), allColumns[allColumns.length-1]);
+							}
 					        CommandMetricUtils.insertMetric(localMetricSet, 
 					        		new MappingMetric(UnixAgentConstants.kCommandMetricName), thisColumn);
 						}
@@ -350,5 +355,13 @@ public class CommandMetricUtils {
 	        }
 	    }
 	    return output;
+	}
+	
+	private static String truncateForInsights(String input) {
+		if (input.length() >= UnixAgentConstants.kInsightsAttributeSize) {
+			return input.substring(0, UnixAgentConstants.kInsightsAttributeSize);
+		} else {
+			return input;
+		}
 	}
 }

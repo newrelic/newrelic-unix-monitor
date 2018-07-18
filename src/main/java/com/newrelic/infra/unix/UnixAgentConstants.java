@@ -8,7 +8,7 @@ public final class UnixAgentConstants {
 	public static final int    kDefaultMetricRatio = 1;
 	public static final String kDefaultMetricType="NORMAL";
 	public static final String kDefaultPagesizeCommand="pagesize";
-	
+		
 	// Special keywords for commands & related fields
 	public static final String kMemberPlaceholder = "MEMBER_PLACEHOLDER";
 	
@@ -26,6 +26,8 @@ public final class UnixAgentConstants {
 	public static final String kEventTypePrefix = "unixMonitor";
 	public static final char   kMetricTreeDivider='.';
 	public static final String kCommandMetricName = "command";
+	public static final int    kInsightsAttributeSize = 4096;
 	public static final String kInstanceMetricName = "instance";	
+	public static final String kJavaClassMetricName = "javaclass";
 	public static final String KAOSMetricName = "osName";
 }

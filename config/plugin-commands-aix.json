@@ -12,7 +12,7 @@
 			"checkAllRegex": false,
 			"lineLimit": 0,
 			"mappings": [{
-				"expression": "\\s*(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%.*",
+				"expression": "(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(.*)",
 				"metrics": [{
 						"name": "DISK_NAME"
 					},
@@ -50,6 +50,10 @@
 						"name": "Inodes Percent Used",
 						"ratio": 1,
 						"type": "NORMAL"
+					},
+					{
+						"name": "Mount Point",
+						"type": "ATTRIBUTE"
 					}
 				]
 			}]

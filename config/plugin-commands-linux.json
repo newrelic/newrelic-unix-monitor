@@ -2,9 +2,9 @@
 	"os_settings": {
 		"disksCommand": "",
 		"disksRegex": "",
-		"interfacesCommand": "ip link show",
+		"interfacesCommand": "/sbin/ip link show",
 		"interfacesRegex": "\\d+:\\s+(\\w+\\d*):.*",
-		"pageSizeCommand": "getconf PAGESIZE"
+		"pageSizeCommand": "/usr/bin/getconf PAGESIZE"
 	},
 	"commands": [{
 			"eventType": "Disk",
