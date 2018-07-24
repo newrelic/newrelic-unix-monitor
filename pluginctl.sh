@@ -25,8 +25,10 @@ DELETE_LOGS_ON_STARTUP=true
 # Uncomment to manually define Java path & filename if this script can't find it
 # AIX:
 # PLUGIN_JAVA=/usr/java6/bin/java
-# LINUX, OSX & SOLARIS:
+# LINUX & SOLARIS:
 # PLUGIN_JAVA=/usr/bin/java
+# OSX / MACOS:
+# PLUGIN_JAVA=/Library/Java/JavaVirtualMachines/<version>/Contents/Commands/java
 
 ### Do not change these unless instructed! ###
 
@@ -66,7 +68,6 @@ if [ -z "$PLUGIN_JAVA" ]; then
 fi
 
 PLUGIN_HOST_OS=`uname`
-PLUGIN_JAVA_VERSION_FULL=`$PLUGIN_JAVA -Xmx32m -version 2>&1`
 
 if [ "$PLUGIN_HOST_OS" = "SunOS" ]; then
   AWK_COMMAND="nawk"
@@ -74,11 +75,14 @@ else
   AWK_COMMAND="awk"
 fi
 
+PLUGIN_JAVA_VERSION_FULL=`$PLUGIN_JAVA -Xmx32m -version 2>&1`
 PLUGIN_JAVA_VERSION=`echo $PLUGIN_JAVA_VERSION_FULL | $AWK_COMMAND -F '"' '/version/ {print $2}'`
-PLUGIN_JAVA_MAJOR_VERSION=`echo $PLUGIN_JAVA_VERSION | $AWK_COMMAND '{split($0, array, ".")} END{print array[2]}'`
+# Old versions of Java are written as "1.x", Newer versions of Java are written as "x".
+PLUGIN_JAVA_MAJOR_VERSION=`echo $PLUGIN_JAVA_VERSION | $AWK_COMMAND '{ split($0, array, ".") } END{ print (array[1] == 1) ? array[2] : array[1] }'`
 
 echo "Java location: $PLUGIN_JAVA"
 echo "Java version: $PLUGIN_JAVA_VERSION"
+echo "Java major version: $PLUGIN_JAVA_MAJOR_VERSION"
 
 if [ $PLUGIN_JAVA_MAJOR_VERSION -lt 6 ]; then
   echo "ERROR: $PLUGIN_NAME will not work with Java versions older than 1.6."
@@ -86,7 +90,7 @@ if [ $PLUGIN_JAVA_MAJOR_VERSION -lt 6 ]; then
   exit 1
 fi
 
-if echo $PLUGIN_JAVA_VERSION_FULL | grep -c -q 'gcj'; then
+if [ `echo $PLUGIN_JAVA_VERSION_FULL | grep -c -i 'gcj'` -gt 0 ]; then
   echo "ERROR: $PLUGIN_NAME will not work with gcj."
   echo "Please edit pluginctl.sh and set PLUGIN_JAVA to another Java distro (Sun/Oracle, IBM, OpenJDK)."
   echo "Output of \"java -version\":\n $PLUGIN_JAVA_VERSION_FULL"
@@ -216,12 +220,12 @@ install_dashboards() {
   echo "Dashboards: Installing dashboards for $PLUGIN_NAME"
   pluginJsonLocation="$PLUGIN_PATH/config/plugin.json"
   defaultInstallerURL="https://oaq67woo45.execute-api.us-east-1.amazonaws.com/prod"
-  
+
   admin_api_key=`grep admin_api_key ${pluginJsonLocation}`
   integration_guid=`grep integration_guid ${pluginJsonLocation}`
   account_id=`grep account_id ${pluginJsonLocation}`
   installer_url=`grep installer_url ${pluginJsonLocation}`
-  
+
   something_is_missing=false
   for testvar in admin_api_key integration_guid account_id; do
     if [ -z "${!testvar}" ] ; then
