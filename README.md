@@ -1,6 +1,6 @@
-# New Relic Plugin for Unix
+# New Relic Unix Monitor
 
-## System-Level Monitoring for AIX, Linux, Mac OS X & Solaris/SunOS
+## System-Level Monitoring for AIX, Linux, OSX/MacOS & Solaris/SunOS
 
 ## Table Of Contents
 * [Requirements](#requirements)
@@ -23,10 +23,10 @@
 * For Dashboard Installation: `curl` or `wget` installed
 
 ### Supported OSes
-* AIX 7
+* AIX 7.x
 * Linux - All sorts, including on ARM processors (such as Raspberry Pi) and z/Linux
-* OS X 10.9 ('Mavericks') and above
-* Solaris 10 and 11
+* OSX / MacOS 10.9 ('Mavericks') and above
+* Solaris/SunOS 10.x and 11.x
 
 --------------------------------------------------------------------------------
 
