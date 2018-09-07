@@ -1,0 +1,66 @@
+[
+  {
+    "framework": "32-Bit OSes",
+    "product": "Plugins"
+  },
+  {
+    "framework": "32-Bit OSes",
+    "product": "Infrastructure"
+  },
+  {
+    "framework": "Apple MacOS",
+    "product": "Plugins"
+  },
+  {
+    "framework": "Apple MacOS",
+    "product": "Infrastructure"
+  },
+  {
+    "framework": "Alpine Linux",
+    "product": "Plugins"
+  },
+  {
+    "framework": "Alpine Linux",
+    "product": "Infrastructure"
+  },
+  {
+    "framework": "IBM AIX",
+    "product": "Plugins"
+  },
+  {
+    "framework": "IBM AIX",
+    "product": "Infrastructure"
+  },
+  {
+    "framework": "IBM zLinux",
+    "product": "Plugins"
+  },
+  {
+    "framework": "IBM zLinux",
+    "product": "Infrastructure"
+  },
+  {
+    "framework": "Linux (Other)",
+    "product": "Plugins"
+  },
+  {
+    "framework": "Linux (Other)",
+    "product": "Infrastructure"
+  },
+  {
+    "framework": "Oracle (Sun) Solaris",
+    "product": "Plugins"
+  },
+  {
+    "framework": "Oracle (Sun) Solaris",
+    "product": "Infrastructure"
+  },
+  {
+    "framework": "SUSE Linux",
+    "product": "Plugins"
+  },
+  {
+    "framework": "SUSE Linux",
+    "product": "Infrastructure"
+  }
+]
