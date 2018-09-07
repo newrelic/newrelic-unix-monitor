@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.newrelic.experts</groupId>
-	<artifactId>unix-infra-monitor</artifactId>
+	<artifactId>newrelic-unix-monitor</artifactId>
 	<version>0.1.1</version>
-	<name>unix-infra-monitor</name>
+	<name>newrelic-unix-monitor</name>
 	<build>
 		<plugins>
 			<plugin>
@@ -38,7 +38,7 @@
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
 							</descriptorRefs>
-							<finalName>unix-infra-monitor</finalName>
+							<finalName>newrelic-unix-monitor</finalName>
 							<appendAssemblyId>false</appendAssemblyId>
 							<archive>
 								<manifest>

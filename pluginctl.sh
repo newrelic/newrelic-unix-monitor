@@ -32,7 +32,7 @@ DELETE_LOGS_ON_STARTUP=true
 
 ### Do not change these unless instructed! ###
 
-PLUGIN_NAME="New Relic Unix Plugin"
+PLUGIN_NAME="New Relic Unix Monitor"
 
 # Behavior when "start" command is issued and plugin is running
 # False (default): Plugin will not be restarted.
@@ -49,7 +49,7 @@ echo "Plugin location: $PLUGIN_PATH"
 # Comment-out if using -jar
 PLUGIN_JAVA_CLASS=com.newrelic.infra.unix.Main
 # Set to the jar if using -jar
-PLUGIN_JAVA_CLASSPATH="$PLUGIN_PATH/lib/unix-infra-monitor.jar"
+PLUGIN_JAVA_CLASSPATH="$PLUGIN_PATH/lib/newrelic-unix-monitor.jar"
 PLUGIN_JAVA_OPTS="-Xms16m -Xmx128m"
 
 # Attempt to set Java path & filename if not manually defined above
