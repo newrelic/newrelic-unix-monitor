@@ -3,10 +3,10 @@
 	<id>distribution</id>
 	<formats>
 		<format>tar.gz</format>
-	    <format>zip</format>
-	 </formats>
+	  <format>zip</format>
+	</formats>
 	<includeBaseDirectory>true</includeBaseDirectory>
-	<baseDirectory>unix-infra-monitor</baseDirectory>
+	<baseDirectory>newrelic-unix-monitor</baseDirectory>
 	<files>
 		<file>
 			<source>README.md</source>
@@ -18,7 +18,7 @@
 			<source>pluginctl.sh</source>
 		</file>
         <file>
-            <source>target/unix-infra-monitor.jar</source>
+            <source>target/newrelic-unix-monitor.jar</source>
             <outputDirectory>lib</outputDirectory>
         </file>
         <file>
