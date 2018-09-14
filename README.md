@@ -33,7 +33,7 @@ New Relic has open-sourced this integration to enable monitoring of this technol
 --------------------------------------------------------------------------------
 
 ## Installation & Usage Overview
-1. Download the latest version of the agent.
+1. Download the latest version of the agent [here](https://github.com/newrelic/newrelic-unix-monitor/releases/latest).
 2. Gunzip & untar on Unix server that you want to monitor
 3. Set account ID, keys and other settings in `config/plugin.json`
 	* [Click here for plugin.json config details](#pluginjson-configuration)
@@ -118,3 +118,11 @@ If so, uncomment the following line in `pluginctl.sh` and restart the plugin.
 ```
 # USE_IBM_JSSE=true
 ```
+### Fix for using Solaris 10
+If you see the following error, it may be because the Bourne shell does not support certain syntax in the installer script.
+
+```
+pluginctl.sh: syntax error at line 240: `admin_api_key=$' unexpected
+```
+
+If so, use the Korn shell or bash (if available).  Both were tested successfully in Solaris 10.
