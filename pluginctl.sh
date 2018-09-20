@@ -1,4 +1,7 @@
 #!/bin/sh
+# change to #!/bin/ksh or #!/bin/bash
+# if you see syntax errors like '`admin_api_key=$' unexpected'
+
 # chkconfig: 2345 20 80
 # description: Unix system plugin for New Relic
 # processname: NR Unix Agent
