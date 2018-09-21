@@ -1,66 +1,66 @@
 [
   {
     "framework": "32-Bit OSes",
-    "product": "Plugins"
+    "feature": "Infrastructure - Platform Support"
   },
   {
     "framework": "32-Bit OSes",
-    "product": "Infrastructure"
+    "feature": "Infrastructure - Integrations"
   },
   {
     "framework": "Apple MacOS",
-    "product": "Plugins"
+    "feature": "Infrastructure - Platform Support"
   },
   {
     "framework": "Apple MacOS",
-    "product": "Infrastructure"
+    "feature": "Infrastructure - Integrations"
   },
   {
     "framework": "Alpine Linux",
-    "product": "Plugins"
+    "feature": "Infrastructure - Platform Support"
   },
   {
     "framework": "Alpine Linux",
-    "product": "Infrastructure"
+    "feature": "Infrastructure - Integrations"
   },
   {
     "framework": "IBM AIX",
-    "product": "Plugins"
+    "feature": "Infrastructure - Platform Support"
   },
   {
     "framework": "IBM AIX",
-    "product": "Infrastructure"
+    "feature": "Infrastructure - Integrations"
   },
   {
     "framework": "IBM zLinux",
-    "product": "Plugins"
+    "feature": "Infrastructure - Platform Support"
   },
   {
     "framework": "IBM zLinux",
-    "product": "Infrastructure"
+    "feature": "Infrastructure - Integrations"
   },
   {
     "framework": "Linux (Other)",
-    "product": "Plugins"
+    "feature": "Infrastructure - Platform Support"
   },
   {
     "framework": "Linux (Other)",
-    "product": "Infrastructure"
+    "feature": "Infrastructure - Integrations"
   },
   {
     "framework": "Oracle (Sun) Solaris",
-    "product": "Plugins"
+    "feature": "Infrastructure - Platform Support"
   },
   {
     "framework": "Oracle (Sun) Solaris",
-    "product": "Infrastructure"
+    "feature": "Infrastructure - Integrations"
   },
   {
     "framework": "SUSE Linux",
-    "product": "Plugins"
+    "feature": "Infrastructure - Platform Support"
   },
   {
     "framework": "SUSE Linux",
-    "product": "Infrastructure"
+    "feature": "Infrastructure - Integrations"
   }
 ]
