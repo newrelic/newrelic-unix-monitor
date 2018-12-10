@@ -1,0 +1,92 @@
+{
+    "dashboard": {
+        "id": 454498,
+        "title": "Unix - Disk",
+        "icon": "bar-chart",
+        "created_at": "2017-12-07T22:06:18Z",
+        "updated_at": "2018-01-05T02:12:38Z",
+        "visibility": "all",
+        "editable": "editable_by_all",
+        "ui_url": "https://insights.newrelic.com/accounts/284929/dashboards/454498",
+        "api_url": "https://api.newrelic.com/v2/dashboards/454498",
+        "owner_email": "seth@newrelic.com",
+        "metadata": {
+            "version": 1
+        },
+        "widgets": [
+            {
+                "visualization": "facet_table",
+                "layout": {
+                    "width": 2,
+                    "height": 1,
+                    "row": 1,
+                    "column": 1
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT latest(total), latest(used), latest(free), latest(percentUsed) FROM `unixMonitor:Disk` SINCE 1 hour ago facet instance"
+                    }
+                ],
+                "presentation": {
+                    "title": "Disk Space",
+                    "notes": null,
+                    "drilldown_dashboard_id": 454498
+                }
+            },
+            {
+                "visualization": "line_chart",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 1,
+                    "column": 3
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT average(total), average(used), average(free) FROM `unixMonitor:Disk` SINCE 1 hour ago timeseries"
+                    }
+                ],
+                "presentation": {
+                    "title": "Disk Space 1H",
+                    "notes": null
+                }
+            },
+            {
+                "visualization": "event_table",
+                "layout": {
+                    "width": 3,
+                    "height": 1,
+                    "row": 2,
+                    "column": 1
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT * FROM `unixMonitor:DiskIO` SINCE 61 seconds ago"
+                    }
+                ],
+                "presentation": {
+                    "title": "Disk IO Details",
+                    "notes": "'Instance' names here don't necessarily match the ones in \"Disk Space\", as that is looking at mount points."
+                }
+            }
+        ],
+        "filter": {
+            "event_types": [
+                "unixMonitor:Disk",
+                "unixMonitor:DiskIO",
+                "unixMonitor:NetworkIO",
+                "unixMonitor:Process",
+                "unixMonitor:Stats",
+                "unixMonitor:Vmstat"
+            ],
+            "attributes": [
+                "agentName",
+                "hostname",
+                "instance"
+            ]
+        }
+    }
+}

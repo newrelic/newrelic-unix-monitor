@@ -1,0 +1,73 @@
+{
+    "dashboard": {
+        "id": 454494,
+        "title": "Unix - VMStat",
+        "icon": "bar-chart",
+        "created_at": "2017-12-07T22:02:06Z",
+        "updated_at": "2018-01-05T03:55:33Z",
+        "visibility": "all",
+        "editable": "editable_by_all",
+        "ui_url": "https://insights.newrelic.com/accounts/284929/dashboards/454494",
+        "api_url": "https://api.newrelic.com/v2/dashboards/454494",
+        "owner_email": "seth@newrelic.com",
+        "metadata": {
+            "version": 1
+        },
+        "widgets": [
+            {
+                "visualization": "facet_table",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 1,
+                    "column": 1
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT latest(timestamp) as 'Last Reported' from `unixMonitor:Vmstat` since 1 day ago facet hostname"
+                    }
+                ],
+                "presentation": {
+                    "title": "Hostnames",
+                    "notes": null,
+                    "drilldown_dashboard_id": 454494
+                }
+            },
+            {
+                "visualization": "single_event",
+                "layout": {
+                    "width": 2,
+                    "height": 3,
+                    "row": 1,
+                    "column": 2
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT * FROM `unixMonitor:Vmstat` SINCE 1 day ago limit 1"
+                    }
+                ],
+                "presentation": {
+                    "title": "VMStat Statistics",
+                    "notes": null
+                }
+            }
+        ],
+        "filter": {
+            "event_types": [
+                "unixMonitor:Disk",
+                "unixMonitor:DiskIO",
+                "unixMonitor:NetworkIO",
+                "unixMonitor:Process",
+                "unixMonitor:Stats",
+                "unixMonitor:Vmstat"
+            ],
+            "attributes": [
+                "agentName",
+                "hostname",
+                "instance"
+            ]
+        }
+    }
+}

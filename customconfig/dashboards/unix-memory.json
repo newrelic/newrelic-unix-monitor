@@ -1,0 +1,131 @@
+{
+    "dashboard": {
+        "id": 465694,
+        "title": "Unix - Memory",
+        "icon": "bar-chart",
+        "created_at": "2018-01-03T17:27:56Z",
+        "updated_at": "2018-01-05T03:54:48Z",
+        "visibility": "all",
+        "editable": "editable_by_all",
+        "ui_url": "https://insights.newrelic.com/accounts/284929/dashboards/465694",
+        "api_url": "https://api.newrelic.com/v2/dashboards/465694",
+        "owner_email": "seth@newrelic.com",
+        "metadata": {
+            "version": 1
+        },
+        "widgets": [
+            {
+                "visualization": "facet_table",
+                "layout": {
+                    "width": 3,
+                    "height": 1,
+                    "row": 1,
+                    "column": 1
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT latest(`memory.used`) as 'Used', latest(`memory.free`) as 'Free', latest(`memory.available`) as Available, latest(`memory.pinned`) as 'Pinned', latest(`memory.virtual`) as 'Virtual', latest(`memory.wired`) as 'Wired', latest(`memory.total`) as 'Total' FROM `unixMonitor:Stats` SINCE 1 hour ago facet hostname"
+                    }
+                ],
+                "presentation": {
+                    "title": "Memory Overview",
+                    "notes": null,
+                    "drilldown_dashboard_id": 465694
+                }
+            },
+            {
+                "visualization": "line_chart",
+                "layout": {
+                    "width": 2,
+                    "height": 1,
+                    "row": 2,
+                    "column": 1
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT average(`memory.free`), average(`memory.used`), average(`memory.total`), average(`memory.available`), average(`memory.virtual`) FROM `unixMonitor:Stats` SINCE 1 hour ago timeseries"
+                    }
+                ],
+                "presentation": {
+                    "title": "Memory Usage 1H",
+                    "notes": null
+                }
+            },
+            {
+                "visualization": "line_chart",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 2,
+                    "column": 3
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT average(`memory.free`), average(`memory.used`), average(`memory.total`), average(`memory.available`), average(`memory.virtual`) FROM `unixMonitor:Stats` SINCE 1 hour ago timeseries"
+                    }
+                ],
+                "presentation": {
+                    "title": "Memory Usage 1D",
+                    "notes": null
+                }
+            },
+            {
+                "visualization": "facet_table",
+                "layout": {
+                    "width": 2,
+                    "height": 1,
+                    "row": 3,
+                    "column": 1
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT latest(`swap.total`), latest(`swap.used`), latest(`swap.total`)-latest(`swap.used`) as 'swap.free' FROM `unixMonitor:Stats` SINCE 1 hour ago facet hostname"
+                    }
+                ],
+                "presentation": {
+                    "title": "Swap Overview",
+                    "notes": null,
+                    "drilldown_dashboard_id": 465694
+                }
+            },
+            {
+                "visualization": "line_chart",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 3,
+                    "column": 3
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT average(`swap.total`), average(`swap.used`), average(`swap.total`-`swap.used`) as 'Avg Swap.Free' from `unixMonitor:Stats` SINCE 1 hour ago timeseries"
+                    }
+                ],
+                "presentation": {
+                    "title": "Swap Usage 1H",
+                    "notes": null
+                }
+            }
+        ],
+        "filter": {
+            "event_types": [
+                "unixMonitor:Disk",
+                "unixMonitor:DiskIO",
+                "unixMonitor:NetworkIO",
+                "unixMonitor:Process",
+                "unixMonitor:Stats",
+                "unixMonitor:Vmstat"
+            ],
+            "attributes": [
+                "agentName",
+                "hostname",
+                "instance"
+            ]
+        }
+    }
+}

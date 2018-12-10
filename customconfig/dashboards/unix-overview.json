@@ -1,0 +1,173 @@
+{
+    "dashboard": {
+        "id": 466144,
+        "title": "Unix - Overview",
+        "icon": "bar-chart",
+        "created_at": "2018-01-04T14:39:58Z",
+        "updated_at": "2018-01-04T22:05:52Z",
+        "visibility": "all",
+        "editable": "editable_by_all",
+        "ui_url": "https://insights.newrelic.com/accounts/284929/dashboards/466144",
+        "api_url": "https://api.newrelic.com/v2/dashboards/466144",
+        "owner_email": "seth@newrelic.com",
+        "metadata": {
+            "version": 1
+        },
+        "widgets": [
+            {
+                "visualization": "markdown",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 1,
+                    "column": 1
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "source": "# Welcome to Unix Monitor\n---\n\n## Please pick host from the list or type in Search pane above.\nHost choice from charts BELOW will persist to other dashboards. (Overview pane links to this page). The host filter can be turned off at any time by clicking the (X) next to it."
+                    }
+                ],
+                "presentation": {
+                    "title": "",
+                    "notes": null
+                }
+            },
+            {
+                "visualization": "facet_table",
+                "layout": {
+                    "width": 2,
+                    "height": 1,
+                    "row": 1,
+                    "column": 2
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT latest(timestamp) as 'Last Reported', 100-latest(`cpu.idle`) as 'CPU Use %', 100*latest(`memory.used`)/(latest(`memory.used`)+latest(`memory.free`)) as 'Memory Use %', max(percentUsed) as 'Fullest Disk %' from `unixMonitor:Disk`, `unixMonitor:Stats` since 1 hour ago facet hostname"
+                    }
+                ],
+                "presentation": {
+                    "title": "Unix Host Overview",
+                    "notes": null,
+                    "drilldown_dashboard_id": 466144
+                }
+            },
+            {
+                "visualization": "facet_bar_chart",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 2,
+                    "column": 1
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT 100-latest(`cpu.idle`) as 'Used Percent' from `unixMonitor:Stats` facet hostname since 1 hour ago"
+                    }
+                ],
+                "presentation": {
+                    "title": "CPU Usage",
+                    "notes": null,
+                    "drilldown_dashboard_id": 466005
+                }
+            },
+            {
+                "visualization": "facet_bar_chart",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 2,
+                    "column": 2
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT max(percentUsed) FROM `unixMonitor:Disk` SINCE 5 minutes ago facet hostname"
+                    }
+                ],
+                "presentation": {
+                    "title": "Fullest Disk",
+                    "notes": null,
+                    "drilldown_dashboard_id": 454498
+                }
+            },
+            {
+                "visualization": "facet_bar_chart",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 2,
+                    "column": 3
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT latest(`memory.used`)/(latest(`memory.used`)+latest(`memory.free`)) as 'Percent Used' FROM `unixMonitor:Stats` SINCE 5 minutes ago facet hostname"
+                    }
+                ],
+                "presentation": {
+                    "title": "Memory Overview",
+                    "notes": null,
+                    "drilldown_dashboard_id": 465694
+                }
+            },
+            {
+                "visualization": "facet_bar_chart",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 3,
+                    "column": 1
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT uniquecount(command) from `unixMonitor:Process` facet hostname since 5 minutes ago"
+                    }
+                ],
+                "presentation": {
+                    "title": "Process Counts",
+                    "notes": null,
+                    "drilldown_dashboard_id": 466006
+                }
+            },
+            {
+                "visualization": "facet_bar_chart",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 3,
+                    "column": 2
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT uniquecount(command) from `unixMonitor:Process` facet hostname since 5 minutes ago"
+                    }
+                ],
+                "presentation": {
+                    "title": "Network IO",
+                    "notes": null,
+                    "drilldown_dashboard_id": 466507
+                }
+            }
+        ],
+        "filter": {
+            "event_types": [
+                "unixMonitor:Disk",
+                "unixMonitor:DiskIO",
+                "unixMonitor:NetworkIO",
+                "unixMonitor:Process",
+                "unixMonitor:Stats",
+                "unixMonitor:Vmstat"
+            ],
+            "attributes": [
+                "agentName",
+                "hostname",
+                "instance"
+            ]
+        }
+    }
+}
