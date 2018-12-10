@@ -1,0 +1,820 @@
+{
+	"os_settings": {
+		"disksCommand": "",
+		"disksRegex": "",
+		"interfacesCommand": "/usr/sbin/ifconfig -a",
+		"interfacesRegex": "(\\w+\\d*):\\s+flags.*.*",
+		"pageSizeCommand": "pagesize"
+	},
+	"commands": [
+		{
+			"eventType": "Disk",
+			"command": "df -v -k",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [
+				{
+					"expression": "(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(.*)",
+					"metrics": [
+						{
+							"name": "DISK_NAME"
+						},
+						{
+							"name": "Total",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Used",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Free",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Percent Used",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Inodes Used",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Inodes Free",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Inodes Percent Used",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Mount Point",
+							"type": "ATTRIBUTE"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "DiskIO",
+			"command": "iostat -d",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [
+				{
+					"expression": "\\s*(\\w+\\d*)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "METRIC_PREFIX"
+						},
+						{
+							"name": "Average Percentage of Time Busy",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Average Data Transferred per Second",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Average Transfers per Second",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Data Read per Interval",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Data Written per Interval",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "NetworkIO",
+			"command": "entstat MEMBER_PLACEHOLDER",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [
+				{
+					"expression": ".*Broadcast\\s+Packets:\\s+([0-9\\.]+)\\s+Broadcast\\s+Packets:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Broadcast Packets",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.Broadcast Packets",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Bytes:\\s+([0-9\\.]+)\\s+Bytes:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Bytes",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.Bytes",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Current HW Transmit Queue\\s+Length:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Current HW Transmit Queue Length",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Current\\s+S/W\\+H/W\\s+Transmit\\s+Queue\\s+Length:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Current SW+HW Transmit Queue Length",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*DMA\\s+Underrun:\\s+([0-9\\.]+)\\s+DMA\\s+Overrun:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.DMA Underrun",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.DMA Overrun",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Deferred:\\s+([0-9\\.]+)\\s+Packet Too Short\\s+Errors:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Deferred",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.Packet Too Short Errors",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Interrupts:\\s+([0-9\\.]+)\\s+Interrupts:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Interrupts",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.Interrupts",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Late Collision\\s+Errors:\\s+([0-9\\.]+)\\s+Receive Collision\\s+Errors:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Late Collision Errors",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.Receive Collision Errors",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Lost CTS\\s+Errors:\\s+([0-9\\.]+)\\s+Alignment\\s+Errors:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Lost CTS Errors",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.Alignment Errors",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Max Collision\\s+Errors:\\s+([0-9\\.]+)\\s+No Resource\\s+Errors:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Max Collision Errors",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.No Resource Errors",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Max\\s+Packets\\s+on\\s+S/W\\s+Transmit\\s+Queue:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Max Packets on SW Transmit Queue",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Multicast\\s+Packets:\\s+([0-9\\.]+)\\s+Multicast\\s+Packets:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Multicast Packets",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.Multicast Packets",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Multiple Collision\\s+Count:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Multiple Collision Count",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*No Carrier\\s+Sense:\\s+([0-9\\.]+)\\s+CRC\\s+Errors:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.No Carrier Sense",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.CRC Errors",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Packets:\\s+([0-9\\.]+)\\s+Packets:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Packets",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.Packets",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Packets\\s+Dropped:\\s+([0-9\\.]+)\\s+Packets\\s+Dropped:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Dropped Packets",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.Dropped Packets",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*S/W\\s+Transmit\\s+Queue\\s+Overflow:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Transmit Queue Overflow",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*SQE\\s+Test:\\s+([0-9\\.]+)\\s+Packet Too Long\\s+Errors:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.SQE Test",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.Packet Too Long Errors",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Single Collision\\s+Count:\\s+([0-9\\.]+)\\s+Receiver Start\\s+Count:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Single Collision Count",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.Receiver Start Count",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Timeout\\s+Errors:\\s+([0-9\\.]+)\\s+Packets Discarded by\\s+Adapter:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Timeout Errors",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.Packets Discarded by Adapter",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				},
+				{
+					"expression": ".*Transmit\\s+Errors:\\s+([0-9\\.]+)\\s+Receive\\s+Errors:\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Transmit.Errors",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"name": "Receive.Errors",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "Process",
+			"command": "ps vewwwg",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [
+				{
+					"expression": "(\\d+)\\s+\\S+\\s+([A-Z]{1})\\s+[\\d:]+\\s+\\d+\\s+(\\d+)\\s+(\\d+)\\s+\\S+\\s+\\d+\\s+\\d+\\s+([\\d\\.]+)\\s+([\\d\\.]+)\\s+(.*)",
+					"metrics": [
+						{
+							"name": "PID",
+							"type": "ATTRIBUTE"
+						},
+						{
+							"name": "State",
+							"type": "ATTRIBUTE"
+						},
+						{
+							"name": "Virtual Size",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Resident Set Size",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "CPU",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "PROCESS_NAME"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "Stats",
+			"command": "lparstat 1 1",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [
+				{
+					"expression": "\\s*([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+).*",
+					"metrics": [
+						{
+							"name": "CPU.User",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "CPU.System",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "CPU.IOWait",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "CPU.Idle",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "Stats",
+			"command": "svmon -Ounit=KB",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [
+				{
+					"expression": "\\s*memory\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+).*",
+					"metrics": [
+						{
+							"name": "Memory.Total",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Used",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Free",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Pinned",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Virtual",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Available",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				},
+				{
+					"expression": "\\s*pg space\\s+(\\d+)\\s+(\\d+)",
+					"metrics": [
+						{
+							"name": "Swap.Total",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Swap.Used",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				},
+				{
+					"expression": "\\s*pin\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)",
+					"metrics": [
+						{
+							"name": "Memory.Pinned.Working",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Pinned.Persistent",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Pinned.Client",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Pinned.Other",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				},
+				{
+					"expression": "\\s*in use\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)",
+					"metrics": [
+						{
+							"name": "Memory.Real.Working",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Real.Persistent",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "Memory.Real.Client",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "Stats",
+			"command": "who -b",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [
+				{
+					"expression": ".*boot\\s+([\\s\\S]+)",
+					"metrics": [
+						{
+							"name": "Boot.time",
+							"type": "NORMAL"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "Stats",
+			"command": "uptime",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [
+				{
+					"expression": ".*up\\s+([0-9\\s+a-z]+).*load average:\\s+([0-9\\.]+),\\s+([0-9\\.]+),\\s+([0-9\\.]+)",
+					"metrics": [
+						{
+							"name": "Uptime",
+							"type": "ATTRIBUTE"
+						},
+						{
+							"name": "LoadAverage.1 Minute",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "LoadAverage.5 Minute",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "LoadAverage.15 Minute",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "Stats",
+			"command": "vmstat -I -W 1 1",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [
+				{
+					"expression": "\\s*(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+).*",
+					"metrics": [
+						{
+							"name": "KernelThreads.Runnable",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "KernelThreads.In Wait Queue",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "KernelThreads.Waiting for Device IO",
+							"ratio": 1,
+							"type": "NORMAL"
+						},
+						{
+							"name": "KernelThreads.Waiting for File IO",
+							"ratio": 1,
+							"type": "NORMAL"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "Vmstat",
+			"command": "vmstat -s",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [
+				{
+					"expression": "\\s*(\\d+)\\s+(.*)",
+					"metrics": [
+						{
+							"name": "METRIC_VALUE",
+							"type": "DELTA"
+						},
+						{
+							"name": "METRIC_NAME"
+						}
+					],
+					"translations": [
+						{
+							"input": "paging space page ins",
+							"output": "pages paged in",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"input": "paging space page outs",
+							"output": "pages paged out",
+							"ratio": 1,
+							"type": "DELTA"
+						},
+						{
+							"input": "total address trans. faults",
+							"output": "translation faults",
+							"ratio": 1,
+							"type": "DELTA"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "Errpt",
+			"command": "errpt",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [
+				{
+					"expression": "(\\S+)\\s+(\\d+)\\s+([A-Z]+)\\s+([A-Z]+)\\s+(\\S+)\\s+([\\s\\S]+)",
+					"metrics": [
+						{
+							"name": "METRIC_PREFIX"
+						},
+						{
+							"name": "Orignal.Timestamp",
+							"type": "ATTRIBUTE"
+						},
+						{
+							"name": "Type",
+							"type": "ATTRIBUTE"
+						},
+						{
+							"name": "Class",
+							"type": "ATTRIBUTE"
+						},
+						{
+							"name": "Resource",
+							"type": "ATTRIBUTE"
+						},
+						{
+							"name": "Description",
+							"type": "ATTRIBUTE"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "lsmksysb",
+			"command": "lsmksysb -B",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [
+				{
+					"expression": "(\\S+)\\s+(\\d+)\\s+([A-Z]+)\\s+([A-Z]+)\\s+(\\S+)\\s+([\\s\\S]+)",
+					"metrics": [
+						{
+							"name": "METRIC_PREFIX"
+						},
+						{
+							"name": "Orignal.Timestamp",
+							"type": "ATTRIBUTE"
+						},
+						{
+							"name": "Type",
+							"type": "ATTRIBUTE"
+						},
+						{
+							"name": "Class",
+							"type": "ATTRIBUTE"
+						},
+						{
+							"name": "Resource",
+							"type": "ATTRIBUTE"
+						},
+						{
+							"name": "Description",
+							"type": "ATTRIBUTE"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "File",
+			"command": "ls -l /opt/BESClient/beclient",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [
+				{
+					"expression": "(\\S+)\\s+(\\d+)\\s+(\\S+)\\s+(\\S+)\\s+(\\d+)\\s+(\\S+\\s+\\d+\\s+\\d+:\\d+)\\s+(\\S+)",
+					"metrics": [
+						{
+							"name": "File.permissions",
+							"type": "NORMAL"
+						},
+						{
+							"name": "File.links",
+							"type": "NORMAL"
+						},
+						{
+							"name": "File.owner",
+							"type": "NORMAL"
+						},
+						{
+							"name": "File.grouup",
+							"type": "NORMAL"
+						},
+						{
+							"name": "File.size",
+							"type": "NORMAL"
+						},
+						{
+							"name": "File.Date",
+							"type": "NORMAL"
+						},
+						{
+							"name": "File.Path",
+							"type": "NORMAL"
+						}
+					]
+				}
+			]
+		}
+	]
+}
