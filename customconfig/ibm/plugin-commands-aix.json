@@ -740,35 +740,40 @@
 			]
 		},
 		{
-			"eventType": "lsmksysb",
+			"eventType": "Backup",
 			"command": "lsmksysb -B",
 			"checkAllRegex": false,
 			"lineLimit": 0,
 			"mappings": [
 				{
-					"expression": "(\\S+)\\s+(\\d+)\\s+([A-Z]+)\\s+([A-Z]+)\\s+(\\S+)\\s+([\\s\\S]+)",
+					"expression": "([/a-z0-9A-Z.]+);\"([a-z-\\sA-Z0-9/.]+)\";([A-Za-z\\s:0-9]+);(\\d+);(\\d+);([\\d-]+);([\\d-]+)",
 					"metrics": [
 						{
-							"name": "METRIC_PREFIX"
-						},
-						{
-							"name": "Orignal.Timestamp",
+							"name": "Device",
 							"type": "ATTRIBUTE"
 						},
 						{
-							"name": "Type",
+							"name": "Command",
 							"type": "ATTRIBUTE"
 						},
 						{
-							"name": "Class",
+							"name": "Orignal.date",
 							"type": "ATTRIBUTE"
 						},
 						{
-							"name": "Resource",
+							"name": "Shrink.Size",
 							"type": "ATTRIBUTE"
 						},
 						{
-							"name": "Description",
+							"name": "Full.Size",
+							"type": "ATTRIBUTE"
+						},
+						{
+							"name": "Maintenance.Level",
+							"type": "ATTRIBUTE"
+						},
+						{
+							"name": "ServicePack.Level",
 							"type": "ATTRIBUTE"
 						}
 					]
@@ -777,7 +782,7 @@
 		},
 		{
 			"eventType": "File",
-			"command": "ls -l /opt/BESClient/beclient",
+			"command": "ls -l /opt/New_Relic/newrelic-unix-monitor/config",
 			"checkAllRegex": false,
 			"lineLimit": 0,
 			"mappings": [
@@ -810,6 +815,35 @@
 						},
 						{
 							"name": "File.Path",
+							"type": "NORMAL"
+						}
+					]
+				}
+			]
+		},
+		{
+			"eventType": "Alog",
+			"command": "alog -o -t nim | egrep -i master",
+			"checkAllRegex": false,
+			"lineLimit": 0,
+			"mappings": [
+				{
+					"expression": "<(\\S+\\s+\\S+\\s+\\S+\\s+\\d+:\\d+:\\d+\\s+\\d+)>\\s+<(\\S+)>\\s+<(\\d+)>\\s+<([\\s\\S]+)",
+					"metrics": [
+						{
+							"name": "Orignal.Timestamp",
+							"type": "NORMAL"
+						},
+						{
+							"name": "METRIC_PREFIX",
+							"type": "NORMAL"
+						},
+						{
+							"name": "id",
+							"type": "NORMAL"
+						},
+						{
+							"name": "Message",
 							"type": "NORMAL"
 						}
 					]

@@ -14,6 +14,7 @@ import com.newrelic.infra.unix.UnixAgentConstants;
     "command",
     "checkAllRegex",
     "lineLimit",
+    "interval",
     "mappings"
 })
 public class Command {
@@ -28,7 +29,9 @@ public class Command {
     private Integer lineLimit;
     @JsonProperty("mappings")
     private List<CommandMapping> mappings = null;
-   
+    @JsonProperty("interval")
+    private Integer interval;
+    
     @JsonProperty("eventType")
     public String getEventType() {
         return eventType;
@@ -77,5 +80,15 @@ public class Command {
     @JsonProperty("mappings")
     public void setMappings(List<CommandMapping> mappings) {
         this.mappings = mappings;
+    }
+    
+    @JsonProperty("interval")
+    public Integer getInterval() {
+        return interval;
+    }
+
+    @JsonProperty("interval")
+    public void setInterval(Integer interval) {
+        this.interval = interval;
     }
 }
