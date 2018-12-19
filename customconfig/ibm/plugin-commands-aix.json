@@ -12,6 +12,7 @@
 			"command": "df -v -k",
 			"checkAllRegex": false,
 			"lineLimit": 0,
+			"interval":	0,
 			"mappings": [
 				{
 					"expression": "(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(.*)",
@@ -67,6 +68,7 @@
 			"command": "iostat -d",
 			"checkAllRegex": false,
 			"lineLimit": 0,
+			"interval":	0,
 			"mappings": [
 				{
 					"expression": "\\s*(\\w+\\d*)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)",
@@ -108,6 +110,7 @@
 			"command": "entstat MEMBER_PLACEHOLDER",
 			"checkAllRegex": false,
 			"lineLimit": 0,
+			"interval":	0,
 			"mappings": [
 				{
 					"expression": ".*Broadcast\\s+Packets:\\s+([0-9\\.]+)\\s+Broadcast\\s+Packets:\\s+([0-9\\.]+)",
@@ -406,6 +409,7 @@
 			"command": "ps vewwwg",
 			"checkAllRegex": false,
 			"lineLimit": 0,
+			"interval":	0,
 			"mappings": [
 				{
 					"expression": "(\\d+)\\s+\\S+\\s+([A-Z]{1})\\s+[\\d:]+\\s+\\d+\\s+(\\d+)\\s+(\\d+)\\s+\\S+\\s+\\d+\\s+\\d+\\s+([\\d\\.]+)\\s+([\\d\\.]+)\\s+(.*)",
@@ -450,6 +454,7 @@
 			"command": "lparstat 1 1",
 			"checkAllRegex": false,
 			"lineLimit": 0,
+			"interval":	0,
 			"mappings": [
 				{
 					"expression": "\\s*([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+).*",
@@ -483,6 +488,7 @@
 			"command": "svmon -Ounit=KB",
 			"checkAllRegex": false,
 			"lineLimit": 0,
+			"interval":	0,
 			"mappings": [
 				{
 					"expression": "\\s*memory\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+).*",
@@ -586,6 +592,7 @@
 			"command": "who -b",
 			"checkAllRegex": false,
 			"lineLimit": 0,
+			"interval":	0,
 			"mappings": [
 				{
 					"expression": ".*boot\\s+([\\s\\S]+)",
@@ -603,6 +610,7 @@
 			"command": "uptime",
 			"checkAllRegex": false,
 			"lineLimit": 0,
+			"interval":	0,
 			"mappings": [
 				{
 					"expression": ".*up\\s+([0-9\\s+a-z]+).*load average:\\s+([0-9\\.]+),\\s+([0-9\\.]+),\\s+([0-9\\.]+)",
@@ -635,6 +643,7 @@
 			"command": "vmstat -I -W 1 1",
 			"checkAllRegex": false,
 			"lineLimit": 0,
+			"interval":	0,
 			"mappings": [
 				{
 					"expression": "\\s*(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+).*",
@@ -668,6 +677,7 @@
 			"command": "vmstat -s",
 			"checkAllRegex": false,
 			"lineLimit": 0,
+			"interval":	0,
 			"mappings": [
 				{
 					"expression": "\\s*(\\d+)\\s+(.*)",
@@ -708,6 +718,7 @@
 			"command": "errpt",
 			"checkAllRegex": false,
 			"lineLimit": 0,
+			"interval":	0,
 			"mappings": [
 				{
 					"expression": "(\\S+)\\s+(\\d+)\\s+([A-Z]+)\\s+([A-Z]+)\\s+(\\S+)\\s+([\\s\\S]+)",
@@ -744,6 +755,7 @@
 			"command": "lsmksysb -B",
 			"checkAllRegex": false,
 			"lineLimit": 0,
+			"interval":	0,
 			"mappings": [
 				{
 					"expression": "([/a-z0-9A-Z.]+);\"([a-z-\\sA-Z0-9/.]+)\";([A-Za-z\\s:0-9]+);(\\d+);(\\d+);([\\d-]+);([\\d-]+)",
@@ -782,9 +794,10 @@
 		},
 		{
 			"eventType": "File",
-			"command": "ls -l /opt/New_Relic/newrelic-unix-monitor/config",
+			"command": "ls -l /opt/New_Relic/newrelic-unix-monitor/config/plugin.json",
 			"checkAllRegex": false,
 			"lineLimit": 0,
+			"interval":	0,
 			"mappings": [
 				{
 					"expression": "(\\S+)\\s+(\\d+)\\s+(\\S+)\\s+(\\S+)\\s+(\\d+)\\s+(\\S+\\s+\\d+\\s+\\d+:\\d+)\\s+(\\S+)",
@@ -826,6 +839,7 @@
 			"command": "alog -o -t nim | egrep -i master",
 			"checkAllRegex": false,
 			"lineLimit": 0,
+			"interval":	0,
 			"mappings": [
 				{
 					"expression": "<(\\S+\\s+\\S+\\s+\\S+\\s+\\d+:\\d+:\\d+\\s+\\d+)>\\s+<(\\S+)>\\s+<(\\d+)>\\s+<([\\s\\S]+)",
