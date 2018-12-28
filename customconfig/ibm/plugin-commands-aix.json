@@ -839,7 +839,7 @@
 			"command": "alog -o -t nim | egrep -i master",
 			"checkAllRegex": false,
 			"lineLimit": 0,
-			"interval":	0,
+			"interval":	1440,
 			"mappings": [
 				{
 					"expression": "<(\\S+\\s+\\S+\\s+\\S+\\s+\\d+:\\d+:\\d+\\s+\\d+)>\\s+<(\\S+)>\\s+<(\\d+)>\\s+<([\\s\\S]+)",

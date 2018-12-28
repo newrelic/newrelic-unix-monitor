@@ -4,7 +4,7 @@
 
 # chkconfig: 2345 20 80
 # description: Unix system plugin for New Relic
-# processname: NR Unix Agent
+# processname: NR Unix Agent for IBM
 
 ### Set these as appropriate ###
 
