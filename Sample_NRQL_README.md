@@ -20,3 +20,4 @@ The following are sample NRQL queries that can be used to configure alerts/widge
 |Backup errors| lsmksysb -B| errors encountered during backup| SELECT uniqueCount(`orignal.date`) FROM `unixMonitor:Backup` WHERE device='/mksysbimg/mksysb.b01avi11810415.aix710.123018' AND command LIKE '%error%'|
 |Ethernet Channel Errors|entstat 'device'|Monitors for Ethernet Errors|select uniqueCount(instance)from `unixMonitor:NetworkIO` WHERE `receive.errors` >0 OR `transmit.errors`>0|
 |File exists|ls -l| checks availability of the configured file | select uniqueCount(`file.date`) from `unixMonitor:File` WHERE  `file.path`='/opt/New_Relic/newrelic-unix-monitor/config/plugin.json' FACET hostname |
+||||
