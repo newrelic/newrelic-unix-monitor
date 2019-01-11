@@ -1,0 +1,112 @@
+{
+    "dashboard": {
+        "id": 466005,
+        "title": "Unix - CPU",
+        "icon": "bar-chart",
+        "created_at": "2018-01-04T02:54:27Z",
+        "updated_at": "2018-01-05T02:50:30Z",
+        "visibility": "all",
+        "editable": "editable_by_all",
+        "ui_url": "https://insights.newrelic.com/accounts/284929/dashboards/466005",
+        "api_url": "https://api.newrelic.com/v2/dashboards/466005",
+        "owner_email": "seth@newrelic.com",
+        "metadata": {
+            "version": 1
+        },
+        "widgets": [
+            {
+                "visualization": "facet_table",
+                "layout": {
+                    "width": 2,
+                    "height": 1,
+                    "row": 1,
+                    "column": 1
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT latest(`cpu.idle`) as 'Idle', latest(`cpu.iowait`) as 'IOWait', latest(`cpu.system`) as 'System', latest(`cpu.user`) as 'User' from `unixMonitor:Stats` facet hostname since 1 hour ago"
+                    }
+                ],
+                "presentation": {
+                    "title": "CPU Overview",
+                    "notes": null,
+                    "drilldown_dashboard_id": 466005
+                }
+            },
+            {
+                "visualization": "line_chart",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 1,
+                    "column": 3
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT average(`cpu.idle`), average(`cpu.iowait`), average(`cpu.system`), average(`cpu.user`) from `unixMonitor:Stats` since 1 hour ago timeseries"
+                    }
+                ],
+                "presentation": {
+                    "title": "CPU Usage 1H",
+                    "notes": null
+                }
+            },
+            {
+                "visualization": "facet_table",
+                "layout": {
+                    "width": 2,
+                    "height": 1,
+                    "row": 2,
+                    "column": 1
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT latest(`loadaverage.1Minute`) as '1 Minute',latest(`loadaverage.5Minute`) as '5 Minute', latest(`loadaverage.15Minute`) as '15 Minute' from `unixMonitor:Stats` since 1 hour ago facet hostname"
+                    }
+                ],
+                "presentation": {
+                    "title": "Load Averages",
+                    "notes": null,
+                    "drilldown_dashboard_id": 466005
+                }
+            },
+            {
+                "visualization": "line_chart",
+                "layout": {
+                    "width": 1,
+                    "height": 1,
+                    "row": 2,
+                    "column": 3
+                },
+                "account_id": 284929,
+                "data": [
+                    {
+                        "nrql": "SELECT average(`loadaverage.15Minute`),average(`loadaverage.1Minute`),average(`loadaverage.5Minute`) from `unixMonitor:Stats` since 1 hour ago timeseries"
+                    }
+                ],
+                "presentation": {
+                    "title": "Load Averages 1H",
+                    "notes": null
+                }
+            }
+        ],
+        "filter": {
+            "event_types": [
+                "unixMonitor:Disk",
+                "unixMonitor:DiskIO",
+                "unixMonitor:NetworkIO",
+                "unixMonitor:Process",
+                "unixMonitor:Stats",
+                "unixMonitor:Vmstat"
+            ],
+            "attributes": [
+                "agentName",
+                "hostname",
+                "instance"
+            ]
+        }
+    }
+}
