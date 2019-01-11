@@ -2,7 +2,7 @@
 System-Level Monitoring for AIX, Linux, OSX/MacOS & Solaris/SunOS
 
 ## Disclaimer
-New Relic has open-sourced this integration to enable monitoring of this technology. This integration is provided AS-IS WITHOUT WARRANTY OR SUPPORT, although you can report issues and contribute to this integration via GitHub. Support for this integration is available with an [Expert Services subscription](newrelic.com/expertservices).
+New Relic has open-sourced this integration to enable monitoring of this technology. This integration is provided AS-IS WITHOUT WARRANTY OR SUPPORT, although you can report issues and contribute to this integration via GitHub. Support for this integration is available with an [Expert Services subscription](https://newrelic.com/expertservices).
 
 ## Table Of Contents
 * [Requirements](#requirements)
@@ -85,7 +85,7 @@ If using a proxy, the optional `proxy` object should be added to the `global` ob
 #### Enabling at plugin startup
 The plugin can check for and deploy the latest dashboards to your account when it starts up. This requires the `dashboards` object in `plugin.json` to be set up properly:
 
-* `admin_api_key`: [Admin API key, as described here.](https://docs.newrelic.com/docs/apis/rest-api-v2/getting-started/api-keys#admin-api)
+* `admin_api_key`: [Admin API key, as described here.](https://docs.newrelic.com/docs/apis/getting-started/intro-apis/understand-new-relic-api-keys#admin-api)
 * `integration_guid`: Default is `UNIX.Infra.Monitor`.
 * `dashboard_install`: Default is `command_line`.
 
