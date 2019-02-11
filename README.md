@@ -136,6 +136,5 @@ To enable it, add `"debug": true,` to the global section, like so:
 	"global": {
 		"OS": "auto",
 		"debug": true,
-	(...and the rest...)
 ```
 You will need to restart the Unix Monitor to pick up this change.
