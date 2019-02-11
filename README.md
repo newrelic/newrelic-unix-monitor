@@ -16,6 +16,8 @@ New Relic has open-sourced this integration to enable monitoring of this technol
 * [Other configurations](#other-configurations)
 	* [Deploying Dashboards from separate server/desktop](#deploying-dashboards-from-separate-serverdesktop)
 	* [Fix for using the WebSphere JDK](#fix-for-using-the-websphere-jdk)
+	* [Enabling Debug Mode](#debug-mode)
+
 
 ## Requirements
 * A New Relic account. Sign up for a free account [here](http://newrelic.com)
