@@ -61,7 +61,7 @@ These settings are found in the `agents` object.
 
 * `name`: If set to `auto`, the plugin will use that server's hostname. Otherwise, sets the hostname and agentName to whatever is set here. 
 * `static` (optional): An object containing static attributes (as name-value pairs) you want to appear in every event from this plugin. For example:
-```
+```json
   "agents": [
     {
       "name": "auto"
@@ -126,3 +126,16 @@ pluginctl.sh: syntax error at line 240: `admin_api_key=$' unexpected
 ```
 
 If so, use the Korn shell or bash (if available).  Both were tested successfully in Solaris 10.
+
+### Debug Mode
+If you are trying to customize the commands that the Unix Monitor is running, or you are not seeing any or all of the data you expect to see, you can put the agent into 'Debug Mode', in which it outputs to the logs all of the commands being run and it's attempts at parsing them.
+
+To enable it, add `"debug": true,` to the global section, like so:
+```json
+{
+	"global": {
+		"OS": "auto",
+		"debug": true,
+	(...and the rest...)
+```
+You will need to restart the Unix Monitor to pick up this change.
