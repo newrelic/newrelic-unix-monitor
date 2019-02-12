@@ -26,7 +26,7 @@ public final class UnixAgentConstants {
 	public static final String kEventTypePrefix = "unixMonitor";
 	public static final char   kMetricTreeDivider='.';
 	public static final String kCommandMetricName = "command";
-	public static final int    kInsightsAttributeSize = 4096;
+	public static final int    kInsightsAttributeSize = 4092;
 	public static final String kInstanceMetricName = "instance";	
 	public static final String kJavaClassMetricName = "javaclass";
 	public static final String KAOSMetricName = "osName";
