@@ -640,16 +640,38 @@
 			]
 		},
 		{
-			"eventType": "MissingFiles",
-			"command": "ls -l /home/linux1/newrelic-unix-monitor/badfolder /home/linux1/newrelic-unix-monitor/blue.txt",
+			"eventType": "MissingProcFiles",
+			"command": "sh find-missing-procfiles.sh",
 			"checkAllRegex": false,
 			"lineLimit": 0,
 			"mappings": [
 				{
-					"expression": ".+ (\\S+): No such file or directory",
+					"expression": "(\\S+):(\\d+),.+ (\\S+): No such file or directory",
 					"metrics": [{
-							"name": "Path",
-							"type": "ATTRIBUTE"
+							"name": "METRIC_PREFIX"
+						},
+						{
+							"name": "PID",
+							"type": "NORMAL"
+						},
+						{
+							"name": "File",
+							"type": "NORMAL"
+						}
+					]
+				},
+				{
+					"expression": "(\\S+):(\\d?),.+ (\\S+)",
+					"metrics": [{
+							"name": "METRIC_PREFIX"
+						},
+						{
+							"name": "PID",
+							"type": "NORMAL"
+						},
+						{
+							"name": "File",
+							"type": "NORMAL"
 						}
 					]
 				}
