@@ -210,17 +210,16 @@ start_plugin() {
   fi
 }
 
-get_variable() {
+format_variable() {
   echo $1 | sed -e 's/^.*://' -e 's/"//g' -e 's/,//' -e 's/ //g'
 }
 
-get_url() {
+format_url() {
   echo $1 | sed -e 's/^.*https/https/' -e 's/"//g' -e 's/,//' -e 's/ //g'
 }
 
 install_dashboards() {
   echo ""
-  echo "Dashboards: Installing dashboards for $PLUGIN_NAME"
   pluginJsonLocation="$PLUGIN_PATH/config/plugin.json"
   defaultInstallerURL="https://oaq67woo45.execute-api.us-east-1.amazonaws.com/prod"
 
@@ -229,22 +228,21 @@ install_dashboards() {
   account_id=`grep account_id ${pluginJsonLocation}`
   installer_url=`grep installer_url ${pluginJsonLocation}`
 
-  something_is_missing=false
-  for testvar in admin_api_key integration_guid account_id; do
-    if [ -z "${!testvar}" ] ; then
-      echo "Dashboards: ${testvar} is not set in ${pluginJsonLocation} or defined in this script."
-      something_is_missing=true
-    fi
-  done
+  admin_api_key=$(format_variable "${admin_api_key}")
+  integration_guid=$(format_variable "${integration_guid}")
+  account_id=$(format_variable "${account_id}")
+  installer_url=$(format_url "${installer_url:-$defaultInstallerURL}")
 
-  if [ "${something_is_missing}" = true ]; then
-    echo "Dashboards: Skipping dashboard installation."
+  if [ -z ${admin_api_key} ] || [ -z ${integration_guid} ] || [ -z ${account_id} ] ; then
+    echo "Dashboards: One of the dashboard variables is not set in ${pluginJsonLocation} or defined in this script."
+    echo "plugin.json location: ${pluginJsonLocation}"
+    echo "admin_api_key: ${admin_api_key}"
+    echo "integration_guid: ${integration_guid}"
+    echo "account_id: ${account_id}"
+    echo "installer_url: ${installer_url}"
+    echo "Dashboards: Skipping installation."
   else
-    admin_api_key=$(get_variable "$admin_api_key")
-  	integration_guid=$(get_variable "$integration_guid")
-  	account_id=$(get_variable "$account_id")
-  	installer_url=$(get_url "${installer_url:-$defaultInstallerURL}")
-
+    echo "Dashboards: Installing dashboards for $PLUGIN_NAME."
     if command -v curl 2>&1 >/dev/null; then
       echo "Dashboards: Using curl to initiate dashboard install."
       dashResponse=$(curl -sb -k \
@@ -262,14 +260,15 @@ install_dashboards() {
           --output-document  \
         -  ${installer_url})
     else
-      echo "Dashboards: installation requires either curl or wget be installed."
+      echo "Dashboards: Installation requires either curl or wget be installed."
+      echo "Dashboards: Skipping installation."
     fi
     if [ -n "${dashResponse}" ]; then
       statusCode=`echo "${dashResponse}" | sed -e 's/.*[cC]ode.:\([0-9][0-9][0-9]\).*/\1/'`
-      if [ "${statusCode}" == "200" ]; then
+      if [ "${statusCode}" = "200" ]; then
         echo "Dashboards: Already exist for $PLUGIN_NAME in ${account_id} and are up to date (nothing to do)."
-      elif [ "${statusCode}" == "201" ]; then
-        echo "Dashboards: Have been successfully created for $PLUGIN_NAME in ${account_id}!"
+      elif [ "${statusCode}" = "201" ]; then
+        echo "Dashboards: Have been successfully created for $PLUGIN_NAME in ${account_id}."
       else
         responseBody=`echo "${dashResponse}" | sed -e 's/.*body.:.\(.*\).,.headers.*/\1/'`
         echo "Dashboards: Installation failed."
@@ -292,7 +291,7 @@ case "$1" in
     start_plugin
   ;;
   restart)
-    echo "Restarting $PLUGIN_NAME"
+    echo "Restarting $PLUGIN_NAME."
     stop_plugin
     start_plugin
   ;;
@@ -301,7 +300,7 @@ case "$1" in
   ;;
   stopremlogs)
     stop_plugin
-    echo "Clearing plugin logs"
+    echo "Clearing plugin logs."
     rm -f $PLUGIN_PATH/logs/*
   ;;
   dashboards)
