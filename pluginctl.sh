@@ -245,7 +245,7 @@ install_dashboards() {
     echo "Dashboards: Installing dashboards for $PLUGIN_NAME."
     if command -v curl 2>&1 >/dev/null; then
       echo "Dashboards: Using curl to initiate dashboard install."
-      dashResponse=$(curl -sb -k \
+      dashResponse=$(curl -s -k \
         --request POST \
         --url ${installer_url} \
         --header 'Content-Type: application/json' \
@@ -253,12 +253,13 @@ install_dashboards() {
     elif command -v wget 2>&1 >/dev/null; then
         echo "Dashboards: Using wget to initiate dashboard install."
         dashResponse=$(wget  \
+          --no-check-certificate
           --quiet \
           --method POST \
           --header 'Content-Type: application/json' \
           --body-data "{ \"integrationId\": \"${integration_guid}\", \"accountId\": ${account_id}, \"accountAdminApiKey\": \"${admin_api_key}\"}" \
           --output-document  \
-        -  ${installer_url})
+        - ${installer_url})
     else
       echo "Dashboards: Installation requires either curl or wget be installed."
       echo "Dashboards: Skipping installation."
