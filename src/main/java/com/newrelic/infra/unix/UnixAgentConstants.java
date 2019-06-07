@@ -16,6 +16,8 @@ public final class UnixAgentConstants {
 	public static final String kColumnMetricDiskName = "DISK_NAME";
 	public static final String kColumnIgnore = "IGNORE_COLUMN";
 	public static final String kColumnMetricName = "METRIC_NAME";
+	// METRIC_INSTANCE and METRIC_PREFIX are interchangeable
+	public static final String kColumnMetricInstance = "METRIC_INSTANCE";
 	public static final String kColumnMetricPrefix = "METRIC_PREFIX";
 	public static final String kColumnMetricValue = "METRIC_VALUE";
 	public static final String kColumnMetricProcessName = "PROCESS_NAME";

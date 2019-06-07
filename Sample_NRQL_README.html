@@ -1,0 +1,25 @@
+<h1><a href="#sample-nrql-queries" id="sample-nrql-queries"></a>Sample NRQL Queries</h1>
+<p>The following are sample NRQL queries that can be used to configure alerts/widgets in dashboards</p>
+<p>*<strong>The NRQL queries suggested here only serve as examples, they need to be modified as per deployments</strong></p>
+<table>
+<thead>
+<tr><th>Resource</th><th>AIX command</th><th>Description</th><th>Sample NRQL</th></tr>
+</thead>
+<tbody>
+<tr><td>CPU Usage</td><td>lparstat 1 1</td><td>This situation monitors the overall CPU utilization of the server</td><td>SELECT  average(`cpu.system`)from `unixMonitor:Stats` FACET hostname </td></tr>
+<tr><td>File Space Fragmented</td><td>df -v -k</td><td>This situation monitors for inodes High and file system used Low, then indicates that file space is fragmented for WARNING severity</td><td>SELECT average(inodesPercentUsed)  FROM `unixMonitor:Disk`  WHERE  mountPoint='/usr' AND hostname='b01avi11810417'</td></tr>
+<tr><td>File System Percent - All</td><td> df -v -k</td><td>File System usage</td><td>SELECT  average(used) FROM `unixMonitor:Disk` AND hostname='b01avi11810417'</td></tr>
+<tr><td>File System Percent - Specified File Systems</td><td>df -v -k</td><td>This situation monitors all OS-related filesystems on an Unix system with MINOR severity</td><td>SELECT  average(used) FROM `unixMonitor:Disk` WHERE mountPoint = '/opt' AND hostname='b01avi11810417'</td></tr>
+<tr><td>Inodes Percent</td><td>df -v -k</td><td>This situation monitors ALL mounted File system's Inodes  % used  on AIX system for MINOR severity</td><td>SELECT average(inodesPercentUsed)  FROM `unixMonitor:Disk WHERE hostname='b01avi11810417'</td></tr>
+<tr><td>Process CPU Usage</td><td>ps vewwwg</td><td>This situation monitors the CPU percent utilization at 95% by all processes except kproc and swapper for WARNING Severity</td><td>SELECT average(cpu) from `unixMonitor:Process` WHERE  instance NOT LIKE '%kproc%' AND instance NOT LIKE 'swapper' AND hostname='b01avi11810417'</td></tr>
+<tr><td>Process Missing</td><td>ps vewwwg</td><td>This situation detects if a critical OS-related process is not running</td><td>SELECT uniqueCount(pid)  from `unixMonitor:Process` WHERE instance='cimserver' AND hostname='b01avi11810417'</td></tr>
+<tr><td>Process User</td><td>ps vewwwg</td><td>This situation detects if the  MQ ITM agent is running as root</td><td>SELECT uniqueCount(pid) from `unixMonitor:Process` WHERE instance = 'cimlistener' AND command LIKE '%LOGNAME=root%' AND hostname='b01avi11810417'</td></tr>
+<tr><td>Swap Percent</td><td>svmon -Ounit=KB</td><td>This situation monitors swap space availability</td><td>select  average(`swap.total`-`swap.used`) as 'Avg Swap.Free' from `unixMonitor:Stats' WHERE hostname='b01avi11810417'</td></tr>
+<tr><td>Zombie Processes</td><td>ps vewwwg</td><td>This situation searches for the total amount of zombie processes running</td><td>SELECT uniquecount(state) FROM `unixMonitor:Process` WHERE state='Z' AND hostname='b01avi11810417'</td></tr>
+<tr><td>Errpt Errors </td><td> errpt </td><td>Entries of CLASS Hardware with TYPE of PEND or PERM in errpt or a particular message</td><td>SELECT uniqueCount(instance) from `unixMonitor:Errpt` where class='S' and type='P' FACET hostname </td></tr>
+<tr><td>Backup errors</td><td> lsmksysb -B</td><td> errors encountered during backup</td><td> SELECT uniqueCount(`orignal.date`) FROM `unixMonitor:Backup` WHERE device='/mksysbimg/mksysb.b01avi11810415.aix710.123018' AND command LIKE '%error%' AND hostname='b01avi11810417'</td></tr>
+<tr><td>Ethernet Channel Errors</td><td>entstat 'device'</td><td>Monitors for Ethernet Errors</td><td>select uniqueCount(instance)from `unixMonitor:NetworkIO` WHERE `receive.errors` &gt;0 OR `transmit.errors`&gt;0 AND hostname='b01avi11810417'</td></tr>
+<tr><td>File exists</td><td>ls -l</td><td> checks availability of the configured file </td><td>select uniqueCount(`file.date`) from `unixMonitor:File` WHERE  `file.path`='/opt/New_Relic/newrelic-unix-monitor/config/plugin.json' FACET hostname </td></tr>
+<tr><td colspan="3"></td></tr>
+</tbody>
+</table>

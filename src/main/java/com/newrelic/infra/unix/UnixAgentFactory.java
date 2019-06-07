@@ -57,9 +57,7 @@ public class UnixAgentFactory extends AgentFactory {
 
 		String commandsFileName = properties.containsKey("configDir") ? (String) properties.get("configDir") : "./config";
 		commandsFileName += File.separator + "plugin-commands-" + os + ".json";
-
 		File commandsFile = new File(commandsFileName);
-
 		AgentSettings agentSettings = new AgentSettings();
 
 		if (commandsFile.exists()) {
@@ -75,7 +73,6 @@ public class UnixAgentFactory extends AgentFactory {
 		agentSettings.setOs(os);
 		agentSettings.setHostname(hostname);
 		agentSettings.setAgentname(agentname);
-
 		return new UnixAgent(agentSettings);
 	}
 

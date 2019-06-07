@@ -234,7 +234,9 @@ public class CommandMetricUtils {
 						}	
 						
 						// Metric prefixes get appended to the "Instance" attribute.
-						else if (columnMetricName.equals(UnixAgentConstants.kColumnMetricPrefix)) {
+						// Can be "METRIC_PREFIX" (old syntax) or "METRIC_INSTANCE" (new syntax) - yay backwards compatibility!
+						else if (columnMetricName.equals(UnixAgentConstants.kColumnMetricPrefix) || 
+							columnMetricName.equals(UnixAgentConstants.kColumnMetricInstance)) {
 							thisMetricInstance = mungeString(thisMetricInstance, thisColumn,
 									UnixAgentConstants.kMetricTreeDivider);
 						}

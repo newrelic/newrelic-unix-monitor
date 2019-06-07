@@ -23,9 +23,7 @@ public class UnixAgent extends Agent {
 	private HashSet<String> disks;
 	private HashSet<String> networkInterfaces;
 	private int pageSize;
-	
-	private  Map<String, Long> commandtimestamp;
-
+	private  Map<String, Long> commandTimestamp;
 	
 	public UnixAgent(AgentSettings asettings) {
 		agentSettings = asettings;
@@ -33,59 +31,46 @@ public class UnixAgent extends Agent {
 		networkInterfaces = getMembers(agentSettings.getOsSettings().getInterfacesCommand(), agentSettings.getOsSettings().getInterfacesRegex());
 		setPageSize(agentSettings);
 		addStaticAttribute(UnixAgentConstants.KAOSMetricName, agentSettings.getOs().split("_")[0]);
-		commandtimestamp =  new HashMap();
+		commandTimestamp = new HashMap();
 	}
-	
-	private boolean doruncommand(Command command) {
-		// Maintain timestamp for when the command was run last. we will skip the
-		// commands unless its time for them to run
-		// added interval attribute in the command json.
-		// Check if we have entry for command if not
 
-		// Check if the command interval is configured, if not return true to run for
-		// each poll cycle
-
-		long interval = 0;
-		if (command.getInterval() != null) {
-			// convert interval to milliseconds
-			interval = command.getInterval() * 60000;
-		}
-
-		String commmandtoexecute = command.getCommand();
-		long currentTime = System.currentTimeMillis();
-
-		// Check if the command interval is configured, if not return true to run for
-		// each poll cycle
-		if (interval != 0) {
-			if (commandtimestamp.containsKey(commmandtoexecute)) {
-				// Find the last run timestamp
-				long lastrun = commandtimestamp.get(commmandtoexecute);
-				// Check if it is time to execute the command
-				if ((currentTime - lastrun) > interval) {
-					// Update the timestamp
-					logger.debug("doruncommand: Time to run command " + commmandtoexecute + " Interval@ " + interval);
-					commandtimestamp.put(commmandtoexecute, currentTime);
-					return true;
-				} else {
-					// Skip running command since interval has not passed
-					logger.debug(
-							"doruncommand: Skipping command " + commmandtoexecute + " Timeleft@ " + (currentTime - lastrun) +" Interval@ " + interval);
-					return false;
-				}
-
-			} else {
-				// First run, since there is interval we need to maintain map
-				logger.debug("doruncommand: First run for command " + commmandtoexecute + " @ " + currentTime);
-				commandtimestamp.put(commmandtoexecute, currentTime);
-				return true;
-			}
-
-		}
-		{
-			logger.debug("doruncommand: No interval configured for command " + commmandtoexecute);
+	// Maintain timestamp for when the command was run last. 
+	// If the command has an interval established ("'interval': nnn" in plugin-commands-xxx.json),
+	// only run command where the interval has been exceeded since the last run.
+	// Returns 'true' if the command should be run, 'false' if it should be skipped.
+	private boolean doRunCommand(Command command) {
+			// Check if the command interval is non-zero (default is 0).
+			// If 0, don't bother doing anything else and return true.
+		if(command.getInterval() == 0) {
+			logger.debug("doRunCommand: Interval not configured or set to '0' for command " 
+				+ command.getCommand() + ", will always execute.");
 			return true;
 		}
-
+		
+		String commandExec = command.getCommand();	
+		long interval = command.getInterval() * 60000;
+		long currentTime = System.currentTimeMillis();
+		if (commandTimestamp.containsKey(commandExec)) {
+			// Find the last run timestamp
+			long lastrun = commandTimestamp.get(commandExec);
+			// Check if it is time to execute the command
+			if ((currentTime - lastrun) > interval) {
+				// Update the timestamp
+				logger.debug("doRunCommand: Time to run command " + commandExec + ", Interval @ " + interval);
+				commandTimestamp.put(commandExec, currentTime);
+				return true;
+			} else {
+				// Skip running command since interval has not passed
+				logger.debug("doRunCommand: Skipping command " + commandExec + 
+					", Timeleft @ " + (currentTime - lastrun) + ", Interval @ " + interval);
+				return false;
+			}
+		} else {
+			// First run, since there is interval we need to maintain map
+			logger.debug("doRunCommand: First run for command " + commandExec + " @ " + currentTime);
+			commandTimestamp.put(commandExec, currentTime);
+			return true;
+		}
 	}
 	
 	@Override
@@ -106,14 +91,13 @@ public class UnixAgent extends Agent {
 					members.add("");
 				}
 				
-				// We need a hack to not run all the commands every harvest cycle. In cases where we just need to run commands every day or even once a week.
-				if( doruncommand(command))
-				{
+				// Checks whether to run this commands in this harvest cycle.
+				if(doRunCommand(command)) {
 					for(String thisMember : members) {
 						CommandMetricUtils.parseCommandOutput(command, thisMember, metricReporter, getStaticAttributes(), pageSize);
 					}
-				}else {
-					logger.debug("Info: Skipping " + command.getEventType() + " : " + command.getCommand() );
+				} else {
+					logger.debug("Info: Skipping " + command.getEventType() + " : " + command.getCommand());
 				}
 			} catch (Exception e) {
 				logger.error("Error: Parsing of " + command.getEventType() + " : " + command.getCommand() + " could not be completed.");
@@ -159,9 +143,8 @@ public class UnixAgent extends Agent {
 	}
 
 	@Override
-	public void dispose() throws Exception {
-	}
+	public void dispose() throws Exception { }
 
 	@Override
-	public void populateInventory(InventoryReporter inventoryReporter) throws Exception {	}	
+	public void populateInventory(InventoryReporter inventoryReporter) throws Exception { }	
 }
