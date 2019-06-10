@@ -9,8 +9,6 @@
 	"commands": [{
 			"eventType": "Disk",
 			"command": "df -Pk -x iso9660 -x cdfs -x hsfs",
-			"checkAllRegex": false,
-			"lineLimit": 0,
 			"mappings": [{
 				"expression": "\\s*(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)[%]*.*",
 				"metrics": [{
@@ -18,22 +16,18 @@
 					},
 					{
 						"name": "Total",
-						"ratio": 1,
 						"type": "NORMAL"
 					},
 					{
 						"name": "Used",
-						"ratio": 1,
 						"type": "NORMAL"
 					},
 					{
 						"name": "Free",
-						"ratio": 1,
 						"type": "NORMAL"
 					},
 					{
 						"name": "Percent Used",
-						"ratio": 1,
 						"type": "NORMAL"
 					}
 				]
@@ -42,66 +36,53 @@
 		{
 			"eventType": "DiskIO",
 			"command": "cat /proc/diskstats",
-			"checkAllRegex": false,
-			"lineLimit": 0,
 			"mappings": [{
 				"expression": "\\d+\\s+\\d+\\s+(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)",
 				"metrics": [{
-						"name": "METRIC_PREFIX"
+						"name": "METRIC_INSTANCE"
 					},
 					{
 						"name": "Reads Per Interval",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"name": "Reads Merged Per Interval",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"name": "Sectors Read Per Interval",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"name": "Time Spent Reading",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"name": "Writes Per Interval",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"name": "Writes Merged Per Interval",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"name": "Sectors Per Interval",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"name": "Time Spent Writing",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"name": "IO In progress",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"name": "Time Spent on IO",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"name": "Time Spent on IO (Weighted)",
-						"ratio": 1,
 						"type": "DELTA"
 					}
 				]
@@ -110,8 +91,6 @@
 		{
 			"eventType": "NetworkIO",
 			"command": "grep -r . /sys/class/net/MEMBER_PLACEHOLDER/statistics 2>&1",
-			"checkAllRegex": false,
-			"lineLimit": 0,
 			"mappings": [{
 				"expression": "\\/sys\\/class\\/net\\/[\\w\\d]+\\/statistics\\/([\\w_]+):(\\d+)",
 				"metrics": [{
@@ -124,139 +103,116 @@
 				"translations": [{
 						"input": "collisions",
 						"output": "Collisions",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "multicast",
 						"output": "Multicast",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "rx_bytes",
 						"output": "Receive.Bytes",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "rx_compressed",
 						"output": "Receive.Compressed",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "rx_crc_errors",
 						"output": "Receive.CRC Errors",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "rx_dropped",
 						"output": "Receive.Dropped",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "rx_errors",
 						"output": "Receive.Errors",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "rx_fifo_errors",
 						"output": "Receive.FIFO Errors",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "rx_frame_errors",
 						"output": "Receive.Frame Errors",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "rx_length_errors",
 						"output": "Receive.Length Errors",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "rx_missed_errors",
 						"output": "Receive.Missed Errors",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "rx_over_errors",
 						"output": "Receive.Overrun Errors",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "rx_packets",
 						"output": "Receive.Packets",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "tx_aborted_errors",
 						"output": "Transmit.Aborted Errors",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "tx_bytes",
 						"output": "Transmit.Bytes",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "tx_carrier_errors",
 						"output": "Transmit.Carrier Errors",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "tx_compressed",
 						"output": "Transmit.Compressed",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "tx_dropped",
 						"output": "Transmit.Dropped",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "tx_errors",
 						"output": "Transmit.Errors",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "tx_fifo_errors",
 						"output": "Transmit.FIFO Errors",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "tx_heartbeat_errors",
 						"output": "Transmit.Heartbeat Errors",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "tx_packets",
 						"output": "Transmit.Packets",
-						"ratio": 1,
 						"type": "DELTA"
 					},
 					{
 						"input": "tx_window_errors",
 						"output": "Transmit.Window Errors",
-						"ratio": 1,
 						"type": "DELTA"
 					}
 				]
@@ -265,8 +221,6 @@
 		{
 			"eventType": "Process",
 			"command": "ps -ewwo pid,state,%cpu,%mem,rss,vsz,command",
-			"checkAllRegex": false,
-			"lineLimit": 0,
 			"mappings": [{
 				"expression": "(\\d+)\\s+([A-Z]{1})\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+(\\d+)\\s+(\\d+)\\s+(.*)",
 				"metrics": [{
@@ -279,22 +233,18 @@
 					},
 					{
 						"name": "CPU",
-						"ratio": 1,
 						"type": "NORMAL"
 					},
 					{
 						"name": "Memory",
-						"ratio": 1,
 						"type": "NORMAL"
 					},
 					{
 						"name": "Resident Set Size",
-						"ratio": 1,
 						"type": "NORMAL"
 					},
 					{
 						"name": "Virtual Size",
-						"ratio": 1,
 						"type": "NORMAL"
 					},
 					{
@@ -306,28 +256,23 @@
 		{
 			"eventType": "Stats",
 			"command": "top -bH -n 2",
-			"checkAllRegex": false,
 			"lineLimit": 5,
 			"mappings": [{
 					"expression": ".*Mem:\\s+(\\d+)k\\s+total,\\s+(\\d+)k\\s+used,\\s+(\\d+)k\\s+free,\\s+(\\d+)k\\s+buff.*",
 					"metrics": [{
 							"name": "Memory.Total",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Memory.Used",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Memory.Free",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Memory.Buffer",
-							"ratio": 1,
 							"type": "NORMAL"
 						}
 					]
@@ -336,22 +281,18 @@
 					"expression": "KiB Mem\\s*:\\s+(\\d+)\\s+total,\\s+(\\d+)\\s+used,\\s+(\\d+)\\s+free,\\s+(\\d+)\\s+buff.*",
 					"metrics": [{
 							"name": "Memory.Total",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Memory.Used",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Memory.Free",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Memory.Buffer",
-							"ratio": 1,
 							"type": "NORMAL"
 						}
 					]
@@ -360,22 +301,18 @@
 					"expression": "KiB Mem\\s*:\\s+(\\d+)\\s+total,\\s+(\\d+)\\s+free,\\s+(\\d+)\\s+used,\\s+(\\d+)\\s+buff.*",
 					"metrics": [{
 							"name": "Memory.Total",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Memory.Free",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Memory.Used",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Memory.Buffer",
-							"ratio": 1,
 							"type": "NORMAL"
 						}
 					]
@@ -384,22 +321,18 @@
 					"expression": ".*Swap:\\s+(\\d+)k\\s+total,\\s+(\\d+)k\\s+used,\\s+(\\d+)k\\s+free,\\s+(\\d+)k\\s+cached",
 					"metrics": [{
 							"name": "Swap.Total",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Swap.Used",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Swap.Free",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Swap.Buffer",
-							"ratio": 1,
 							"type": "NORMAL"
 						}
 					]
@@ -408,22 +341,18 @@
 					"expression": "KiB Swap:\\s+(\\d+)\\s+total,\\s+(\\d+)\\s+used,\\s+(\\d+)\\s+free,\\s+(\\d+)\\s+cached",
 					"metrics": [{
 							"name": "Swap.Total",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Swap.Used",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Swap.Free",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Swap.Buffer",
-							"ratio": 1,
 							"type": "NORMAL"
 						}
 					]
@@ -432,22 +361,18 @@
 					"expression": "KiB Swap:\\s+(\\d+)\\s+total,\\s+(\\d+)\\s+free,\\s+(\\d+)\\s+used[,\\.]*\\s+(\\d+)\\s+avail.*",
 					"metrics": [{
 							"name": "Swap.Total",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Swap.Free",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Swap.Used",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "Swap.Available",
-							"ratio": 1,
 							"type": "NORMAL"
 						}
 					]
@@ -456,27 +381,22 @@
 					"expression": "Threads:\\s+(\\d+)\\s+total,\\s+(\\d+)\\s+running,\\s+(\\d+)\\s+sleeping,\\s+(\\d+)\\s+stopped,\\s+(\\d+)\\s+zombie",
 					"metrics": [{
 							"name": "KernelThreads.Total",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "KernelThreads.Runnable",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "KernelThreads.Sleeping",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "KernelThreads.Stopped",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "KernelThreads.Zombie",
-							"ratio": 1,
 							"type": "NORMAL"
 						}
 					]
@@ -485,42 +405,34 @@
 					"expression": "[%]*Cpu[^:]*:\\s+([\\d\\.]+)[%]*\\s*us,\\s+([\\d\\.]+)[%]*\\s*sy,\\s+([\\d\\.]+)[%]*\\s*ni,\\s+([\\d\\.]+)[%]*\\s*id,\\s+([\\d\\.]+)[%]*\\s*wa,\\s+([\\d\\.]+)[%]*\\s*hi,\\s+([\\d\\.]+)[%]*\\s*si,\\s+([\\d\\.]+)[%]*\\s*st",
 					"metrics": [{
 							"name": "CPU.User",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "CPU.System",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "CPU.Nice",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "CPU.Idle",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "CPU.Waiting",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "CPU.Interrupt-Hardware",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "CPU.Interrupt-Software",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "CPU.Stolen",
-							"ratio": 1,
 							"type": "NORMAL"
 						}
 					]
@@ -529,17 +441,14 @@
 					"expression": "top.*load average:\\s+([0-9\\.]+),\\s+([0-9\\.]+),\\s+([0-9\\.]+)",
 					"metrics": [{
 							"name": "LoadAverage.1 Minute",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "LoadAverage.5 Minute",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
 							"name": "LoadAverage.15 Minute",
-							"ratio": 1,
 							"type": "NORMAL"
 						}
 					]
@@ -549,13 +458,10 @@
 		{
 			"eventType": "Vmstat",
 			"command": "vmstat -s",
-			"checkAllRegex": false,
-			"lineLimit": 0,
 			"mappings": [{
 					"expression": "\\s*(\\d+)\\s+(?!K\\s+)(.+)(?=ticks)",
 					"metrics": [{
 							"name": "METRIC_VALUE",
-							"ratio": 1,
 							"type": "DELTA"
 						},
 						{
@@ -567,7 +473,6 @@
 					"expression": "\\s*(\\d+)\\s+(?!K\\s+)(.+)",
 					"metrics": [{
 							"name": "METRIC_VALUE",
-							"ratio": 1,
 							"type": "DELTA"
 						},
 						{
@@ -579,7 +484,6 @@
 					"expression": "\\s*(\\d+)\\s+K\\s+(.+)",
 					"metrics": [{
 							"name": "METRIC_VALUE",
-							"ratio": 1,
 							"type": "NORMAL"
 						},
 						{
