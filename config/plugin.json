@@ -2,7 +2,7 @@
 	"global": {
 		"OS": "auto",
 		"debug": false,
-		"account_id": "insert_your_RPM_account_ID_here",
+		"account_id": "insert_your_New_Relic_account_ID_here",
 		"insights_mode": {
 			"insights_insert_key": "insert_your_insights_insert_key_here",
 			"insights_data_center": "US"

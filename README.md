@@ -43,7 +43,7 @@ We'd love to get your contributions to improve the Unix Monitor! Keep in mind wh
 --------------------------------------------------------------------------------
 
 ## Installation & Usage Overview
-1. Download the latest version of the agent [here](https://github.com/newrelic/newrelic-unix-monitor/releases/latest).
+1. Download the latest version of the Unix Monitor [here](https://github.com/newrelic/newrelic-unix-monitor/releases/latest).
 2. Copy, gunzip & untar the latest release onto the Unix server that you want to monitor
 3. Set account ID, keys and other settings in `config/plugin.json`
 	* [Click here for plugin.json config details](#pluginjson-configuration)
@@ -59,7 +59,7 @@ We'd love to get your contributions to improve the Unix Monitor! Keep in mind wh
 --------------------------------------------------------------------------------
 
 ## `plugin.json` configuration
-_Note: A full example of the possible fields in `plugin.json` can be found in `plugin-fullexample.json`_
+_Note: A full example of the possible fields in `plugin.json` can be found in `plugin-full-example.json`_
 
 ### Global settings
 * `OS` (default: `auto`): Used to determine which commands to run and how to parse them. Leave set to `auto` to have the plugin figure that out (which normally works).
