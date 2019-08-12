@@ -2,9 +2,10 @@
 	"global": {
 		"OS": "auto",
 		"debug": false,
-		"account_id": "enter_NR_account_ID",
+		"account_id": "insert_your_New_Relic_account_ID_here",
 		"insights_mode": {
-			"insights_insert_key": "enter_insights_insert_key"
+			"insights_insert_key": "enter_insights_insert_key",
+			"insights_data_center": "US"
 		},
 		"infra_mode": {
 			"rpc_listener_port": 9001

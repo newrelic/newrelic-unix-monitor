@@ -27,8 +27,8 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
-    <logger name="com.newrelic" level="DEBUG" additivity="false">
-        <appender-ref ref="STDOUT" />
+    <logger name="com.newrelic.infra" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE" />
     </logger>
     <root level="ERROR">
     </root>
