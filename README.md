@@ -2,7 +2,7 @@
 System-Level Monitoring for AIX, Linux, OSX/MacOS & Solaris/SunOS
 
 ## TL;DR - where's the download link?
-**[Here.](https://github.com/newrelic/newrelic-unix-monitor/releases/latest)** If you are just deploying and not compiling it, please download the release instead of cloning the repo.
+**[Here.](https://github.com/newrelic/newrelic-unix-monitor/releases/latest) If you are just deploying and not compiling it, _please download the release instead of cloning the repo._**
 
 ## Table Of Contents
 * [Disclaimer](#Disclaimer)
