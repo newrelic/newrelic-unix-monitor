@@ -9,15 +9,15 @@ System-Level Monitoring for AIX, Linux, OSX/MacOS & Solaris/SunOS
 * [Contributing](#Contributing)
 * [Requirements](#requirements)
 	* [Supported OSes](#supported-oses)
-* [Installation & Usage Overview](#installation-usage-overview)
+* [Installation & Usage Overview](#installation--usage-overview)
 * [`plugin.json` configuration](#pluginjson-configuration)
 	* [Global settings](#global-settings)
-		* [Using the EU Data Center? Click here!](#eu-data-center)
+		* [Using the EU Data Center? Click here!](#global-settings)
 	* [Agent settings](#agent-settings)
 	* [Proxy settings](#proxy-settings)
 	* [Dashboard deployment](#dashboard-deployment)
 * [Other configurations](#other-configurations)
-	* [Deploying Dashboards from separate server/desktop](#deploying-dashboards-from-separate-serverdesktop)
+	* [Deploying Dashboards from separate server or desktop](#deploying-dashboards-from-separate-server-or-desktop)
 	* [Fix for using the WebSphere JDK](#fix-for-using-the-websphere-jdk)
 	* [Enabling Debug Mode](#debug-mode)
 
@@ -70,7 +70,7 @@ _Note: A full example of the possible fields in `plugin.json` can be found in `p
 ### Agent settings
 These settings are found in the `agents` object.
 
-* `name`: If set to `auto`, the plugin will use that server's hostname. Otherwise, sets the hostname and agentName to whatever is set here. 
+* `name`: If set to `auto`, the plugin will use that server's hostname. Otherwise, sets the hostname and agentName to whatever is set here.
 * `static` (optional): An object containing static attributes (as name-value pairs) you want to appear in every event from this plugin. For example:
 ```json
   "agents": [
@@ -79,7 +79,7 @@ These settings are found in the `agents` object.
       "static": {
         "data_center": "Philadelphia",
         "customer": "Eagles",
-        "rank": 1	
+        "rank": 1
       }
     }
   ]
@@ -109,7 +109,7 @@ If you don't want the dashboard deployment to run at startup, leave `admin_api_k
 
 ## Other configurations
 
-### Deploying Dashboards from separate server/desktop
+### Deploying Dashboards from separate server or desktop
 If you want to initiate the dashboard install from a standalone machine (i.e. a tools server or your own mac, linux or cygwin laptop/desktop), you will need the following:
 
 * `pluginctl.sh`
@@ -159,4 +159,3 @@ Note: You will need to restart the Unix Monitor to pick up these changes.
 1. Remove `"debug": true` from `config/plugin.json` or change to `"debug": false`
 2. Replace `config/logback.xml` with `config/logback-info.xml`
 3. Restart Unix Monitor
-

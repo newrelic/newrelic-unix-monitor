@@ -3,7 +3,6 @@ package com.newrelic.infra.unix;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +22,7 @@ public class UnixAgent extends Agent {
 	private HashSet<String> disks;
 	private HashSet<String> networkInterfaces;
 	private int pageSize;
-	private  Map<String, Long> commandTimestamp;
+	private HashMap<String, Long> commandTimestamp;
 	
 	public UnixAgent(AgentSettings asettings) {
 		agentSettings = asettings;
@@ -31,7 +30,7 @@ public class UnixAgent extends Agent {
 		networkInterfaces = getMembers(agentSettings.getOsSettings().getInterfacesCommand(), agentSettings.getOsSettings().getInterfacesRegex());
 		setPageSize(agentSettings);
 		addStaticAttribute(UnixAgentConstants.KAOSMetricName, agentSettings.getOs().split("_")[0]);
-		commandTimestamp = new HashMap();
+		commandTimestamp = new HashMap<String, Long>();
 	}
 
 	// Maintain timestamp for when the command was run last. 

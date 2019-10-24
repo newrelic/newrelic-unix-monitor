@@ -27,10 +27,7 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
-	<logger name="com.newrelic.infra" level="INFO" additivity="false">
-        <appender-ref ref="FILE" />
-    </logger>
-    <logger name="com.newrelic.infra.publish.insights.InsightsRunner$PollAgentsRunnable" level="ERROR" additivity="false">
+	<logger name="com.newrelic" level="INFO" additivity="false">
         <appender-ref ref="FILE" />
     </logger>
     <root level="ERROR">
