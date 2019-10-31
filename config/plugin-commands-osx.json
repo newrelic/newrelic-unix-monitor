@@ -10,44 +10,44 @@
 			"eventType": "Disk",
 			"command": "df -k -T nocdfs,devfs,hsfs,iso9660,nfs",
 			"mappings": [{
-				"expression": "\\s*(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%.*",
-				"metrics": ["expression": "\\s*(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(\\S+).*",
-                                "metrics": [
-                                        {
-                                                "name": "DISK_NAME"
-                                        },
-                                        {
-                                                "name": "Total",
-                                                "type": "NORMAL"
-                                        },
-                                        {
-                                                "name": "Used",
-                                                "type": "NORMAL"
-                                        },
-                                        {
-                                                "name": "Free",
-                                                "type": "NORMAL"
-                                        },
-                                        {
-                                                "name": "Percent Used",
-                                                "type": "NORMAL"
-                                        },
-                                        {
-                                                "name": "Is Used",
-                                                "type": "NORMAL"
-                                        },
-                                        {
-                                                "name": "Ifree",
-                                                "type": "NORMAL"
-                                        },
-                                        {
-                                                "name": "%ISUSED",
-                                                "type": "NORMAL"
-                                        },
-                                        {
-                                                "name": "Mounted On",
-                                                "type": "NORMAL"
-                                        }
+				"expression": "\\s*(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(\\S+).*",
+				"metrics": [
+				  {
+						"name": "DISK_NAME"
+					},
+					{
+						"name": "Total",
+						"type": "NORMAL"
+					},
+					{
+						"name": "Used",
+						"type": "NORMAL"
+					},
+					{
+						"name": "Free",
+						"type": "NORMAL"
+					},
+					{
+						"name": "Percent Used",
+						"type": "NORMAL"
+					},
+					{
+						"name": "Is Used",
+						"type": "NORMAL"
+					},
+					{
+						"name": "Ifree",
+						"type": "NORMAL"
+					},
+					{
+						"name": "%ISUSED",
+						"type": "NORMAL"
+					},
+					{
+						"name": "Mounted On",
+						"type": "NORMAL"
+					}
+					
 				]
 			}]
 		},
