@@ -1,5 +1,5 @@
 package com.newrelic.infra.unix;
-
+import java.nio.charset.Charset;
 public final class UnixAgentConstants {
 	
 	// Defaults
@@ -32,4 +32,7 @@ public final class UnixAgentConstants {
 	public static final String kInstanceMetricName = "instance";	
 	public static final String kJavaClassMetricName = "javaclass";
 	public static final String KAOSMetricName = "osName";
+
+	public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
+	public static final Charset UTF_8 = Charset.forName("UTF-8");
 }

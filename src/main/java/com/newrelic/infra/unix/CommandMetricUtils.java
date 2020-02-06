@@ -21,6 +21,9 @@ import com.newrelic.infra.unix.config.CommandMapping;
 import com.newrelic.infra.unix.config.MappingMetric;
 import com.newrelic.infra.unix.config.MappingTranslation;
 
+import static com.newrelic.infra.unix.UnixAgentConstants.ISO_8859_1;
+import static com.newrelic.infra.unix.UnixAgentConstants.UTF_8;
+
 public class CommandMetricUtils {
 
 	public static final String kPluginJarName = "newrelic_unix_plugin";
@@ -360,10 +363,12 @@ public class CommandMetricUtils {
 	}
 	
 	private static String truncateForInsights(String input) {
-		if (input.length() >= UnixAgentConstants.kInsightsAttributeSize) {
-			return input.substring(0, UnixAgentConstants.kInsightsAttributeSize);
+		byte[] ptext = input.getBytes(ISO_8859_1);
+		String inputUTF8 = new String(ptext, UTF_8);
+		if (inputUTF8.length() >= UnixAgentConstants.kInsightsAttributeSize) {
+			return inputUTF8.substring(0, UnixAgentConstants.kInsightsAttributeSize);
 		} else {
-			return input;
+			return inputUTF8;
 		}
 	}
 }
