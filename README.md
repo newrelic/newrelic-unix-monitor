@@ -2,7 +2,7 @@
 System-Level Monitoring for AIX, Linux, OSX/MacOS & Solaris/SunOS
 
 ## TL;DR - where's the download link?
-**[Here.](https://github.com/newrelic/newrelic-unix-monitor/releases/latest)** If you are just deploying and not compiling it, please download the release instead of cloning the repo.
+**[Here.](https://github.com/newrelic/newrelic-unix-monitor/releases/latest) If you are just deploying and not compiling it, _please download the release instead of cloning the repo._**
 
 ## Table Of Contents
 * [Disclaimer](#Disclaimer)
@@ -28,7 +28,8 @@ New Relic has Open Sourced this integration to enable monitoring of this technol
 We'd love to get your contributions to improve the Unix Monitor! Keep in mind when you submit your pull request, you'll need to sign the CLA via the click-through using CLA-Assistant. If you'd like to execute our corporate CLA, or if you have any questions, please drop us an email at open-source@newrelic.com.
 
 ## Requirements
-* A New Relic account. Sign up for a free account [here](http://newrelic.com)
+* A New Relic account.
+	* As this monitor posts 'custom events' to Insights, your account must either have an active [Insights trial](https://newrelic.com/signup) or be a paid Insights account.
 * A Unix server that you want to monitor
 * Java JRE/JDK v1.6 or later
 * Network access to New Relic (proxies are supported, see details below)
