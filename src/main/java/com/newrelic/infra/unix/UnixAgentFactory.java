@@ -23,7 +23,6 @@ public class UnixAgentFactory extends AgentFactory {
 	HashMap<String, Object> agentInstanceConfigs;
 
 	String agentname;
-	Boolean debug;
 	String hostname;
 	String os;
 

@@ -121,7 +121,12 @@ else
 fi
 
 # Adding logback config
-PLUGIN_JAVA_OPTS="$PLUGIN_JAVA_OPTS -Dlogback.configurationFile=config/logback.xml"
+if  [ "$2" = "debug" ]; then
+  echo "Running in debug mode"
+  PLUGIN_JAVA_OPTS="$PLUGIN_JAVA_OPTS -Dlogback.configurationFile=config/logback-debug.xml"
+else
+  PLUGIN_JAVA_OPTS="$PLUGIN_JAVA_OPTS -Dlogback.configurationFile=config/logback.xml"
+fi
 
 if [ -n "$PLUGIN_JAVA_CLASS" ]; then
   PLUGIN_JAVA_FULL_COMMAND="$PLUGIN_JAVA $PLUGIN_JAVA_OPTS -cp $PLUGIN_JAVA_CLASSPATH $PLUGIN_JAVA_CLASS"
@@ -181,6 +186,8 @@ start_plugin() {
     fi
   fi
 
+  fi
+
   if [ "$DELETE_LOGS_ON_STARTUP" = true ] ; then
     echo "Deleting logs"
     rm -f $PLUGIN_ERR_FILE
@@ -233,7 +240,7 @@ install_dashboards() {
   account_id=$(format_variable "${account_id}")
   installer_url=$(format_url "${installer_url:-$defaultInstallerURL}")
 
-  if [ -z ${admin_api_key} ] || [ -z ${integration_guid} ] || [ -z ${account_id} ] ; then
+  if [ -z "${admin_api_key}" ] || [ -z "${integration_guid}" ] || [ -z "${account_id}" ] ; then
     echo "Dashboards: One of the dashboard variables is not set in ${pluginJsonLocation} or defined in this script."
     echo "plugin.json location: ${pluginJsonLocation}"
     echo "admin_api_key: ${admin_api_key}"
@@ -308,6 +315,6 @@ case "$1" in
   	install_dashboards
   ;;
   *)
-    echo "Usage: $0 [status|start|stop|stopremlogs|restart|dashboards]"
+    echo "Usage: $0 [status|start|stop|stopremlogs|restart|dashboards] [debug]"
     exit 1
 esac

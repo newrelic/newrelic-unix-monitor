@@ -1,7 +1,6 @@
 {
 	"global": {
 		"OS": "auto",
-		"debug": false,
 		"account_id": "insert_your_New_Relic_account_ID_here",
 		"insights_mode": {
 			"insights_insert_key": "insert_your_insights_insert_key_here",
@@ -18,4 +17,4 @@
 			"name": "auto"
 		}
 	]
-}	
+}

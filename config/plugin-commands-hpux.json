@@ -1,0 +1,326 @@
+{
+  "os_settings": {
+    "disksCommand": "",
+    "disksRegex": "",
+    "interfacesCommand": "/etc/lanscan",
+    "interfacesRegex": "\\S+\\s+0x[0-9A-Fa-f]+\\s+\\d+\\s+\\S+\\s+\\w+(\\d+).*",
+    "pageSizeCommand": "/bin/getconf PAGESIZE"
+  },
+  "commands": [{
+      "eventType": "Disk",
+      "command": "/bin/bdf -l -i",
+      "mappings": [{
+        "expression": "(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(.*)",
+        "metrics": [{
+            "name": "DISK_NAME"
+          },
+          {
+            "name": "Total",
+            "type": "NORMAL"
+          },
+          {
+            "name": "Used",
+            "type": "NORMAL"
+          },
+          {
+            "name": "Free",
+            "type": "NORMAL"
+          },
+          {
+            "name": "Percent Used",
+            "type": "NORMAL"
+          },
+          {
+            "name": "Inodes Used",
+            "type": "NORMAL"
+          },
+          {
+            "name": "Inodes Free",
+            "type": "NORMAL"
+          },
+          {
+            "name": "Inodes Percent Used",
+            "type": "NORMAL"
+          },
+          {
+            "name": "Mount Point",
+            "type": "ATTRIBUTE"
+          }
+        ]
+      }]
+    },
+    {
+      "eventType": "DiskIO",
+      "command": "iostat 10 2",
+      "mappings": [{
+        "expression": "\\s*(\\w+\\d*)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)",
+        "metrics": [{
+            "name": "METRIC_INSTANCE"
+          },
+          {
+            "name": "Average Data Transferred per Second",
+            "type": "NORMAL"
+          },
+          {
+            "name": "Average Seeks per Second",
+            "type": "NORMAL"
+          },
+          {
+            "name": "Average Seek time (ms) per Interval",
+            "type": "NORMAL"
+          }
+        ]
+      }]
+    },
+    {
+      "eventType": "NetworkIO",
+      "command": "netstat -in",
+      "mappings": [{
+          "expression": "([\\w\\d]+)\\s+(\\d+)\\s+([\\d\\.]+)\\s+([\\d\\.]+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)",
+          "metrics": [{
+              "name": "METRIC_INSTANCE"
+            },
+            {
+              "name": "MTU",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Network",
+              "type": "ATTRIBUTE"
+            },
+            {
+              "name": "Address",
+              "type": "ATTRIBUTE"
+            },
+            {
+              "name": "Receive.Packets",
+              "type": "DELTA"
+            },
+            {
+              "name": "Receive.Errors",
+              "type": "DELTA"
+            },
+            {
+              "name": "Transmit.Packets",
+              "type": "DELTA"
+            },
+            {
+              "name": "Transmit.Errors",
+              "type": "DELTA"
+            },
+            {
+              "name": "Collisions",
+              "type": "DELTA"
+            }
+          ]
+        },
+        {
+          "expression": "([\\w\\d]+)\\s+(\\d+)\\s+([\\d:a-fA-f]+/\\d+)\\s+(\\d+)\\s+(\\d+)",
+          "metrics": [{
+              "name": "METRIC_INSTANCE"
+            },
+            {
+              "name": "MTU",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Address",
+              "type": "ATTRIBUTE"
+            },
+            {
+              "name": "Receive.Packets",
+              "type": "DELTA"
+            },
+            {
+              "name": "Transmit.Packets",
+              "type": "DELTA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "eventType": "Process",
+      "command": "ps -elf",
+      "mappings": [{
+        "expression": "(\\d+)\\s+([A-Z]{1})\\s+(\\w+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+\\d+\\s+\\d+\\s+[0-9a-f]+\\s+(\\d+)\\s+[^:]+:\\d+\\s+(.*)",
+        "metrics": [{
+            "name": "Flags",
+            "type": "ATTRIBUTE"
+          },
+          {
+            "name": "State",
+            "type": "ATTRIBUTE"
+          },
+          {
+            "name": "User",
+            "type": "ATTRIBUTE"
+          },
+          {
+            "name": "PID",
+            "type": "ATTRIBUTE"
+          },
+          {
+            "name": "Parent PID",
+            "type": "ATTRIBUTE"
+          },
+          {
+            "name": "CPU",
+            "type": "NORMAL"
+          },
+          {
+            "name": "Virtual Size",
+            "ratio": "PAGE_SIZE",
+            "type": "NORMAL"
+          },
+          {
+            "name": "PROCESS_NAME"
+          }
+        ]
+      }]
+    },
+    {
+      "eventType": "Stats",
+      "command": "swapinfo",
+      "mappings": [{
+        "expression": ".*(\\w+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%.*",
+        "metrics": [{
+            "name": "METRIC_INSTANCE"
+          },
+          {
+            "name": "Swap.Available",
+            "type": "NORMAL"
+          },
+          {
+            "name": "Swap.Used",
+            "type": "NORMAL"
+          },
+          {
+            "name": "Swap.Free",
+            "type": "NORMAL"
+          },
+          {
+            "name": "Swap.Used.Percent",
+            "type": "NORMAL"
+          }
+        ]
+      }]
+    },
+    {
+      "eventType": "Stats",
+      "command": "top -d1 -h -n1",
+      "mappings": [{
+          "expression": ".*Load averages:\\s+([0-9\\.]+),\\s+([0-9\\.]+),\\s+([0-9\\.]+)",
+          "metrics": [{
+              "name": "LoadAverage.1 Minute",
+              "type": "NORMAL"
+            },
+            {
+              "name": "LoadAverage.5 Minute",
+              "type": "NORMAL"
+            },
+            {
+              "name": "LoadAverage.15 Minute",
+              "type": "NORMAL"
+            }
+          ]
+        },
+        {
+          "expression": ".*(\\d+)\\s+processes:\\s+(\\d+)\\s+sleeping,\\s+(\\d+),\\s+running",
+          "metrics": [{
+              "name": "Processes.Total",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Processes.Sleeping",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Processes.Running",
+              "type": "NORMAL"
+            }
+          ]
+        },
+        {
+          "expression": ".*(\\d+\\.\\d+)\\s+(\\d+\\.\\d+)%\\s+(\\d+\\.\\d+)%\\s+(\\d+\\.\\d+)%\\s+(\\d+\\.\\d+)%\\s+(\\d+\\.\\d+)%\\s+(\\d+\\.\\d+)%\\s+(\\d+\\.\\d+)%\\s+(\\d+\\.\\d+)%",
+          "metrics": [{
+              "name": "CPU.Load",
+              "type": "NORMAL"
+            },
+            {
+              "name": "CPU.User",
+              "type": "NORMAL"
+            },
+            {
+              "name": "CPU.Nice",
+              "type": "NORMAL"
+            },
+            {
+              "name": "CPU.System",
+              "type": "NORMAL"
+            },
+            {
+              "name": "CPU.Idle",
+              "type": "NORMAL"
+            },
+            {
+              "name": "CPU.Blocked",
+              "type": "NORMAL"
+            },
+            {
+              "name": "CPU.SWAIT",
+              "type": "NORMAL"
+            },
+            {
+              "name": "CPU.Interrupt",
+              "type": "NORMAL"
+            },
+            {
+              "name": "CPU.SSYS",
+              "type": "NORMAL"
+            }
+          ]
+        },
+        {
+          "expression": ".*Memory:\\s+(\\d+)K\\s+\\((\\d+)K\\)\\s+real,\\s+(\\d+)K\\s+\\((\\d+)K\\)\\s+virtual,\\s+(\\d+)K\\s+free.*",
+          "metrics": [{
+              "name": "Memory.Used",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Memory.Real.Active",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Memory.Virtual",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Memory.Virtual.Active",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Memory.Free",
+              "type": "NORMAL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "eventType": "Vmstat",
+      "command": "vmstat -s",
+      "mappings": [{
+        "expression": "(\\d+)\\s+(.*)",
+        "metrics": [{
+            "name": "METRIC_VALUE",
+            "type": "DELTA"
+          },
+          {
+            "name": "METRIC_NAME"
+          }
+        ]
+      }]
+    }
+  ]
+}

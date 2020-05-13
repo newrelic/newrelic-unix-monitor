@@ -34,8 +34,9 @@ We'd love to get your contributions to improve the Unix Monitor! Keep in mind wh
 * Network access to New Relic (proxies are supported, see details below)
 * For Dashboard Installation: `curl` or `wget` installed
 
-### Supported OSes
+### OSes with Available Configurations
 * AIX 7.x
+* HP-UX 11.x
 * Linux - All sorts, including on ARM processors (such as Raspberry Pi) and z/Linux
 * OSX / MacOS 10.9 ('Mavericks') and above
 * Solaris/SunOS 10.x and 11.x
@@ -145,17 +146,9 @@ If you are trying to customize the commands that the Unix Monitor is running, or
 Note: You will need to restart the Unix Monitor to pick up these changes.
 
 #### Enabling Debug Mode
-1. Set `"debug"` to  `true` to the global section of `config/plugin.json`, like so:
-```json
-{
-	"global": {
-		"OS": "auto",
-		"debug": true,
-```
-2. Replace `config/logback.xml` with `config/logback-debug.xml`
-3. Restart Unix Monitor
-
-#### Disabling Debug Mode
-1. Remove `"debug": true` from `config/plugin.json` or change to `"debug": false`
-2. Replace `config/logback.xml` with `config/logback-info.xml`
-3. Restart Unix Monitor
+This can be enabled EITHER by:
+* Running `pluginctl.sh` with the `debug` at the end to start, like so:
+  `./pluginctl.sh start debug` or `./pluginctl.sh restart debug`
+OR
+* Replacing `config/logback.xml` with `config/logback-debug.xml` and restarting the Unix monitor
+(if using this method, remember to swap the files back when finished)
