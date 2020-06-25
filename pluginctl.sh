@@ -322,6 +322,6 @@ case "$1" in
     install_dashboards force_deploy
   ;;
   *)
-    echo "Usage: $0 [status|start|stop|stopremlogs|restart|dashboards] [debug]"
+    echo "Usage: $0 [status|start|stop|stopremlogs|restart|dashboards|dashboards_redeploy] [debug]"
     exit 1
 esac
