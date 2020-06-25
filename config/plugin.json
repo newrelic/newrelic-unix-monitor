@@ -9,7 +9,8 @@
 		"dashboards": {
 			"admin_api_key": "insert_your_admin_api_key_here",
 			"integration_guid": "UNIX.Infra.Monitor",
-			"dashboard_install": "command_line"
+			"dashboard_install": "command_line",
+			"force_deploy": false
 		}
 	},
 	"agents": [

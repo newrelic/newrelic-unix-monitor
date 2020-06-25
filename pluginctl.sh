@@ -186,8 +186,6 @@ start_plugin() {
     fi
   fi
 
-  fi
-
   if [ "$DELETE_LOGS_ON_STARTUP" = true ] ; then
     echo "Deleting logs"
     rm -f $PLUGIN_ERR_FILE
@@ -217,55 +215,61 @@ start_plugin() {
   fi
 }
 
-format_variable() {
-  echo $1 | sed -e 's/^.*://' -e 's/"//g' -e 's/,//' -e 's/ //g'
-}
-
-format_url() {
-  echo $1 | sed -e 's/^.*https/https/' -e 's/"//g' -e 's/,//' -e 's/ //g'
+get_variable() {
+  varValue=`grep $2 $1`
+  if [ -z "${varValue}" ] && [ -n "$3" ]; then
+    varValue=$3
+  fi
+  case "$2" in
+    *url*) echo ${varValue} | sed -e 's/^.*https/https/' -e 's/"//g' -e 's/,//' -e 's/ //g' ;;
+    *) echo ${varValue} | sed -e 's/^.*://' -e 's/"//g' -e 's/,//' -e 's/ //g' ;;
+  esac
 }
 
 install_dashboards() {
-  echo ""
   pluginJsonLocation="$PLUGIN_PATH/config/plugin.json"
   defaultInstallerURL="https://oaq67woo45.execute-api.us-east-1.amazonaws.com/prod"
+  defaultForceDeploy=false
 
-  admin_api_key=`grep admin_api_key ${pluginJsonLocation}`
-  integration_guid=`grep integration_guid ${pluginJsonLocation}`
-  account_id=`grep account_id ${pluginJsonLocation}`
-  installer_url=`grep installer_url ${pluginJsonLocation}`
+  admin_api_key=$(get_variable ${pluginJsonLocation} admin_api_key)
+  integration_guid=$(get_variable ${pluginJsonLocation} integration_guid)
+  account_id=$(get_variable ${pluginJsonLocation} account_id)
+  installer_url=$(get_variable ${pluginJsonLocation} installer_url ${defaultInstallerURL})
+  force_deploy=$(get_variable ${pluginJsonLocation} force_deploy ${defaultForceDeploy})
 
-  admin_api_key=$(format_variable "${admin_api_key}")
-  integration_guid=$(format_variable "${integration_guid}")
-  account_id=$(format_variable "${account_id}")
-  installer_url=$(format_url "${installer_url:-$defaultInstallerURL}")
+  if [ "$1" == "force_deploy" ]; then
+    force_deploy=true
+  fi
 
   if [ -z "${admin_api_key}" ] || [ -z "${integration_guid}" ] || [ -z "${account_id}" ] ; then
     echo "Dashboards: One of the dashboard variables is not set in ${pluginJsonLocation} or defined in this script."
-    echo "plugin.json location: ${pluginJsonLocation}"
-    echo "admin_api_key: ${admin_api_key}"
-    echo "integration_guid: ${integration_guid}"
-    echo "account_id: ${account_id}"
-    echo "installer_url: ${installer_url}"
+    echo "  plugin.json location: ${pluginJsonLocation}"
+    echo "  admin_api_key: ${admin_api_key}"
+    echo "  integration_guid: ${integration_guid}"
+    echo "  account_id: ${account_id}"
+    echo "  installer_url: ${installer_url}"
     echo "Dashboards: Skipping installation."
   else
     echo "Dashboards: Installing dashboards for $PLUGIN_NAME."
+    if [ ${force_deploy} == "true" ]; then
+      echo "Dashboards: Force-deploy is enabled."
+    fi
     if command -v curl 2>&1 >/dev/null; then
       echo "Dashboards: Using curl to initiate dashboard install."
       dashResponse=$(curl -s -k \
         --request POST \
         --url ${installer_url} \
         --header 'Content-Type: application/json' \
-        --data "{ \"integrationId\": \"${integration_guid}\", \"accountId\": ${account_id}, \"accountAdminApiKey\": \"${admin_api_key}\"}")
+        --data "{ \"integrationId\": \"${integration_guid}\", \"accountId\": ${account_id}, \"accountAdminApiKey\": \"${admin_api_key}\", \"forceDeploy\": ${force_deploy} }")
     elif command -v wget 2>&1 >/dev/null; then
         echo "Dashboards: Using wget to initiate dashboard install."
-        dashResponse=$(wget  \
+        dashResponse=$(wget \
           --no-check-certificate
           --quiet \
           --method POST \
           --header 'Content-Type: application/json' \
-          --body-data "{ \"integrationId\": \"${integration_guid}\", \"accountId\": ${account_id}, \"accountAdminApiKey\": \"${admin_api_key}\"}" \
-          --output-document  \
+          --body-data "{ \"integrationId\": \"${integration_guid}\", \"accountId\": ${account_id}, \"accountAdminApiKey\": \"${admin_api_key}\", \"forceDeploy\": ${force_deploy} }" \
+          --output-document \
         - ${installer_url})
     else
       echo "Dashboards: Installation requires either curl or wget be installed."
@@ -313,6 +317,9 @@ case "$1" in
   ;;
   dashboards)
   	install_dashboards
+  ;;
+  dashboards_redeploy)
+    install_dashboards force_deploy
   ;;
   *)
     echo "Usage: $0 [status|start|stop|stopremlogs|restart|dashboards] [debug]"

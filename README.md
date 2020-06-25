@@ -99,13 +99,20 @@ If using a proxy, the optional `proxy` object should be added to the `global` ob
 The plugin can check for and deploy the latest dashboards to your account when it starts up. This requires the `dashboards` object in `plugin.json` to be set up properly:
 
 * `admin_api_key`: [Admin API key, as described here.](https://docs.newrelic.com/docs/apis/getting-started/intro-apis/understand-new-relic-api-keys#admin-api)
-* `integration_guid`: Default is `UNIX.Infra.Monitor`.
-* `dashboard_install`: Default is `command_line`.
+* `integration_guid`: Default is `UNIX.Infra.Monitor`. *DO NOT DELETE OR CHANGE UNLESS OTHERWISE INSTRUCTED.*
+* `dashboard_install`: Default is `command_line`. *DO NOT DELETE OR CHANGE UNLESS OTHERWISE INSTRUCTED.*
+* (Optional) `force_deploy`: Default is `false`, see [Redeploying dashboards](#redeploying-dashboards) for details.
 
-**Note:** *DO NOT DELETE OR CHANGE `integration_guid` AND `dashboard_install` UNLESS OTHERWISE INSTRUCTED.* Both are required, but must be left to their default values.
+#### Disabling at plugin startup
+If you don't want the dashboard deployment to run at start-up, leave `admin_api_key` blank or remove it entirely.
 
-#### Disabling deployment
-If you don't want the dashboard deployment to run at startup, leave `admin_api_key` blank or remove it entirely.
+#### Redeploying dashboards
+The plugin can force the dashboards to be redeployed by either of two ways:
+
+* Run `./pluginctl.sh dashboards_redeploy`
+OR
+* Set `force_deploy` to `true` in the `dashboards` object in plugin.json and run `./pluginctl.sh dashboards`
+  *NOTE:* Be sure to re-set `force_deploy` to `false` once completed. Otherwise, the dashboards will re-deploy every time the `./pluginctl.sh start` or `./pluginctl.sh restart` is run.
 
 --------------------------------------------------------------------------------
 
