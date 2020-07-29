@@ -264,7 +264,7 @@ install_dashboards() {
     elif command -v wget 2>&1 >/dev/null; then
         echo "Dashboards: Using wget to initiate dashboard install."
         dashResponse=$(wget \
-          --no-check-certificate
+          --no-check-certificate \
           --quiet \
           --method POST \
           --header 'Content-Type: application/json' \
