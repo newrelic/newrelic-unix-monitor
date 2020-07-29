@@ -1,0 +1,93 @@
+{
+  "eventType": "fileWatcher",
+  "command": "ls -las /var/log",
+  "mappings": [{
+      "expression": "\\s*(\\d+)\\s+(\\S{1})(\\S{3})(\\S{3})(\\S{3})\\s+(\\d+)\\s+(\\w+)\\s+(\\w+)\\s+(\\d+)\\s+(\\w{3}\\s+\\d{2}\\s+\\d{4})\\s+(.*)",
+      "metrics": [
+        {
+          "name": "someNumber",
+          "type": "NORMAL"
+        },
+        {
+          "name": "ownerPermissions",
+          "type": "ATTRIBUTE"
+        },
+        {
+          "name": "groupPermissions",
+          "type": "ATTRIBUTE"
+        },
+        {
+          "name": "allPermissions",
+          "type": "ATTRIBUTE"
+        },
+        {
+          "name": "numberOfLinks",
+          "type": "NORMAL"
+        },
+        {
+          "name": "owner",
+          "type": "ATTRIBUTE"
+        },
+        {
+          "name": "group",
+          "type": "ATTRIBUTE"
+        },
+        {
+          "name": "fileSize",
+          "type": "NORMAL"
+        },
+        {
+          "name": "lastModified",
+          "type": "ATTRIBUTE"
+        },
+        {
+          "name": "METRIC_INSTANCE"
+        }
+      ]
+    },
+    {
+        "expression": "\\s*(\\d+)\\s+(\\S{1})(\\S{3})(\\S{3})(\\S{3})\\s+(\\d+)\\s+(\\w+)\\s+(\\w+)\\s+(\\d+)\\s+(\\w{3}\\s+\\d{2}\\s+\\d{2}:\\d{2})\\s+(.*)",
+        "metrics": [
+          {
+            "name": "someNumber",
+            "type": "NORMAL"
+          },
+          {
+            "name": "ownerPermissions",
+            "type": "ATTRIBUTE"
+          },
+          {
+            "name": "groupPermissions",
+            "type": "ATTRIBUTE"
+          },
+          {
+            "name": "allPermissions",
+            "type": "ATTRIBUTE"
+          },
+          {
+            "name": "numberOfLinks",
+            "type": "NORMAL"
+          },
+          {
+            "name": "owner",
+            "type": "ATTRIBUTE"
+          },
+          {
+            "name": "group",
+            "type": "ATTRIBUTE"
+          },
+          {
+            "name": "fileSize",
+            "type": "NORMAL"
+          },
+          {
+            "name": "lastModified",
+            "type": "ATTRIBUTE"
+          },
+          {
+            "name": "METRIC_INSTANCE"
+          }
+        ]
+      }
+    ]
+  }
