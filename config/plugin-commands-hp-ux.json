@@ -1,20 +1,17 @@
 {
   "os_settings": {
-    "disksCommand": "",
-    "disksRegex": "",
+    "disksCommand": "df -l",
+    "disksRegex": "\\/\\S*\\s+\\(([^\\)]+)\\).*",
     "interfacesCommand": "/etc/lanscan",
     "interfacesRegex": "\\S+\\s+0x[0-9A-Fa-f]+\\s+\\d+\\s+\\S+\\s+\\w+(\\d+).*",
     "pageSizeCommand": "/bin/getconf PAGESIZE"
   },
   "commands": [{
       "eventType": "Disk",
-      "command": "/bin/bdf -l -i",
+      "command": "/bin/bdf -i MEMBER_PLACEHOLDER",
       "mappings": [{
-        "expression": "(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(.*)",
+        "expression": "[^\\d]*(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(.*)",
         "metrics": [{
-            "name": "DISK_NAME"
-          },
-          {
             "name": "Total",
             "type": "NORMAL"
           },
@@ -181,9 +178,9 @@
     },
     {
       "eventType": "Stats",
-      "command": "swapinfo",
+      "command": "/usr/sbin/swapinfo",
       "mappings": [{
-        "expression": ".*(\\w+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%.*",
+        "expression": "(\\w+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%.*",
         "metrics": [{
             "name": "METRIC_INSTANCE"
           },
@@ -210,7 +207,7 @@
       "eventType": "Stats",
       "command": "top -d1 -h -n1",
       "mappings": [{
-          "expression": ".*Load averages:\\s+([0-9\\.]+),\\s+([0-9\\.]+),\\s+([0-9\\.]+)",
+          "expression": "Load averages:\\s+([0-9\\.]+),\\s+([0-9\\.]+),\\s+([0-9\\.]+).*",
           "metrics": [{
               "name": "LoadAverage.1 Minute",
               "type": "NORMAL"
@@ -226,7 +223,7 @@
           ]
         },
         {
-          "expression": ".*(\\d+)\\s+processes:\\s+(\\d+)\\s+sleeping,\\s+(\\d+),\\s+running",
+          "expression": "(\\d+)\\s+processes:\\s+(\\d+)\\s+sleeping,\\s+(\\d+)\\s+running.*",
           "metrics": [{
               "name": "Processes.Total",
               "type": "NORMAL"
@@ -242,7 +239,7 @@
           ]
         },
         {
-          "expression": ".*(\\d+\\.\\d+)\\s+(\\d+\\.\\d+)%\\s+(\\d+\\.\\d+)%\\s+(\\d+\\.\\d+)%\\s+(\\d+\\.\\d+)%\\s+(\\d+\\.\\d+)%\\s+(\\d+\\.\\d+)%\\s+(\\d+\\.\\d+)%\\s+(\\d+\\.\\d+)%",
+          "expression": "\\s*([\\d\\.]+)\\s+([\\d\\.]+)%\\s+([\\d\\.]+)%\\s+([\\d\\.]+)%\\s+([\\d\\.]+)%\\s+([\\d\\.]+)%\\s+([\\d\\.]+)%\\s+([\\d\\.]+)%\\s+([\\d\\.]+)%.*",
           "metrics": [{
               "name": "CPU.Load",
               "type": "NORMAL"

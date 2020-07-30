@@ -237,7 +237,7 @@ install_dashboards() {
   installer_url=$(get_variable ${pluginJsonLocation} installer_url ${defaultInstallerURL})
   force_deploy=$(get_variable ${pluginJsonLocation} force_deploy ${defaultForceDeploy})
 
-  if [ "$1" == "force_deploy" ]; then
+  if [ "$1" = "force_deploy" ]; then
     force_deploy=true
   fi
 
@@ -251,7 +251,7 @@ install_dashboards() {
     echo "Dashboards: Skipping installation."
   else
     echo "Dashboards: Installing dashboards for $PLUGIN_NAME."
-    if [ ${force_deploy} == "true" ]; then
+    if [ ${force_deploy} = "true" ]; then
       echo "Dashboards: Force-deploy is enabled."
     fi
     if command -v curl 2>&1 >/dev/null; then
