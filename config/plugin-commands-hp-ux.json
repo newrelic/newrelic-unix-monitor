@@ -166,7 +166,7 @@
             "type": "NORMAL"
           },
           {
-            "name": "Virtual Size",
+            "name": "Memory",
             "ratio": "PAGE_SIZE",
             "type": "NORMAL"
           },
