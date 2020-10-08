@@ -15,6 +15,7 @@ System-Level Monitoring for AIX, Linux, OSX/MacOS & Solaris/SunOS
 		* [Using the EU Data Center? Click here!](#global-settings)
 	* [Agent settings](#agent-settings)
 	* [Proxy settings](#proxy-settings)
+		* [Credential Obfuscation](#credential-obfuscation)
 	* [Dashboard deployment](#dashboard-deployment)
 * [Other configurations](#other-configurations)
 	* [Deploying Dashboards from separate server or desktop](#deploying-dashboards-from-separate-server-or-desktop)
