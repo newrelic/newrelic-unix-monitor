@@ -97,15 +97,15 @@ If using a proxy, the optional `proxy` object should be added to the `global` ob
 #### Credential Obfuscation
 For additional security, this integration supports the using obfuscated values for any attribute, by appending `_obfuscated` to the attribute name and providing an obfuscated value that was produced by the [New Relic CLI](https://github.com/newrelic/newrelic-cli).
 
-1. Prerequesitie: [New Relic CLI is installed](https://github.com/newrelic/newrelic-cli#installation) on any supported platform.
+1. Prerequesite: [New Relic CLI is installed](https://github.com/newrelic/newrelic-cli#installation) on any supported platform.
     * **NOTE**: It does NOT need to be installed on the same host as the Unix Monitor. It is only used to generate the obfuscated keys, this integration handles deobfuscation independently.
-1. Generate your obfuscated credentials using the following CLI command:
+2. Generate your obfuscated credentials using the following CLI command:
 ```
 newrelic agent config obfuscate --key OBSCURING_KEY --value "CLEAR_TEXT_PROXY_PASSWORD"
 ```
 The obscuring key may also be configured by setting the `NEW_RELIC_CONFIG_OBSCURING_KEY` environment variable.
 
-1. In the `proxy` object, populate the `proxy_username_obfuscated` and `proxy_password_obfuscated` attributes with the values returned by the CLI.
+3. In the `proxy` object, populate the `proxy_username_obfuscated` and `proxy_password_obfuscated` attributes with the values returned by the CLI.
 
 ### Dashboard deployment
 
