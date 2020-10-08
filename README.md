@@ -103,7 +103,8 @@ For additional security, this integration supports the using obfuscated values f
 ```
 newrelic agent config obfuscate --key OBSCURING_KEY --value "CLEAR_TEXT_PROXY_PASSWORD"
 ```
-    * The obscuring key may also be configured by setting the NEW_RELIC_CONFIG_OBSCURING_KEY environment variable.
+The obscuring key may also be configured by setting the `NEW_RELIC_CONFIG_OBSCURING_KEY` environment variable.
+
 1. In the `proxy` object, populate the `proxy_username_obfuscated` and `proxy_password_obfuscated` attributes with the values returned by the CLI.
 
 ### Dashboard deployment
