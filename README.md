@@ -99,13 +99,20 @@ For additional security, this integration supports the using obfuscated values f
 
 1. Prerequesite: [New Relic CLI is installed](https://github.com/newrelic/newrelic-cli#installation) on any supported platform.
     * **NOTE**: It does NOT need to be installed on the same host as the Unix Monitor. It is only used to generate the obfuscated keys, this integration handles deobfuscation independently.
+
 2. Generate your obfuscated credentials using the following CLI command:
 ```
-newrelic agent config obfuscate --key OBSCURING_KEY --value "CLEAR_TEXT_PROXY_PASSWORD"
+newrelic agent config obfuscate --key "OBSCURING_KEY" --value "CLEAR_TEXT_PROXY_PASSWORD"
 ```
-The obscuring key may also be configured by setting the `NEW_RELIC_CONFIG_OBSCURING_KEY` environment variable.
+In this command, `OBSCURING_KEY` can be any value you want. You can even point it at an existing environment variable. Examples:
+```
+newrelic agent config obfuscate --key "IUsedS0methingRand0m!" --value "proxyPassword2020!"
+newrelic agent config obfuscate --key ${NEW_RELIC_CONFIG_OBSCURING_KEY} --value ${OUR_PROXY_PASSWORD}
+```
 
-3. In the `proxy` object, populate the `proxy_username_obfuscated` and `proxy_password_obfuscated` attributes with the values returned by the CLI.
+3. In the `proxy` object in `plugin.json`, populate the `proxy_username_obfuscated` and `proxy_password_obfuscated` attributes with the values returned by the CLI.
+
+4. In `pluginctl.sh`, uncomment the `NEW_RELIC_CONFIG_OBSCURING_KEY` variable, and set it to the same value or envrionment variable as you used in step 2 for `OBSCURING_KEY`.
 
 ### Dashboard deployment
 

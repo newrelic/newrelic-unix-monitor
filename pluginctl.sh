@@ -33,6 +33,11 @@ DELETE_LOGS_ON_STARTUP=true
 # OSX / MACOS:
 # PLUGIN_JAVA=/Library/Java/JavaVirtualMachines/<version>/Contents/Commands/java
 
+#
+# Set to the value of your obfuscation key
+# Either directly as the key, or indirectly as another environment variable
+# NEW_RELIC_CONFIG_OBSCURING_KEY=your_key_or_envvar_here
+
 ### Do not change these unless instructed! ###
 
 PLUGIN_NAME="New Relic Unix Monitor"
