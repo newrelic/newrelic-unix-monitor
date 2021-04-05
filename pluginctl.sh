@@ -6,26 +6,15 @@
 # description: Unix system plugin for New Relic
 # processname: NR Unix Agent
 
-### Set these as appropriate ###
+### BEGIN: Configuration ###
 
-# Change to 'true' if you want to send directly to insights
-# Add the following to 'newrelic.json' in config:
-# {
-#    "account_id": "[your-account-number]",
-#    "insights_insert_key": "[your-insights-insert-key]"
-# }
-SEND_DIRECTLY_TO_INSIGHTS=true
-
-# Change to false if you want to append to existing logs.
+## Plugin logs behavior
+# Change to false if you want to append to existing logs on start/restart ##
 DELETE_LOGS_ON_STARTUP=true
 
-# Uncomment if you are using a JDK packaged with WebSphere
-# USE_IBM_JSSE=true
+## Java path ##
 
-# Uncomment to manually define Plugin path if this script can't find it
-# PLUGIN_PATH=/opt/newrelic/unix-infra-monitor
-
-# Uncomment to manually define Java path & filename if this script can't find it
+# Uncomment to manually define Java path & filename if this script can't find it (common examples below)
 # AIX:
 # PLUGIN_JAVA=/usr/java6/bin/java
 # LINUX & SOLARIS:
@@ -33,15 +22,34 @@ DELETE_LOGS_ON_STARTUP=true
 # OSX / MACOS:
 # PLUGIN_JAVA=/Library/Java/JavaVirtualMachines/<version>/Contents/Commands/java
 
-#
+## Java options ##
+
+# Add custom java options here as needed
+PLUGIN_JAVA_OPTS="-Xms16m -Xmx128m"
+
+# TLS 1.2 Java settings - Uncomment if having TLS issues.
+# PLUGIN_JAVA_OPTS="$PLUGIN_JAVA_OPTS -Dcom.ibm.jsse2.overrideDefaultTLS=true -Dhttps.protocols=TLSv1.2 -Djdk.tls.client.protocols=TLSv1.2"
+
+# WebSphere JDK Java settings
+# Uncomment if you are are having SSL issues and are using a JDK packaged with WebSphere
+# PLUGIN_JAVA_OPTS="$PLUGIN_JAVA_OPTS -Djava.security.properties=$PLUGIN_PATH/etc/ibm_jsse.java.security"
+
+## Plugin path ##
+# Uncomment to manually define Plugin path if this script can't find it
+# PLUGIN_PATH=/opt/newrelic/unix-infra-monitor
+
+##
 # Set to the value of your obfuscation key
 # Either directly as the key, or indirectly as another environment variable
 # NEW_RELIC_CONFIG_OBSCURING_KEY=your_key_or_envvar_here
 
-### Do not change these unless instructed! ###
+### END: Configuration ###
 
+## DO NOT CHANGE THESE unless instructed! ##
 PLUGIN_NAME="New Relic Unix Monitor"
-
+PLUGIN_JAVA_CLASS=com.newrelic.infra.unix.Main
+PLUGIN_JAVA_CLASSPATH="$PLUGIN_PATH/lib/newrelic-unix-monitor.jar"
+SEND_DIRECTLY_TO_INSIGHTS=true
 # Behavior when "start" command is issued and plugin is running
 # False (default): Plugin will not be restarted.
 # True: Plugin will be restarted.
@@ -54,11 +62,6 @@ if [ -z "$PLUGIN_PATH" ]; then
 fi
 echo "Plugin location: $PLUGIN_PATH"
 
-# Comment-out if using -jar
-PLUGIN_JAVA_CLASS=com.newrelic.infra.unix.Main
-# Set to the jar if using -jar
-PLUGIN_JAVA_CLASSPATH="$PLUGIN_PATH/lib/newrelic-unix-monitor.jar"
-PLUGIN_JAVA_OPTS="-Xms16m -Xmx128m"
 
 # Attempt to set Java path & filename if not manually defined above
 if [ -z "$PLUGIN_JAVA" ]; then
@@ -108,13 +111,6 @@ fi
 PLUGIN_ERR_FILE=$PLUGIN_PATH/logs/plugin.err
 PLUGIN_LOG_FILE=$PLUGIN_PATH/logs/plugin.log
 PLUGIN_PID_FILE=$PLUGIN_PATH/logs/plugin.pid
-
-# Added for IBM JSSE support
-if [ -n "$USE_IBM_JSSE" ] && [ "$USE_IBM_JSSE" = "true" ]; then
-  PLUGIN_SEC_FILE=$PLUGIN_PATH/etc/ibm_jsse.java.security
-  echo "Using IBM JSSE, classes defined in $PLUGIN_SEC_FILE"
-  PLUGIN_JAVA_OPTS="$PLUGIN_JAVA_OPTS -Djava.security.properties=$PLUGIN_SEC_FILE"
-fi
 
 # Added for direct-to-Insights support
 if [ -n "$SEND_DIRECTLY_TO_INSIGHTS" ] && [ "$SEND_DIRECTLY_TO_INSIGHTS" = "true" ]; then

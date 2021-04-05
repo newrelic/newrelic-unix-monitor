@@ -1,2 +1,3 @@
 ssl.SocketFactory.provider=com.ibm.jsse2.SSLSocketFactoryImpl
 ssl.ServerSocketFactory.provider=com.ibm.jsse2.SSLServerSocketFactoryImpl
+com.ibm.jsse2.overrideDefaultTLS=true
