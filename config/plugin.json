@@ -5,12 +5,6 @@
 		"insights_mode": {
 			"insights_insert_key": "insert_your_insights_insert_key_here",
 			"insights_data_center": "US"
-		},
-		"dashboards": {
-			"admin_api_key": "insert_your_admin_api_key_here",
-			"integration_guid": "UNIX.Infra.Monitor",
-			"dashboard_install": "command_line",
-			"force_deploy": false
 		}
 	},
 	"agents": [

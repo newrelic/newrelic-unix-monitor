@@ -6,15 +6,6 @@
 			"insights_insert_key": "enter_insights_insert_key",
 			"insights_data_center": "US"
 		},
-		"infra_mode": {
-			"rpc_listener_port": 9001
-		},
-		"dashboards": {
-			"admin_api_key": "enter_admin_api_key",
-			"installer_url": "https://url_for_installer_service",
-			"integration_guid": "UNIX.Infra.Monitor",
-			"dashboard_install": "command_line"
-		},
 		"proxy": {
 			"proxy_host": "enter_proxy_host",
 			"proxy_port": 5443,
