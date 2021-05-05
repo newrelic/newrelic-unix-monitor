@@ -10,16 +10,16 @@ System-Level Monitoring for AIX, HP-UX, Linux, OSX/MacOS & Solaris/SunOS
 * [Contributing](#Contributing)
 * [Requirements](#requirements)
 	* [Supported OSes](#supported-oses)
-* [Installation & Usage Overview](#installation--usage-overview)
-* [`plugin.json` configuration](#pluginjson-configuration)
-	* [Global settings](#global-settings)
-		* [Using the EU Data Center? Click here!](#global-settings)
-	* [Agent settings](#agent-settings)
-	* [Proxy settings](#proxy-settings)
-		* [Credential Obfuscation](#credential-obfuscation)
-	* [Dashboard deployment](#dashboard-deployment)
+* [Installation](#installation)
+	* [Overview](#overview)
+	* [`plugin.json` configuration](#pluginjson-configuration)
+		* [Global settings](#global-settings)
+			* [Using the EU Data Center? Click here!](#global-settings)
+		* [Agent settings](#agent-settings)
+		* [Proxy settings](#proxy-settings)
+			* [Credential Obfuscation](#credential-obfuscation)
+	* [Dashboards](#dashboards)
 * [Other configurations](#other-configurations)
-	* [Deploying Dashboards from separate server or desktop](#deploying-dashboards-from-separate-server-or-desktop)
 	* [Fix for using the WebSphere JDK](#fix-for-using-the-websphere-jdk)
 	* [Enabling Debug Mode](#debug-mode)
 
@@ -31,11 +31,9 @@ We'd love to get your contributions to improve the Unix Monitor! Keep in mind wh
 
 ## Requirements
 * A New Relic account.
-	* As this monitor posts 'custom events' to Insights, your account must either have an active [Insights trial](https://newrelic.com/signup) or be a paid Insights account.
 * A Unix server that you want to monitor
 * Java JRE/JDK v1.6 or later
 * Network access to New Relic (proxies are supported, see details below)
-* For Dashboard Installation: `curl` or `wget` installed
 
 ### OSes with Available Configurations
 * AIX 7.x
@@ -46,7 +44,9 @@ We'd love to get your contributions to improve the Unix Monitor! Keep in mind wh
 
 --------------------------------------------------------------------------------
 
-## Installation & Usage Overview
+## Installation
+
+### Overview
 1. Download the latest version of the Unix Monitor [here](https://github.com/newrelic/newrelic-unix-monitor/releases/latest).
 2. Copy, gunzip & untar the latest release onto the Unix server that you want to monitor
 3. Set account ID, keys and other settings in `config/plugin.json`
@@ -59,19 +59,20 @@ We'd love to get your contributions to improve the Unix Monitor! Keep in mind wh
 7. Login to New Relic UI and find your data in Insights
 	* In the data explorer, look for custom event types that start with "unixMonitor:"
 	* Possible event types (for out-of-the-box commands): unixMonitor:Disk, unixMonitor:DiskIO, unixMonitor:NetworkIO, unixMonitor:Process, unixMonitor:Stats, unixMonitor:Vmstat
+8. If you don't yet have the Unix Monitor dashboards in your account, [use the Quickstarts NR1app to deploy them](#dashboards)
 
 --------------------------------------------------------------------------------
 
-## `plugin.json` configuration
+### `plugin.json` configuration
 _Note: A full example of the possible fields in `plugin.json` can be found in `plugin-full-example.json`_
 
-### Global settings
+#### Global settings
 * `OS` (default: `auto`): Used to determine which commands to run and how to parse them. Leave set to `auto` to have the plugin figure that out (which normally works).
 * `account_id`: New Relic account ID - the 6- or 7- digit number in the URL when you're logged into the account of your choosing.
 * `insights_insert_key` (under `insights`): You must create an [Insights Insert key, as described here.](https://docs.newrelic.com/docs/insights/insights-data-sources/custom-data/insert-custom-events-insights-api#register)
 * `insights_data_center` (under `insights`, default: `us`): If using the NR EU data center for your account, please change this to `eu` or `EU`. Otherwise, you can leave this alone or omit this setting entirely. {#eu-data-center}
 
-### Agent settings
+#### Agent settings
 These settings are found in the `agents` object.
 
 * `name`: If set to `auto`, the plugin will use that server's hostname. Otherwise, sets the hostname and agentName to whatever is set here.
@@ -89,13 +90,13 @@ These settings are found in the `agents` object.
   ]
 ```
 
-### Proxy settings
+#### Proxy settings
 If using a proxy, the optional `proxy` object should be added to the `global` object in `plugin.json`, if its not there already.
 
 * The available attributes are: `proxy_host`, `proxy_port`, `proxy_username` and `proxy_password`.
 * The only attribute that is required in the `proxy` object is `proxy_host`.
 
-#### Credential Obfuscation
+##### Credential Obfuscation
 For additional security, this integration supports the using obfuscated values for any attribute, by appending `_obfuscated` to the attribute name and providing an obfuscated value that was produced by the [New Relic CLI](https://github.com/newrelic/newrelic-cli).
 
 1. Prerequesite: [New Relic CLI is installed](https://github.com/newrelic/newrelic-cli#installation) on any supported platform.
@@ -115,38 +116,18 @@ newrelic agent config obfuscate --key ${NEW_RELIC_CONFIG_OBSCURING_KEY} --value 
 
 4. In `pluginctl.sh`, uncomment the `NEW_RELIC_CONFIG_OBSCURING_KEY` variable, and set it to the same value or envrionment variable as you used in step 2 for `OBSCURING_KEY`.
 
-### Dashboard deployment
+### Dashboards
 
-#### Enabling at plugin startup
-The plugin can check for and deploy the latest dashboards to your account when it starts up. This requires the `dashboards` object in `plugin.json` to be set up properly:
+Unix Monitor Dashboards are now installed using the Quickstarts app. 
 
-* `admin_api_key`: [Admin API key, as described here.](https://docs.newrelic.com/docs/apis/getting-started/intro-apis/understand-new-relic-api-keys#admin-api)
-* `integration_guid`: Default is `UNIX.Infra.Monitor`. *DO NOT DELETE OR CHANGE UNLESS OTHERWISE INSTRUCTED.*
-* `dashboard_install`: Default is `command_line`. *DO NOT DELETE OR CHANGE UNLESS OTHERWISE INSTRUCTED.*
-* (Optional) `force_deploy`: Default is `false`, see [Redeploying dashboards](#redeploying-dashboards) for details.
-
-#### Disabling at plugin startup
-If you don't want the dashboard deployment to run at start-up, leave `admin_api_key` blank or remove it entirely.
-
-#### Redeploying dashboards
-The plugin can force the dashboards to be redeployed by either of two ways:
-
-* Run `./pluginctl.sh dashboards_redeploy`
-OR
-* Set `force_deploy` to `true` in the `dashboards` object in plugin.json and run `./pluginctl.sh dashboards`
-  *NOTE:* Be sure to re-set `force_deploy` to `false` once completed. Otherwise, the dashboards will re-deploy every time the `./pluginctl.sh start` or `./pluginctl.sh restart` is run.
+1. If you don't already have the Quickstarts app installed, [visit this page](https://newrelic.github.io/quickstarts-dashboard-library/#/installation) to learn how.
+1. Once it is installed, open it up in the NR1 UI ("Quickstarts" under the "Apps" menu in the top bar)
+1. In Quickstarts, find the "Unix Monitor" dashboards and open them.
+1. Click "Import", which will bring up a dialog to guide you through deployment to a specific account.
 
 --------------------------------------------------------------------------------
 
 ## Other configurations
-
-### Deploying Dashboards from separate server or desktop
-If you want to initiate the dashboard install from a standalone machine (i.e. a tools server or your own mac, linux or cygwin laptop/desktop), you will need the following:
-
-* `pluginctl.sh`
-* `config/plugin.json` (including path) with the `dashboard` object filled in [as described above.](#enabling-at-plugin-startup)
-
-To install, run `./pluginctl.sh dashboards`.
 
 ### Fix for using the WebSphere JDK
 If you are using the JDK that is packaged with WebSphere and see an exception in the logs like below, it is due to attempting to use the WebSphere SSL Factory instead of the IBM JSSE packages.

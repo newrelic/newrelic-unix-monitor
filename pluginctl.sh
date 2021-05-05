@@ -211,7 +211,6 @@ start_plugin() {
     echo $PID > $PLUGIN_PID_FILE
     echo "$PLUGIN_NAME started with PID $PID" | tee -a $PLUGIN_ERR_FILE
     echo "####################" >> $PLUGIN_ERR_FILE
-    install_dashboards
     exit 0
   fi
 }
@@ -225,75 +224,6 @@ get_variable() {
     *url*) echo ${varValue} | sed -e 's/^.*https/https/' -e 's/"//g' -e 's/,//' -e 's/ //g' ;;
     *) echo ${varValue} | sed -e 's/^.*://' -e 's/"//g' -e 's/,//' -e 's/ //g' ;;
   esac
-}
-
-install_dashboards() {
-  pluginJsonLocation="$PLUGIN_PATH/config/plugin.json"
-  defaultInstallerURL="https://oaq67woo45.execute-api.us-east-1.amazonaws.com/prod"
-  defaultForceDeploy=false
-
-  admin_api_key=$(get_variable ${pluginJsonLocation} admin_api_key)
-  integration_guid=$(get_variable ${pluginJsonLocation} integration_guid)
-  account_id=$(get_variable ${pluginJsonLocation} account_id)
-  installer_url=$(get_variable ${pluginJsonLocation} installer_url ${defaultInstallerURL})
-  force_deploy=$(get_variable ${pluginJsonLocation} force_deploy ${defaultForceDeploy})
-
-  if [ "$1" = "force_deploy" ]; then
-    force_deploy=true
-  fi
-
-  if [ -z "${admin_api_key}" ] || [ -z "${integration_guid}" ] || [ -z "${account_id}" ] ; then
-    echo "Dashboards: One of the dashboard variables is not set in ${pluginJsonLocation} or defined in this script."
-    echo "  plugin.json location: ${pluginJsonLocation}"
-    echo "  admin_api_key: ${admin_api_key}"
-    echo "  integration_guid: ${integration_guid}"
-    echo "  account_id: ${account_id}"
-    echo "  installer_url: ${installer_url}"
-    echo "Dashboards: Skipping installation."
-  else
-    echo "Dashboards: Installing dashboards for $PLUGIN_NAME."
-    if [ ${force_deploy} = "true" ]; then
-      echo "Dashboards: Force-deploy is enabled."
-    fi
-    if command -v curl 2>&1 >/dev/null; then
-      echo "Dashboards: Using curl to initiate dashboard install."
-      dashResponse=$(curl -s -k \
-        --request POST \
-        --url ${installer_url} \
-        --header 'Content-Type: application/json' \
-        --data "{ \"integrationId\": \"${integration_guid}\", \"accountId\": ${account_id}, \"accountAdminApiKey\": \"${admin_api_key}\", \"forceDeploy\": ${force_deploy} }")
-    elif command -v wget 2>&1 >/dev/null; then
-        echo "Dashboards: Using wget to initiate dashboard install."
-        dashResponse=$(wget \
-          --no-check-certificate \
-          --quiet \
-          --method POST \
-          --header 'Content-Type: application/json' \
-          --body-data "{ \"integrationId\": \"${integration_guid}\", \"accountId\": ${account_id}, \"accountAdminApiKey\": \"${admin_api_key}\", \"forceDeploy\": ${force_deploy} }" \
-          --output-document \
-        - ${installer_url})
-    else
-      echo "Dashboards: Installation requires either curl or wget be installed."
-      echo "Dashboards: Skipping installation."
-    fi
-    if [ -n "${dashResponse}" ]; then
-      statusCode=`echo "${dashResponse}" | sed -e 's/.*[cC]ode.:\([0-9][0-9][0-9]\).*/\1/'`
-      if [ "${statusCode}" = "200" ]; then
-        echo "Dashboards: Already exist for $PLUGIN_NAME in ${account_id} and are up to date (nothing to do)."
-      elif [ "${statusCode}" = "201" ]; then
-        echo "Dashboards: Have been successfully created for $PLUGIN_NAME in ${account_id}."
-      else
-        responseBody=`echo "${dashResponse}" | sed -e 's/.*body.:.\(.*\).,.headers.*/\1/'`
-        echo "Dashboards: Installation failed."
-        echo "Dashboards: Status Code: ${statusCode}"
-        echo "Dashboards: Response Body: ${responseBody}"
-      fi
-    else
-      echo "Dashboards: Installation failed."
-      echo "Dashboards: No response recorded, check settings in config/plugin.json."
-    fi
-  fi
-  echo ""
 }
 
 case "$1" in
@@ -316,13 +246,10 @@ case "$1" in
     echo "Clearing plugin logs."
     rm -f $PLUGIN_PATH/logs/*
   ;;
-  dashboards)
-  	install_dashboards
-  ;;
-  dashboards_redeploy)
-    install_dashboards force_deploy
-  ;;
   *)
-    echo "Usage: $0 [status|start|stop|stopremlogs|restart|dashboards|dashboards_redeploy] [debug]"
+    echo "Usage: $0 [status|start|stop|stopremlogs|restart] [debug]"
+    echo "Note: Unix Monitor Dashboards are now installed using the Quick Starts app."
+    echo "      If you don't already have Quick Starts app installed: https://newrelic.github.io/quickstarts-dashboard-library/#/installation"
+    echo "      Once it is installed, open it up in the NR1 UI and search for \"Unix\""
     exit 1
 esac
