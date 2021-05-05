@@ -48,7 +48,6 @@ PLUGIN_JAVA_OPTS="-Xms16m -Xmx128m"
 ## DO NOT CHANGE THESE unless instructed! ##
 PLUGIN_NAME="New Relic Unix Monitor"
 PLUGIN_JAVA_CLASS=com.newrelic.infra.unix.Main
-PLUGIN_JAVA_CLASSPATH="$PLUGIN_PATH/lib/newrelic-unix-monitor.jar"
 SEND_DIRECTLY_TO_INSIGHTS=true
 # Behavior when "start" command is issued and plugin is running
 # False (default): Plugin will not be restarted.
@@ -61,7 +60,7 @@ if [ -z "$PLUGIN_PATH" ]; then
   PLUGIN_PATH=`eval "cd \"$RELATIVE_PATH\" && pwd"`
 fi
 echo "Plugin location: $PLUGIN_PATH"
-
+PLUGIN_JAVA_CLASSPATH="$PLUGIN_PATH/lib/newrelic-unix-monitor.jar"
 
 # Attempt to set Java path & filename if not manually defined above
 if [ -z "$PLUGIN_JAVA" ]; then
