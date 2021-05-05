@@ -42,8 +42,6 @@ We'd love to get your contributions to improve the Unix Monitor! Keep in mind wh
 * OSX / MacOS 10.9 ('Mavericks') and above
 * Solaris/SunOS 10.x and 11.x
 
---------------------------------------------------------------------------------
-
 ## Installation
 
 ### Overview
@@ -60,8 +58,6 @@ We'd love to get your contributions to improve the Unix Monitor! Keep in mind wh
 	* In the data explorer, look for custom event types that start with "unixMonitor:"
 	* Possible event types (for out-of-the-box commands): unixMonitor:Disk, unixMonitor:DiskIO, unixMonitor:NetworkIO, unixMonitor:Process, unixMonitor:Stats, unixMonitor:Vmstat
 8. If you don't yet have the Unix Monitor dashboards in your account, [use the Quickstarts NR1app to deploy them](#dashboards)
-
---------------------------------------------------------------------------------
 
 ### `plugin.json` configuration
 _Note: A full example of the possible fields in `plugin.json` can be found in `plugin-full-example.json`_
