@@ -5,7 +5,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -137,6 +140,26 @@ public class CommandMetricUtils {
 		// Assume that it's a string attribute if we don't know the type.
 		if((metricDeets.getType() == null) || metricDeets.getType().equals("ATTRIBUTE")) {
 			newMetric = new AttributeMetric(metricName, truncateForInsights(metricValueString));
+		} else if((metricDeets.getType().equals("DATE"))) {
+			SimpleDateFormat dateFormat;
+			if(metricDeets.getFormat() == null) {
+				dateFormat = new SimpleDateFormat();
+			} else {
+				dateFormat = new SimpleDateFormat(metricDeets.getFormat());
+			}
+			try {
+				Date date = dateFormat.parse(metricValueString);
+				newMetric = new GaugeMetric(metricName, date.getTime());
+				logger.debug("Date parsing succeeded.");
+			} catch(ParseException pe) {
+				logger.debug("Date parsing failed, reporting attribute value as-is.");
+				try {
+						double metricValue = Double.parseDouble(metricValueString);
+						newMetric = new GaugeMetric(metricName, metricValue);
+				} catch (NumberFormatException e) {
+					newMetric = new AttributeMetric(metricName, truncateForInsights(metricValueString));
+				}
+			}
 		} else {
 			double metricValue;
 			try {
@@ -155,16 +178,16 @@ public class CommandMetricUtils {
 				} else if(metricDeets.getType().equals("RATE")) {
 					newMetric = new RateMetric(metricName, metricValue);
 				}
-	  		} catch (NumberFormatException e) {
+	  	} catch (NumberFormatException e) {
 				newMetric = new AttributeMetric(metricName, truncateForInsights(metricValueString));
-	  		}
+	  	}
 		}
 		
 		if(newMetric != null) {
-			CommandMetricUtils.logger.debug("Inserting Metric: " + newMetric.getName() + " : " + newMetric.getValue());
+			logger.debug("Inserting Metric: " + newMetric.getName() + " : " + newMetric.getValue());
 			metricSet.add(newMetric);
 		} else {
-			CommandMetricUtils.logger.error("Error parsing metric name: " + metricDeets.getName() + ", value: " + metricValueString);
+			logger.error("Error parsing metric name: " + metricDeets.getName() + ", value: " + metricValueString);
 		}
 	}
 
@@ -211,6 +234,7 @@ public class CommandMetricUtils {
 					String thisMetricName = "";
 					String thisMetricValue = "";
 					String thisMetricType = "";
+					String thisMetricDateFormat = "";
 
 					// Loop through columns of regexed line.
 					// If the matching field in the mappings is one of the special keywords, act accordingly.
@@ -257,10 +281,11 @@ public class CommandMetricUtils {
 						}
 					    
 						// If column is metric value (matched to metric name from that line),
-					    // get its value, and get its type from the mapping.
+					    // get its value, and get its type (and date format if exists) from the mapping.
 						else if (columnMetricName.equals(UnixAgentConstants.kColumnMetricValue)) {
 							thisMetricValue = thisColumn;
 							thisMetricType = thisLineMappingMetrics.get(l).getType();
+							thisMetricDateFormat = thisLineMappingMetrics.get(l).getFormat();
 						}
 						
 						// Normal case - column is a metric, mapped to a mapping without any special keywords.
@@ -282,24 +307,25 @@ public class CommandMetricUtils {
 					// If the kColumnMetricName & kColumnMetricValue keywords were used to get metric name and value, 
 					// and the metric name and value were subsequently defined, insert this metric.
 					if(!thisMetricName.isEmpty() && !thisMetricValue.isEmpty()) {
-			    			MappingMetric thisMappingMetric = null;
-					    
-			    			// Check for a translation table - if one exists, attempt to match metric name to a tranlsation.
-			    			if(thisLineMapping.getTranslations() != null) { 
-					    		for(MappingTranslation thisTrans : thisLineMapping.getTranslations()) {
-					    			if(thisTrans.getInput().equals(thisMetricName)) {
-					    				thisMappingMetric = new MappingMetric(thisTrans.getOutput(), thisTrans.getType(), thisTrans.getRatio());
-					    				thisMappingMetric.setActualRatio(pageSize);
-					    				break;
-					    			}
-					    		}
-					    }
+						MappingMetric thisMappingMetric = null;
+					
+						// Check for a translation table - if one exists, attempt to match metric name to a tranlsation.
+						if(thisLineMapping.getTranslations() != null) { 
+							for(MappingTranslation thisTrans : thisLineMapping.getTranslations()) {
+								if(thisTrans.getInput().equals(thisMetricName)) {
+									thisMappingMetric = new MappingMetric(thisTrans.getOutput(), thisTrans.getType(), thisTrans.getRatio(), thisTrans.getFormat());
+									thisMappingMetric.setActualRatio(pageSize);
+									break;
+								}
+							}
+						}
 			    			
-			    			// If mapping is still null, nothing was matched in translation table (or table doesn't exist)
-			    			if(thisMappingMetric == null) {
-			    				thisMappingMetric = new MappingMetric(thisMetricName);
-			    				thisMappingMetric.setType(thisMetricType);
-			    			}
+						// If mapping is still null, nothing was matched in translation table (or table doesn't exist)
+						if(thisMappingMetric == null) {
+							thisMappingMetric = new MappingMetric(thisMetricName);
+							thisMappingMetric.setType(thisMetricType);
+							thisMappingMetric.setFormat(thisMetricDateFormat);
+						}
 			    			
 						CommandMetricUtils.insertMetric(localMetricSet, thisMappingMetric, thisMetricValue);
 					}
