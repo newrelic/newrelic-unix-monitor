@@ -9,7 +9,7 @@ System-Level Monitoring for AIX, HP-UX, Linux, OSX/MacOS & Solaris/SunOS
 * [Disclaimer](#Disclaimer)
 * [Contributing](#Contributing)
 * [Requirements](#requirements)
-	* [Supported OSes](#supported-oses)
+	* [Operating Systems with available configurations](#oses-with-available-configurations)
 * [Installation](#installation)
 	* [Overview](#overview)
 	* [`plugin.json` configuration](#pluginjson-configuration)
