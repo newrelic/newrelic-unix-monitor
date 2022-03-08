@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.newrelic.experts</groupId>
 	<artifactId>newrelic-unix-monitor</artifactId>
-	<version>0.2.4</version>
+	<version>0.2.5</version>
 	<name>newrelic-unix-monitor</name>
 	<build>
 		<plugins>
@@ -67,7 +67,7 @@
 		<dependency>
 			<groupId>com.newrelic.experts</groupId>
 			<artifactId>infra_publish</artifactId>
-			<version>2.3.2</version>
+			<version>2.3.3</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

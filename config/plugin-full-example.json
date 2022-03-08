@@ -2,6 +2,7 @@
 	"global": {
 		"OS": "auto",
 		"account_id": "insert_your_New_Relic_account_ID_here",
+                "fedramp": "false",
 		"insights_mode": {
 			"insights_insert_key": "enter_insights_insert_key",
 			"insights_data_center": "US"
