@@ -65,6 +65,7 @@ _Note: A full example of the possible fields in `plugin.json` can be found in `p
 #### Global settings
 * `OS` (default: `auto`): Used to determine which commands to run and how to parse them. Leave set to `auto` to have the plugin figure that out (which normally works).
 * `account_id`: New Relic account ID - the 6- or 7- digit number in the URL when you're logged into the account of your choosing.
+* `fedramp`: A true or false string to indicate that the target is the New Relic Fedramp-authorized endpoint.
 * `insights_insert_key` (under `insights`): You must create an [Insights Insert key, as described here.](https://docs.newrelic.com/docs/insights/insights-data-sources/custom-data/insert-custom-events-insights-api#register)
 * `insights_data_center` (under `insights`, default: `us`): If using the NR EU data center for your account, please change this to `eu` or `EU`. Otherwise, you can leave this alone or omit this setting entirely. {#eu-data-center}
 
