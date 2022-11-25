@@ -10,7 +10,7 @@
 			"eventType": "Disk",
 			"command": "df -k -l",
 			"mappings": [{
-				"expression": "\\s*(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%.*",
+				"expression": "\\s*(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(\\S+).*",
 				"metrics": [{
 						"name": "DISK_NAME"
 					},
@@ -28,6 +28,10 @@
 					},
 					{
 						"name": "Percent Used",
+						"type": "NORMAL"
+					},
+                    {
+						"name": "Mounted On",
 						"type": "NORMAL"
 					}
 				]
