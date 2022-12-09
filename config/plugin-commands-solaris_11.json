@@ -418,6 +418,73 @@
 					"type": "DELTA"
 				}]
 			}]
-		}
+		},
+        {
+          "eventType": "Memstat",
+          "command": "bash ./scripts/unix/getMemStats.sh",
+          "mappings": [
+            {
+              "expression": "^([\\w_ /\\(\\)]+)\\s+([0-9\\.]+)\\s+.*",
+              "metrics": [
+                {
+                  "name": "METRIC_NAME"
+                },
+                {
+                  "name": "METRIC_VALUE"
+                }
+              ],
+              "translations": [
+                {
+                  "input": "Kernel",
+                  "output": "Mem.Kernel",
+                  "ratio": "PAGE_SIZE/1000",
+                  "type": "NORMAL"
+                },
+                {
+                  "input": "ZFS",
+                  "output": "Mem.ZFS",
+                  "ratio": "PAGE_SIZE/1000",
+                  "type": "NORMAL"
+                },
+                {
+                  "input": "User/Anon",
+                  "output": "Mem.User/Anon",
+                  "ratio": "PAGE_SIZE/1000",
+                  "type": "NORMAL"
+                },
+                {
+                  "input": "Exec and libs",
+                  "output": "Mem.ExecAndLibs",
+                  "ratio": "PAGE_SIZE/1000",
+                  "type": "NORMAL"
+                },
+                {
+                  "input": "Page Cache",
+                  "output": "Mem.Page Cache",
+                  "ratio": "PAGE_SIZE/1000",
+                  "type": "NORMAL"
+                },
+                {
+                  "input": "Free (cachelist)",
+                  "output": "Mem.Free (cachelist)",
+                  "ratio": "PAGE_SIZE/1000",
+                  "type": "NORMAL"
+                },
+                {
+                  "input": "Free",
+                  "output": "Mem.Free",
+                  "ratio": "PAGE_SIZE/1000",
+                  "type": "NORMAL"
+                },
+                {
+                  "input": "Total",
+                  "output": "Mem.Total",
+                  "ratio": "PAGE_SIZE/1000",
+                  "type": "NORMAL"
+                }
+              ]
+            }
+          ]
+        }
 	]
 }
