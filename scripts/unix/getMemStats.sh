@@ -1,0 +1,1 @@
+echo ::memstat | mdb -k
