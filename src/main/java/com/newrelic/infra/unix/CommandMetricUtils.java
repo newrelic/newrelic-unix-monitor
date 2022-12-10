@@ -135,7 +135,7 @@ public class CommandMetricUtils {
 	private static void insertMetric(List<Metric> metricSet,
 		MappingMetric metricDeets, String metricValueString) {
 		Metric newMetric = null;
-		String metricName = toCamelCase(metricDeets.getName());
+		String metricName = toCamelCase(metricDeets.getName().trim());
 		
 		// Assume that it's a string attribute if we don't know the type.
 		if((metricDeets.getType() == null) || metricDeets.getType().equals("ATTRIBUTE")) {
@@ -184,6 +184,7 @@ public class CommandMetricUtils {
 		}
 		
 		if(newMetric != null) {
+			
 			logger.debug("Inserting Metric: " + newMetric.getName() + " : " + newMetric.getValue());
 			metricSet.add(newMetric);
 		} else {
@@ -240,7 +241,7 @@ public class CommandMetricUtils {
 					// If the matching field in the mappings is one of the special keywords, act accordingly.
 					for (int l = 0; l < thisLineMappingMetrics.size(); l++) {
 						String columnMetricName = thisLineMappingMetrics.get(l).getName();
-						String thisColumn = lineMatch.group(l + 1);
+						String thisColumn = lineMatch.group(l + 1).trim();
 						if(columnMetricName.equals(UnixAgentConstants.kColumnIgnore))
 							continue;	
 						
