@@ -12,7 +12,7 @@
 			"mappings": [{
 				"expression": "\\s*(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(\\S+).*",
 				"metrics": [{
-						"name": "DISK_NAME"
+						"name": "METRIC_INSTANCE"
 					},
 					{
 						"name": "Total",
