@@ -437,6 +437,37 @@
           ]
         }
       ]
+    },
+{
+      "eventType": "ServiceStatus",
+      "command": "svcs -av",
+      "mappings": [
+        {
+          "expression": "([a-zA-Z_]+)\\s+([a-zA-Z-]+)\\s+(.*)\\s+([0-9_-]+)\\s+(.*)",
+          "metrics": [
+            {
+              "name": "METRIC_INSTANCE"
+            },
+            {
+              "name": "NSTATE",
+              "type": "NORMAL"
+            },
+            {
+              "name": "STIME",
+              "type": "NORMAL"
+            },
+            {
+              "name": "CTID",
+              "type": "NORMAL"
+            },
+            {
+               "name": "FMRI",
+               "type": "NORMAL"
+            }
+          ]
+        }
+      ]
     }
+    
   ]
 }
