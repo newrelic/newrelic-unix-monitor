@@ -166,9 +166,9 @@
 		},
 		{
 			"eventType": "Process",
-			"command": "ps -eo pid,s,pcpu,pmem,rss,vsz,args",
+			"command": "ps -eo pid,s,pcpu,pmem,rss,vsz,user,time,nlwp,args",
 			"mappings": [{
-				"expression": "(\\d+)\\s+([A-Z]{1})\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+(\\d+)\\s+(\\d+)\\s+(.+)",
+				"expression": "(\\d+)\\s+([A-Z]{1})\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+(\\d+)\\s+(\\d+)\\s+([A-Za-z0-9]+)\\s+([0-9:]+)\\s+(\\d+)\\s+(.+)",
 				"metrics": [{
 						"name": "PID",
 						"type": "ATTRIBUTE"
@@ -191,6 +191,18 @@
 					},
 					{
 						"name": "Virtual Size",
+						"type": "NORMAL"
+					},
+					{
+						"name": "User",
+						"type": "NORMAL"
+					},
+					{
+						"name": "Time",
+						"type": "NORMAL"
+					},
+					{
+						"name": "Nlwp",
 						"type": "NORMAL"
 					},
 					{
@@ -467,7 +479,80 @@
           ]
         }
       ]
-    }
+    },
+    {
+      "eventType": "LDMMemstat",
+      "command": "bash ./scripts/unix/getLdmMemStat.sh",
+      "mappings": [
+        {
+          "expression": "DOMAIN\\|name=([A-Za-z0-9]+)\\|state=([a-zA-Z]+)\\|flags=([-A-Za-z0-9]+)\\|cons=([a-zA-Z0-9]*)\\|ncpu=([0-9]+)\\|mem=([0-9]+)\\|util=([\\d.]*)\\|uptime=([\\d.]*)\\|norm_util=([\\d.]*)",
+          "metrics": [
+            {
+              "name": "METRIC_INSTANCE"
+            },
+            {
+              "name": "State",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Flags",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Cons",
+              "type": "NORMAL"
+            },{
+              "name": "Ncpu",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Memory",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Util",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Uptime",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Norm Util",
+              "type": "NORMAL"
+            }
+          ]
+        }
+      ]
+    },
+	{
+		"eventType": "UnixFaults",
+		"command": "bash ./scripts/unix/getUnixFaults.sh",
+		"mappings": [
+		  {
+			"expression": "([A-Za-z0-9: ]+)\\s+([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\\s+([A-Za-z0-9-]+)\\s+([A-Za-z0-9]+)",
+			"metrics": [
+			  {
+				"name": "METRIC_INSTANCE",
+				"type": "DATE"
+			  },
+			  {
+				"name": "EventID",
+				"type": "NORMAL"
+			  },
+			  {
+				"name": "MsgID",
+				"type": "NORMAL"
+			  },
+			  {
+				"name": "Severity",
+				"type": "NORMAL"
+				
+			  }
+			]
+		  }
+		]
+	  }
     
   ]
 }
