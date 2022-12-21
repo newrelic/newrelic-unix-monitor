@@ -433,7 +433,7 @@
 		},
 {
       "eventType": "Memstat",
-      "command": "bash ./scripts/unix/getMemStats.sh",
+      "command": "echo ::memstat | mdb -k",
       "mappings": [
         {
           "expression": "^([\\w_ /\\(\\)]+)\\s+([0-9\\.]+)\\s+.*",
