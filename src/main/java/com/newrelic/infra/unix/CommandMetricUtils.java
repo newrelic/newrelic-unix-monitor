@@ -44,7 +44,7 @@ public class CommandMetricUtils {
 		String command=sCommand;
 		boolean bPipedCommand=false;
 		
-		if (sCommand.contains("|")) {
+		if (sCommand.contains("|") || sCommand.contains(";") || sCommand.contains("&&") || sCommand.contains("||")) {
 			arCommand[2]=sCommand;
 			bPipedCommand=true;
 		}
@@ -91,7 +91,7 @@ public class CommandMetricUtils {
 						proc = pb.start();
 					}
 					else {
-						CommandMetricUtils.logger.debug("Begin execution of piped command \"" + command + "\"");
+						CommandMetricUtils.logger.debug("Begin execution of Multiple commands \"" + command + "\"");
 						proc=Runtime.getRuntime().exec(arCommand);
 					}
 					// piped command implementation -end

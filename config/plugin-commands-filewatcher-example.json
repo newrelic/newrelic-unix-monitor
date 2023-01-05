@@ -9,6 +9,10 @@
           "type": "NORMAL"
         },
         {
+          "name": "fileType",
+          "type": "ATTRIBUTE"
+        },
+        {
           "name": "ownerPermissions",
           "type": "ATTRIBUTE"
         },
@@ -51,6 +55,10 @@
           {
             "name": "someNumber",
             "type": "NORMAL"
+          },
+          {
+            "name": "fileType",
+            "type": "ATTRIBUTE"
           },
           {
             "name": "ownerPermissions",

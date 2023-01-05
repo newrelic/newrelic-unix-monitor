@@ -482,7 +482,7 @@
     },
     {
       "eventType": "LDMMemstat",
-      "command": "bash ./scripts/unix/getLdmMemStat.sh",
+      "command": "bash ./scripts/getLdmMemStat.sh",
       "mappings": [
         {
           "expression": "DOMAIN\\|name=([A-Za-z0-9]+)\\|state=([a-zA-Z]+)\\|flags=([-A-Za-z0-9]+)\\|cons=([a-zA-Z0-9]*)\\|ncpu=([0-9]+)\\|mem=([0-9]+)\\|util=([\\d.]*)\\|uptime=([\\d.]*)\\|norm_util=([\\d.]*)",
@@ -527,7 +527,7 @@
     },
 	{
 		"eventType": "UnixFaults",
-		"command": "bash ./scripts/unix/getUnixFaults.sh",
+		"command": "bash ./scripts/getUnixFaults.sh",
 		"mappings": [
 		  {
 			"expression": "([A-Za-z0-9: ]+)\\s+([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\\s+([A-Za-z0-9-]+)\\s+([A-Za-z0-9]+)",
@@ -552,7 +552,29 @@
 			]
 		  }
 		]
-	  }
+	  },
+	  {
+		  "eventType": "UnixScriptStats",
+		  "command": "cat /tmp/script_status.out && rm /tmp/script_status.out",
+		  "mappings": [
+			{
+			  "expression": "status=([\\d]+)\\scommand=([a-zA-Z.0-9]+)\\stime=([a-zA-Z.0-9:\\s]+)",
+			  "metrics": [
+				{
+				  "name": "StausCode",
+				  "type": "NORMAL"
+				},
+				{
+				  "name": "PROCESS_NAME"
+				},
+				{
+					"name": "ExecutedAt",
+					"type": "NORMAL"
+				}
+			  ]
+			}
+		  ]
+		}
     
   ]
 }
