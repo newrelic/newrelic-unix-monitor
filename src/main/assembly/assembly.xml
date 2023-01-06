@@ -33,5 +33,9 @@
 		<fileSet>
 			<directory>config</directory>
 		</fileSet>
+		<fileSet>
+			<directory>scripts</directory>
+		</fileSet>
 	</fileSets>
+	
 </assembly>
