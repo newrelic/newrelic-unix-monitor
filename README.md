@@ -168,4 +168,4 @@ Date: 13-Jan-2023
 Version: 1.0.1
 
 The release 1.0.1 is a major release with multiple fixes and enhancements for Solaris 11.x platform, and this release has been certified on Oracle Solaris 11.4.
-Please refer the [user guide](https://github.com/newrelic/newrelic-unix-monitor/blob/master/NewRelic_UnixMonitor_Readme.pdf) for further details.
+Please refer the [user guide](https://github.com/newrelic/newrelic-unix-monitor/blob/master/docs/NewRelic_UnixMonitor_Readme.pdf) for further details.
