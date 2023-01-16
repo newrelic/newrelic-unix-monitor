@@ -12,7 +12,7 @@
 			"mappings": [{
 				"expression": "\\s*(\\S+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)%\\s+(\\S+).*",
 				"metrics": [{
-						"name": "DISK_NAME"
+						"name": "METRIC_INSTANCE"
 					},
 					{
 						"name": "Total",
@@ -41,7 +41,7 @@
 			"eventType": "DiskIO",
 			"command": "iostat -x -I",
 			"mappings": [{
-				"expression": "\\s*([\\/\\w\\d]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+(\\d+)\\s+(\\d+)",
+				"expression": "\\s*([A-Za-z0-9]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+([0-9\\.]+)",
 				"metrics": [{
 						"name": "METRIC_INSTANCE"
 					},
@@ -166,9 +166,9 @@
 		},
 		{
 			"eventType": "Process",
-			"command": "ps -eo pid,s,pcpu,pmem,rss,vsz,args",
+			"command": "ps -eo pid,s,pcpu,pmem,rss,vsz,user,time,nlwp,args",
 			"mappings": [{
-				"expression": "(\\d+)\\s+([A-Z]{1})\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+(\\d+)\\s+(\\d+)\\s+(.+)",
+				"expression": "(\\d+)\\s+([A-Z]{1})\\s+([0-9\\.]+)\\s+([0-9\\.]+)\\s+(\\d+)\\s+(\\d+)\\s+([A-Za-z0-9]+)\\s+([0-9:]+)\\s+(\\d+)\\s+(.+)",
 				"metrics": [{
 						"name": "PID",
 						"type": "ATTRIBUTE"
@@ -191,6 +191,18 @@
 					},
 					{
 						"name": "Virtual Size",
+						"type": "NORMAL"
+					},
+					{
+						"name": "User",
+						"type": "NORMAL"
+					},
+					{
+						"name": "Time",
+						"type": "NORMAL"
+					},
+					{
+						"name": "Nlwp",
 						"type": "NORMAL"
 					},
 					{
@@ -299,7 +311,7 @@
 				},
 
 				{
-					"expression": "CPU states:\\s+([0-9\\.]+)%\\s+idle,\\s+([0-9\\.]+)%\\s+user,\\s+([0-9\\.]+)%\\s+kernel,\\s+([0-9\\.]+)%\\s+iowait,\\s+([0-9\\.]+)%\\s+swap",
+					"expression": "CPU states:\\s+([0-9\\.]+)%\\s+idle,\\s+([0-9\\.]+)%\\s+user,\\s+([0-9\\.]+)%\\s+kernel,\\s+([0-9\\.]+)%\\s+stolen,\\s+([0-9\\.]+)%\\s+swap",
 					"metrics": [{
 							"name": "CPU.Idle",
 							"type": "NORMAL"
@@ -316,7 +328,7 @@
 						},
 
 						{
-							"name": "CPU.IOWait",
+							"name": "CPU.Stolen",
 							"type": "NORMAL"
 						},
 
@@ -418,6 +430,151 @@
 					"type": "DELTA"
 				}]
 			}]
+		},
+{
+      "eventType": "Memstat",
+      "command": "echo ::memstat | mdb -k",
+      "mappings": [
+        {
+          "expression": "^([\\w_ /\\(\\)]+)\\s+([0-9\\.]+)\\s+.*",
+          "metrics": [
+            {
+              "name": "METRIC_INSTANCE"
+            },
+            {
+              "name": "Page Memory",
+              "ratio": "PAGE_SIZE/1000",
+              "type": "NORMAL"
+            }
+          ]
+        }
+      ]
+    },
+{
+      "eventType": "ServiceStatus",
+      "command": "svcs -av",
+      "mappings": [
+        {
+          "expression": "([a-zA-Z_]+)\\s+([a-zA-Z-]+)\\s+(.*)\\s+([0-9_-]+)\\s+(.*)",
+          "metrics": [
+            {
+              "name": "State",
+			  "type": "NORMAL"
+            },
+            {
+              "name": "NSTATE",
+              "type": "NORMAL"
+            },
+            {
+              "name": "STIME",
+              "type": "NORMAL"
+            },
+            {
+              "name": "CTID",
+              "type": "NORMAL"
+            },
+            {
+               "name": "METRIC_INSTANCE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "eventType": "LDMMemstat",
+      "command": "bash ./scripts/getLdmMemStat.sh",
+      "mappings": [
+        {
+          "expression": "DOMAIN\\|name=([A-Za-z0-9]+)\\|state=([a-zA-Z]+)\\|flags=([-A-Za-z0-9]+)\\|cons=([a-zA-Z0-9]*)\\|ncpu=([0-9]+)\\|mem=([0-9]+)\\|util=([\\d.]*)\\|uptime=([\\d.]*)\\|norm_util=([\\d.]*)",
+          "metrics": [
+            {
+              "name": "METRIC_INSTANCE"
+            },
+            {
+              "name": "State",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Flags",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Cons",
+              "type": "NORMAL"
+            },{
+              "name": "Ncpu",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Memory",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Util",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Uptime",
+              "type": "NORMAL"
+            },
+            {
+              "name": "Norm Util",
+              "type": "NORMAL"
+            }
+          ]
+        }
+      ]
+    },
+	{
+		"eventType": "UnixFaults",
+		"command": "bash ./scripts/getUnixFaults.sh",
+		"mappings": [
+		  {
+			"expression": "([A-Za-z0-9: ]+)\\s+([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\\s+([A-Za-z0-9-]+)\\s+([A-Za-z0-9]+)",
+			"metrics": [
+			  {
+				"name": "METRIC_INSTANCE",
+				"type": "DATE"
+			  },
+			  {
+				"name": "EventID",
+				"type": "NORMAL"
+			  },
+			  {
+				"name": "MsgID",
+				"type": "NORMAL"
+			  },
+			  {
+				"name": "Severity",
+				"type": "NORMAL"
+				
+			  }
+			]
+		  }
+		]
+	  },
+	  {
+		  "eventType": "UnixScriptStats",
+		  "command": "cat /tmp/script_status.out && rm /tmp/script_status.out",
+		  "mappings": [
+			{
+			  "expression": "status=([\\d]+)\\scommand=([a-zA-Z.0-9]+)\\stime=([,a-zA-Z.0-9:\\s]+)",
+			  "metrics": [
+				{
+				  "name": "StausCode",
+				  "type": "NORMAL"
+				},
+				{
+				  "name": "PROCESS_NAME"
+				},
+				{
+					"name": "ExecutedAt",
+					"type": "NORMAL"
+				}
+			  ]
+			}
+		  ]
 		}
-	]
+    
+  ]
 }

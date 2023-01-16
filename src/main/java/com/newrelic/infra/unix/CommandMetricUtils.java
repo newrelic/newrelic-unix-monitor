@@ -33,10 +33,22 @@ public class CommandMetricUtils {
 		return executeCommand(command, false);
 	}
 
-	public static ArrayList<String> executeCommand(String command, Boolean useFile) {
+	public static ArrayList<String> executeCommand(String sCommand, Boolean useFile) {
 		BufferedReader br = null;
 		ArrayList<String> al = new ArrayList<String>();
 		String line = null;
+		// piped command implementation -begin
+		String[] arCommand =new String[3];
+		arCommand[0]="/bin/bash";
+		arCommand[1]= "-c";		
+		String command=sCommand;
+		boolean bPipedCommand=false;
+		
+		if (sCommand.contains("|") || sCommand.contains(";") || sCommand.contains("&&") || sCommand.contains("||")) {
+			arCommand[2]=sCommand;
+			bPipedCommand=true;
+		}
+		// piped command implementation-end
 
 		if (useFile) {
 			File commandFile = new File(command + ".out");
@@ -70,11 +82,19 @@ public class CommandMetricUtils {
 		} else {
 			Process proc = null;
 			try {
-				if (command != null) {
-					CommandMetricUtils.logger.debug("Begin execution of " + command);
-					ProcessBuilder pb = new ProcessBuilder(command.split(" "))
-							.redirectErrorStream(true);
-					proc = pb.start();
+				if (command != null ) {
+					// piped command implementation -begin
+					if (bPipedCommand==false) {
+						CommandMetricUtils.logger.debug("Begin execution of " + command);
+						ProcessBuilder pb = new ProcessBuilder(command.split(" "))
+								.redirectErrorStream(true);
+						proc = pb.start();
+					}
+					else {
+						CommandMetricUtils.logger.debug("Begin execution of Multiple commands \"" + command + "\"");
+						proc=Runtime.getRuntime().exec(arCommand);
+					}
+					// piped command implementation -end
 					br = new BufferedReader(new InputStreamReader(
 							proc.getInputStream()));
 					while((line = br.readLine()) != null) {
@@ -135,7 +155,7 @@ public class CommandMetricUtils {
 	private static void insertMetric(List<Metric> metricSet,
 		MappingMetric metricDeets, String metricValueString) {
 		Metric newMetric = null;
-		String metricName = toCamelCase(metricDeets.getName());
+		String metricName = toCamelCase(metricDeets.getName().trim());
 		
 		// Assume that it's a string attribute if we don't know the type.
 		if((metricDeets.getType() == null) || metricDeets.getType().equals("ATTRIBUTE")) {
@@ -184,6 +204,7 @@ public class CommandMetricUtils {
 		}
 		
 		if(newMetric != null) {
+			
 			logger.debug("Inserting Metric: " + newMetric.getName() + " : " + newMetric.getValue());
 			metricSet.add(newMetric);
 		} else {
@@ -202,7 +223,7 @@ public class CommandMetricUtils {
 	}
 
 	public static void parseCommandOutput(Command command, String metricPrefix,
-			MetricReporter metricReporter, List<Metric> staticAttributes, int pageSize) throws Exception {
+		MetricReporter metricReporter, List<Metric> staticAttributes, int pageSize) throws Exception {
 		String thisCommand = command.getCommand().replace(UnixAgentConstants.kMemberPlaceholder, metricPrefix);
 		ArrayList<String> commandReader = CommandMetricUtils.executeCommand(thisCommand);
 		
@@ -240,7 +261,7 @@ public class CommandMetricUtils {
 					// If the matching field in the mappings is one of the special keywords, act accordingly.
 					for (int l = 0; l < thisLineMappingMetrics.size(); l++) {
 						String columnMetricName = thisLineMappingMetrics.get(l).getName();
-						String thisColumn = lineMatch.group(l + 1);
+						String thisColumn = lineMatch.group(l + 1).trim();
 						if(columnMetricName.equals(UnixAgentConstants.kColumnIgnore))
 							continue;	
 						

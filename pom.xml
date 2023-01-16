@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.newrelic.experts</groupId>
 	<artifactId>newrelic-unix-monitor</artifactId>
-	<version>0.2.5</version>
+	<version>1.0.1</version>
 	<name>newrelic-unix-monitor</name>
 	<build>
 		<plugins>
@@ -82,7 +82,7 @@
 	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.target>1.6</maven.compiler.target>
-		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.7</maven.compiler.source>
 	</properties>
 </project>

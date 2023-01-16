@@ -17,6 +17,9 @@
 		<file>
 			<source>pluginctl.sh</source>
 		</file>
+		<file>
+			<source>gen_scriptdriver_script.sh</source>
+		</file>
         <file>
             <source>target/newrelic-unix-monitor.jar</source>
             <outputDirectory>lib</outputDirectory>
@@ -30,5 +33,9 @@
 		<fileSet>
 			<directory>config</directory>
 		</fileSet>
+		<fileSet>
+			<directory>scripts</directory>
+		</fileSet>
 	</fileSets>
+	
 </assembly>

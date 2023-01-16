@@ -1,4 +1,5 @@
 
+
 # New Relic Unix Monitor
 System-Level Monitoring for AIX, HP-UX, Linux, OSX/MacOS & Solaris/SunOS
 
@@ -160,3 +161,11 @@ This can be enabled EITHER by:
 OR
 * Replacing `config/logback.xml` with `config/logback-debug.xml` and restarting the Unix monitor
 (if using this method, remember to swap the files back when finished)
+
+#### Release Notes
+
+Date: 13-Jan-2023
+Version: 1.0.1
+
+The release 1.0.1 is a major release with multiple fixes and enhancements for Solaris 11.x platform, and this release has been certified on Oracle Solaris 11.4.
+Please refer the [user guide](https://github.com/newrelic/newrelic-unix-monitor/blob/master/NewRelic_UnixMonitor_Readme.pdf) for further details.
