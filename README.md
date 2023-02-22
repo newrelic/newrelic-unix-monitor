@@ -33,7 +33,7 @@ We'd love to get your contributions to improve the Unix Monitor! Keep in mind wh
 ## Requirements
 * A New Relic account.
 * A Unix server that you want to monitor
-* Java JRE/JDK v1.6 or later
+* Java JRE/JDK v1.8 or later
 * Network access to New Relic (proxies are supported, see details below)
 
 ### OSes with Available Configurations
