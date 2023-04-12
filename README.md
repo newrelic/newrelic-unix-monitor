@@ -1,3 +1,4 @@
+[![Community Project header](https://github.com/newrelic/open-source-office/raw/master/examples/categories/images/Community_Project.png)](https://github.com/newrelic/open-source-office/blob/master/examples/categories/index.md#community-project)
 
 
 # New Relic Unix Monitor
@@ -25,7 +26,7 @@ System-Level Monitoring for AIX, HP-UX, Linux, OSX/MacOS & Solaris/SunOS
 	* [Enabling Debug Mode](#debug-mode)
 
 ## Disclaimer
-New Relic has Open Sourced this integration to enable monitoring of this technology. This integration is provided AS-IS WITHOUT WARRANTY OR SUPPORT, although you can report issues and contribute to this integration via GitHub. Support for this integration is available with an [Expert Services subscription](https://newrelic.com/expertservices).
+New Relic has Open Sourced this integration to enable monitoring of this technology. This integration is provided AS-IS WITHOUT WARRANTY OR SUPPORT, although you can report issues and contribute to this integration via GitHub. 
 
 ## Contributing
 We'd love to get your contributions to improve the Unix Monitor! Keep in mind when you submit your pull request, you'll need to sign the CLA via the click-through using CLA-Assistant. If you'd like to execute our corporate CLA, or if you have any questions, please drop us an email at open-source@newrelic.com.
