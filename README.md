@@ -183,7 +183,7 @@ OR
 Date: 09-May-2023
 Version: 1.0.2
 
-The release 1.0.2 is a minor release with updated libray for httpclient. This update addresses the CVE-2020-13956.
+The release 1.0.2 is a minor release with updated libray for httpclient. This update addresses the [CVE-2020-13956](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-13956).
 
 Date: 13-Jan-2023
 Version: 1.0.1
