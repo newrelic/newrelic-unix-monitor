@@ -79,11 +79,18 @@ We'd love to get your contributions to improve the Unix Monitor! Keep in mind wh
 ### `plugin.json` configuration
 _Note: A full example of the possible fields in `plugin.json` can be found in `plugin-full-example.json`_
 
-#### Global settings
-* `OS` (default: `auto`): Used to determine which commands to run and how to parse them. Leave set to `auto` to have the plugin figure that out (which normally works).
-* `account_id`: New Relic account ID - the 6- or 7- digit number in the URL when you're logged into the account of your choosing.
-* `fedramp`: A true or false string to indicate that the target is the New Relic Fedramp-authorized endpoint.
-* `insights_insert_key` (under `insights`): You must create an [Insights Insert key, as described here.](https://docs.newrelic.com/docs/insights/insights-data-sources/custom-data/insert-custom-events-insights-api#register)
+
+### Global Settings
+
+* `OS` (default: `auto`): Determines which commands to run and how to parse them. Leave set to `auto` to let the plugin figure it out, which usually works.
+* `account_id`: Your New Relic account ID, a 6- or 7-digit number found in the URL when you're logged into the account.
+* `fedramp`: A true or false string indicating whether the target is the New Relic FedRAMP-authorized endpoint.
+* `insights_insert_key` (under `insights`): Create an [Insights Insert key as described here](https://docs.newrelic.com/docs/insights/insights-data-sources/custom-data/insert-custom-events-insights-api#register).
+
+  **OR** (From version 1.0.3 and above)
+
+* `insights_insert_key_obfuscated`: Refer to the section on [credential obfuscation](https://github.com/newrelic/newrelic-unix-monitor/blob/master/README.md#credential-obfuscation) to use the obfuscated Ingest key in your configuration. You must set the environment variable `NEW_RELIC_CONFIG_OBSCURING_KEY` for this configuration to work.
+  
 * `insights_data_center` (under `insights`, default: `us`): If using the NR EU data center for your account, please change this to `eu` or `EU`. Otherwise, you can leave this alone or omit this setting entirely. {#eu-data-center}
 
 #### Agent settings
